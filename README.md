@@ -1,9 +1,8 @@
-# Your Project's Title...
-Your project's description...
+# shsteimer.coom
 
 ## Environments
-- Preview: https://main--{repo}--{owner}.hlx.page/
-- Live: https://main--{repo}--{owner}.hlx.live/
+- Preview: https://main--shsteimer-com--shsteimer.hlx.page/
+- Live: https://main--shsteimer-com--shsteimer.hlx.live/
 
 ## Installation
 
