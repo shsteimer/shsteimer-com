@@ -9,3 +9,11 @@
   color: var(--clr-grey-500);
   margin-bottom: 1.5em;
 }
+
+.post main .post-date a:any-link {
+  color: var(--clr-red-400);
+}
+
+.post main .post-date a:hover {
+  color: var(--clr-red-500);
+}

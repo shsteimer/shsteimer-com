@@ -2,6 +2,7 @@ import ffetch from '../../scripts/ffetch.js';
 import {
   p, ul, li, h2, a,
 } from '../../scripts/dom-helpers.js';
+import { toClassName } from '../../scripts/aem.js';
 
 export function createPostDate(post) {
   const d = new Date(0);
@@ -12,7 +13,7 @@ export function createPostDate(post) {
 
   const dateFormatted = `${days[d.getUTCDay()]}, ${months[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()}`;
 
-  return p({ class: 'post-date' }, `Posted on ${dateFormatted} in ${post.category}`);
+  return p({ class: 'post-date' }, `Posted on ${dateFormatted} in `, a({ href: `/blog/archives#categories:${toClassName(post.category)}` }, post.category));
 }
 
 export default async function decorate(block) {

@@ -1,6 +1,7 @@
 @media(width < 900px) {
   main .archives-container:has(.archives.simple) .archives-wrapper {
     border-top: 1px dashed var(--dark-color);
+    padding-top: 2rem;
   }
 }
 
