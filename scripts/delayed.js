@@ -3,8 +3,10 @@ import { sampleRUM, loadCSS, loadScript } from './aem.js';
 
 const highlightCode = async () => {
   if (document.querySelector('.code:not(.gist)')) {
-    await loadCSS('../../libs/highlight/styles/github-dark.min.css');
-    await loadScript('../../libs/highlight/highlight.min.js');
+    await Promise.all([
+      loadCSS('../../libs/highlight/styles/github-dark.min.css'),
+      loadScript('../../libs/highlight/highlight.min.js'),
+    ]);
     // eslint-disable-next-line no-undef
     hljs.highlightAll();
   }
