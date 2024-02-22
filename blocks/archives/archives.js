@@ -37,6 +37,28 @@ export default async function decorate(block) {
     structured.Date[d.getFullYear()] = byYear;
   }
 
+  structured.Date.orderedKeys = Object.keys(structured.Date).sort((yearA, yearB) => {
+    const aNum = Number(yearA);
+    const bNum = Number(yearB);
+
+    // should never happen but JIC
+    if (Number.isNaN(aNum) || Number.isNaN(bNum)) return 0;
+
+    return bNum - aNum;
+  });
+  structured.Tags.orderedKeys = Object.keys(structured.Tags).sort((tagA, tagB) => {
+    const aCount = structured.Tags[tagA].length;
+    const bCount = structured.Tags[tagB].length;
+
+    return bCount - aCount;
+  });
+  structured.Categories.orderedKeys = Object.keys(structured.Categories).sort((catA, catB) => {
+    const aCount = structured.Categories[catA].length;
+    const bCount = structured.Categories[catB].length;
+
+    return bCount - aCount;
+  });
+
   block.innerHTML = '';
   Object.keys(structured).forEach((group) => {
     const el = div(
@@ -48,7 +70,7 @@ export default async function decorate(block) {
       ),
     );
     const list = el.querySelector('ul');
-    Object.keys(structured[group]).forEach((subGroup) => {
+    structured[group].orderedKeys.forEach((subGroup) => {
       const posts = structured[group][subGroup];
       const listItem = li(
         { id: `sub-group-${toClassName(group)}-${toClassName(subGroup)}`, 'aria-expanded': 'false' },

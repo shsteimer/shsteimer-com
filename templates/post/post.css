@@ -1,1 +1,11 @@
 @import url('../blog/blog.css');
+
+.post main h1 {
+  margin-bottom: 0;
+}
+
+.post main .post-date {
+  font-size: var(--body-font-size-xs);
+  color: var(--clr-grey-500);
+  margin-bottom: 1.5em;
+}
