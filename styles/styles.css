@@ -34,7 +34,7 @@ svg {
   --clr-black: #000;
   --clr-red-400: #ce2f00;
   --clr-red-500: #9b2300;
-  --clr-blue-400: #244E7A;
+  --clr-blue-400: #428bca;
   --clr-blue-500: #2a6496;
   --clr-grey-400: #f5f5f5;
   --clr-grey-500: #999;
@@ -42,8 +42,8 @@ svg {
   --clr-grey-700: #222;
 
   /* element colors */
-  --link-color: var(--clr-blue-400);
-  --link-hover-color: var(--clr-blue-500);
+  --link-color: var(--clr-blue-500);
+  --link-hover-color: var(--clr-blue-400);
   --background-color: var(--clr-white);
   --light-color: var(--clr-grey-400);
   --dark-color: var(--clr-grey-600);
