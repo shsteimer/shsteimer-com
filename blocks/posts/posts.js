@@ -4,16 +4,13 @@ import {
 } from '../../scripts/dom-helpers.js';
 
 export function createPostDate(post) {
-  let d = post.date;
-  if (!(d instanceof Date)) {
-    d = new Date(0);
-    d.setUTCSeconds(post.date);
-  }
+  const d = new Date(0);
+  d.setUTCSeconds(post.date);
 
   const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
-  const dateFormatted = `${days[d.getDay()]}, ${months[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+  const dateFormatted = `${days[d.getUTCDay()]}, ${months[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()}`;
 
   return p({ class: 'post-date' }, `Posted on ${dateFormatted} in ${post.category}`);
 }

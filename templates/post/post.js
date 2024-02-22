@@ -7,9 +7,9 @@ export default async function decorateTemplate(doc) {
   doc.body.classList.add('blog');
 
   const pubDate = getMetadata('publication-date');
-  const asDate = new Date(pubDate);
+  const dateStamp = Date.parse(pubDate) / 1000;
   const datePar = createPostDate({
-    date: asDate,
+    date: dateStamp,
     category: getMetadata('category'),
   });
   doc.querySelector('main h1').after(datePar);
