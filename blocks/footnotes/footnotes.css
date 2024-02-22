@@ -1,0 +1,12 @@
+main .footnotes {
+  font-size: var(--body-font-size-xs);
+}
+
+main .footnote-link {
+  font-size: var(--body-font-size-xs);
+}
+
+main .footnotes .footnote-back-link::after {
+  content: '↩';
+  margin-inline-start: 1ch;
+}

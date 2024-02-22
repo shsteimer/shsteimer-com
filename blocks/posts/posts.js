@@ -16,6 +16,10 @@ export function createPostDate(post) {
   return p({ class: 'post-date' }, `Posted on ${dateFormatted} in `, a({ href: `/blog/archives#categories:${toClassName(post.category)}` }, post.category));
 }
 
+/**
+ * decorate the block
+ * @param {Element} block the block
+ */
 export default async function decorate(block) {
   const results = ffetch('/query-index.json')
     .filter((page) => page.template && page.template.toLowerCase() === 'post')

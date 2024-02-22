@@ -10,7 +10,6 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
-  decorateButtons,
   toClassName,
   getMetadata,
 } from './aem.js';
@@ -88,7 +87,6 @@ function buildAutoBlocks(main) {
 export function decorateMain(main) {
   decorateIcons(main);
   main.querySelectorAll('a').forEach(rewriteLinkUrl);
-  decorateButtons(main);
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);

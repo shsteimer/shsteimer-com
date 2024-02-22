@@ -80,9 +80,6 @@ const decorateNav = (navSection, brandSection) => {
 
     if (brandSection) {
       const brandLinks = brandSection.querySelectorAll('a');
-      brandLinks.forEach((a) => {
-        a.classList.remove('button');
-      });
       const brandWrapper = div({ class: 'nav-brand' });
       brandWrapper.append(...brandLinks);
       navEl.append(brandWrapper);
