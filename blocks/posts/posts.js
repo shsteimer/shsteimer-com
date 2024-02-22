@@ -71,16 +71,20 @@ export default async function decorate(block) {
           return true;
         });
       renderResults(block, searchResults).then(() => {
-        block.querySelectorAll('.post-item').forEach((item) => {
-          const title = item.querySelector('h2');
-          title.innerHTML = title.innerHTML.replaceAll(regex, (match) => `<mark>${match}</mark>`);
+        if (block.querySelector('.posts-list:empty')) {
+          block.querySelector('.posts-list:empty').append(li({ class: 'post-item' }, 'No Results Found'));
+        } else {
+          block.querySelectorAll('.post-item').forEach((item) => {
+            const title = item.querySelector('h2');
+            title.innerHTML = title.innerHTML.replaceAll(regex, (match) => `<mark>${match}</mark>`);
 
-          const category = item.querySelector('.post-date a');
-          category.innerHTML = category.innerHTML.replaceAll(regex, (match) => `<mark>${match}</mark>`);
+            const category = item.querySelector('.post-date a');
+            category.innerHTML = category.innerHTML.replaceAll(regex, (match) => `<mark>${match}</mark>`);
 
-          const description = item.querySelector('.post-description');
-          description.innerHTML = description.innerHTML.replaceAll(regex, (match) => `<mark>${match}</mark>`);
-        });
+            const description = item.querySelector('.post-description');
+            description.innerHTML = description.innerHTML.replaceAll(regex, (match) => `<mark>${match}</mark>`);
+          });
+        }
       });
     }
   });
