@@ -4,7 +4,7 @@ import {
 } from '../../scripts/dom-helpers.js';
 import { toClassName } from '../../scripts/aem.js';
 
-export default async function decorate(block) {
+const gatherData = async () => {
   const structured = {
     Categories: {},
     Tags: {},
@@ -59,6 +59,10 @@ export default async function decorate(block) {
     return bCount - aCount;
   });
 
+  return structured;
+};
+
+const renderDom = (block, structured) => {
   block.innerHTML = '';
   Object.keys(structured).forEach((group) => {
     const el = div(
@@ -101,6 +105,15 @@ export default async function decorate(block) {
     });
     block.append(el);
   });
+};
+
+/**
+ * decorate the block
+ * @param {Element} block the block
+ */
+export default async function decorate(block) {
+  const structured = await gatherData();
+  renderDom(block, structured);
 
   block.querySelectorAll('.sub-group-controller').forEach((controller) => {
     if (block.classList.contains('simple')) {
@@ -122,6 +135,7 @@ export default async function decorate(block) {
     const target = block.querySelector(`#sub-group-${splitHash[0]}-${splitHash[1]}`);
     if (target) {
       target.setAttribute('aria-expanded', true);
+      target.scrollIntoView({ behavior: 'smooth' });
     }
   }
 }

@@ -45,9 +45,6 @@ main .archives .group-list > li {
 
 main .archives.simple .group-list > li {
   padding: 0;
-}
-
-main .archives.simple .group-list > li {
   border: none;
 }
 

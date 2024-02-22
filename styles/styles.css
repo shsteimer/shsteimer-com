@@ -55,12 +55,10 @@ svg {
   --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
 
   /* body sizes */
-  --body-font-size-m: 1.25rem;
-  /* 24px */
-  --body-font-size-s: 1.125rem;
-  /* 18px */
-  --body-font-size-xs: 1rem;
-  /* 16px */
+  --body-font-size-m: 1.25rem; /* 24px */
+  --body-font-size-s: 1.125rem; /* 18px */
+  --body-font-size-xs: 1rem; /* 16px */
+
 
   /* heading sizes */
   --heading-font-size-xxl: clamp(2.75rem, 4.4vw, 3.5rem);

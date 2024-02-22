@@ -72,17 +72,17 @@ header nav .nav-hamburger-icon::after {
   width: calc(var(--hamburger-size) - 2px);
 }
 
-header nav:not(.no-transition) .nav-hamburger-icon,
-header nav:not(.no-transition) .nav-hamburger-icon::before,
-header nav:not(.no-transition) .nav-hamburger-icon::after {
-  transition: transform .5s, top .5s, bottom .5s;
-}
-
 header nav .nav-hamburger-icon::before,
 header nav .nav-hamburger-icon::after {
   content: '';
   position: absolute;
   background: currentcolor;
+}
+
+header nav:not(.no-transition) .nav-hamburger-icon,
+header nav:not(.no-transition) .nav-hamburger-icon::before,
+header nav:not(.no-transition) .nav-hamburger-icon::after {
+  transition: transform .5s, top .5s, bottom .5s;
 }
 
 header nav[aria-expanded="false"] .nav-hamburger-icon,
