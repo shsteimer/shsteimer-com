@@ -164,6 +164,10 @@ header nav[aria-expanded="true"] .nav-list {
 }
 
 /* search form */
+header:not(.with-search) nav .search-form {
+  display: none;
+}
+
 header nav .search-form .field-wrapper {
   position: relative;
   width: 12rem;

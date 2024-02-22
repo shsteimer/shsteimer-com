@@ -3,6 +3,7 @@ import { loadFragment } from '../fragment/fragment.js';
 import {
   div, nav, button, span, form, input, label,
 } from '../../scripts/dom-helpers.js';
+import { getOrigin } from '../../scripts/utils.js';
 
 // media query match that indicates mobile/tablet width
 const isDesktop = window.matchMedia('(min-width: 900px)');
@@ -31,6 +32,14 @@ const toggleMenu = (navEl, forceExpanded = null) => {
     window.removeEventListener('keydown', closeOnEscape);
   }
 };
+
+let tId;
+function debounce(method, delay) {
+  clearTimeout(tId);
+  tId = setTimeout(() => {
+    method();
+  }, delay);
+}
 
 const decorateNav = (navSection, brandSection) => {
   if (navSection) {
@@ -76,6 +85,14 @@ const decorateNav = (navSection, brandSection) => {
         ),
       );
       navEl.querySelector('.icon-search').replaceWith(searchForm);
+
+      const searchInput = searchForm.querySelector('input');
+      searchInput.addEventListener('keyup', () => {
+        debounce(() => {
+          const q = searchInput.value;
+          window.postMessage({ executeSearch: true, q }, getOrigin());
+        }, 250);
+      });
     }
 
     if (brandSection) {
