@@ -9,7 +9,7 @@ main .code pre {
   color: var(--code-text-color);
   max-height: 800px;
   overflow: auto;
-  padding: 1.5rem 1rem 1rem;
+  padding: 2.7rem 1rem 1rem;
   border-radius: 0.5em;
 }
 
@@ -18,12 +18,8 @@ main .code button {
   top: .5rem;
   right: 1rem;
   margin: 0;
-  opacity: .33;
+  opacity: .5;
   transition: opacity .5s;
-}
-
-main .code:hover button {
-  opacity: .8;
 }
 
 main .code button:hover,

@@ -42,6 +42,21 @@ function buildCodeBlocks(container) {
     pre.before(block);
     pre.remove();
   });
+
+  container.querySelectorAll('a[href^="https://gist.github.com"]').forEach((gistLink) => {
+    // ignore if inside a code block
+    if (gistLink.closest('.code')) return;
+
+    const block = buildBlock('code', [[gistLink.cloneNode(true)]]);
+    const parent = gistLink.parentNode;
+    if (parent.tagName === 'P') {
+      parent.before(block);
+      parent.remove();
+    } else {
+      gistLink.before(block);
+      gistLink.remove();
+    }
+  });
 }
 
 function buildFragmentBlocks(container) {
