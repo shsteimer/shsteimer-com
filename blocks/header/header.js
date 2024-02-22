@@ -41,7 +41,7 @@ const decorateNav = (navSection, brandSection) => {
       div(
         { class: 'nav-hamburger' },
         button(
-          { type: 'button', 'aria-controls': 'nav', 'aria-lable': 'Open navigation' },
+          { type: 'button', 'aria-controls': 'nav', 'aria-label': 'Open navigation' },
           span({ class: 'nav-hamburger-icon' }),
         ),
       ),
