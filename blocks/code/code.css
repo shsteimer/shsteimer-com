@@ -1,0 +1,33 @@
+main .code {
+  position: relative;
+  max-width: min(800px, 100%);
+  margin-inline: auto;
+}
+
+main .code pre {
+  background-color: var(--code-bg-color);
+  color: var(--code-text-color);
+  max-height: 800px;
+  overflow: auto;
+  padding: 1.5rem 1rem 1rem;
+  
+  border-radius: 0.5em;
+}
+
+main .code button {
+  position: absolute;
+  top: .5rem;
+  right: 1rem;
+  margin: 0;
+  opacity: .33;
+  transition: opacity .5s;
+}
+
+main .code:hover button {
+  opacity: .8;
+}
+
+main .code button:hover,
+main .code button:focus {
+  opacity: 1;
+}
