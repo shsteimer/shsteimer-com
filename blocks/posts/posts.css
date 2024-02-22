@@ -36,6 +36,10 @@ main .posts .posts-list .post-item .post-date a:any-link {
   text-underline-offset: 4px;
 }
 
+main .posts .posts-list .post-item .post-date a:hover {
+  text-decoration: underline solid;
+}
+
 main .posts .posts-list .post-item .post-description {
   font-size: var(--body-font-size-s);
   margin-bottom: .3em;

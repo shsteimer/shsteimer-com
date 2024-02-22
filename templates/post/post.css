@@ -11,19 +11,13 @@
   margin-bottom: 1.5em;
 }
 
-.post main a:any-link {
+.blog main .section:not(.archives-container) a:any-link {
+  color: var(--clr-red-400);
   text-decoration: underline dotted;
   text-underline-offset: 4px;
 }
 
-.post main a:hover {
-  text-decoration: underline solid;
-}
-
-.blog main .section:not(.archives-container) a:any-link {
-  color: var(--clr-red-400);
-}
-
 .blog main .section:not(.archives-container) a:hover {
   color: var(--clr-red-500);
+  text-decoration: underline solid;
 }
