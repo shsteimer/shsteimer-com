@@ -135,7 +135,9 @@ export default async function decorate(block) {
     const target = block.querySelector(`#sub-group-${splitHash[0]}-${splitHash[1]}`);
     if (target) {
       target.setAttribute('aria-expanded', true);
-      target.scrollIntoView({ behavior: 'smooth' });
+      setTimeout(() => {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }, 1000);
     }
   }
 }
