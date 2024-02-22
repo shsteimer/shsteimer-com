@@ -1,3 +1,9 @@
+@media(width < 900px) {
+  main .archives-container:has(.archives.simple) .archives-wrapper {
+    border-top: 1px dashed var(--dark-color);
+  }
+}
+
 main .archives {
   font-size: var(--body-font-size-s);
 }

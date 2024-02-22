@@ -1,5 +1,4 @@
 footer {
-  padding: 2rem var(--inline-section-padding);
   background-color: var(--light-color);
   font-size: var(--body-font-size-xs);
   border-block: 1px solid var(--clr-black);
@@ -8,6 +7,7 @@ footer {
 footer .footer {
   max-width: var(--max-content-width);
   margin: auto;
+  padding: 2rem var(--inline-section-padding);
 }
 
 footer .footer p {
