@@ -4,9 +4,14 @@ main .footnotes {
 
 main .footnote-link {
   font-size: var(--body-font-size-xs);
+  vertical-align: super;
 }
 
 main .footnotes .footnote-back-link::after {
   content: '↩';
   margin-inline-start: 1ch;
+}
+
+main .footnotes p:last-of-type {
+  margin: 0;
 }

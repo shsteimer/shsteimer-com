@@ -609,6 +609,23 @@ async function loadBlocks(main) {
 }
 
 /**
+ * Ensure all column div's within a block contain a block level element (p, h2, etc.)
+ * Avoids situations where you end up with a column with just a text node but no wrapping p tag
+ * @param {Element} main the main element
+ */
+// eslint-disable-next-line import/prefer-default-export
+function addMissingParagraphs(block) {
+  block.querySelectorAll(':scope > div > div').forEach((blockColumn) => {
+    const hasContent = !!blockColumn.firstElementChild || !!block.textContent.trim();
+    if (hasContent) {
+      const hasWrapper = !!blockColumn.firstElementChild
+        && window.getComputedStyle(blockColumn.firstElementChild).display === 'block';
+      if (!hasWrapper) blockColumn.innerHTML = `<p>${blockColumn.innerHTML}</p>`;
+    }
+  });
+}
+
+/**
  * Decorates a block.
  * @param {Element} block The block element
  */
@@ -618,6 +635,7 @@ function decorateBlock(block) {
     block.classList.add('block');
     block.dataset.blockName = shortBlockName;
     block.dataset.blockStatus = 'initialized';
+    addMissingParagraphs(block);
     const blockWrapper = block.parentElement;
     blockWrapper.classList.add(`${shortBlockName}-wrapper`);
     const section = block.closest('.section');

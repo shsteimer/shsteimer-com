@@ -24,15 +24,20 @@ export default async function decorate(block) {
 
     const item = li({ id: `fn-${i + 1}` });
     item.append(...footnote.childNodes);
-    item.append(
-      a(
-        { href: `#fn-ref-${i + 1}`, class: 'footnote-back-link' },
-        span(
-          { class: 'sr-only' },
-          'Back to Content',
-        ),
+    const backToContentLink = a(
+      { href: `#fn-ref-${i + 1}`, class: 'footnote-back-link' },
+      span(
+        { class: 'sr-only' },
+        'Back to Content',
       ),
     );
+    const lastPar = item.querySelector('p:last-of-type');
+    if (lastPar) {
+      lastPar.append(backToContentLink);
+    } else {
+      item.append(backToContentLink);
+    }
+
     list.append(item);
   });
 
