@@ -83,7 +83,7 @@ const renderDom = (block, structured) => {
             role: 'button',
             'aria-controls': `sub-group-${toClassName(group)}-${toClassName(subGroup)}`,
             class: 'sub-group-controller',
-            href: `/blog/archives#${toClassName(group)}:${toClassName(subGroup)}`,
+            href: `/blog/archives#sub-group-${toClassName(group)}-${toClassName(subGroup)}`,
           },
           `${subGroup} (${posts.length})`,
         ),
@@ -130,14 +130,10 @@ export default async function decorate(block) {
   });
 
   const { hash } = window.location;
-  if (hash && hash.includes(':')) {
-    const splitHash = hash.substring(1).split(':');
-    const target = block.querySelector(`#sub-group-${splitHash[0]}-${splitHash[1]}`);
+  if (hash) {
+    const target = block.querySelector(hash);
     if (target) {
       target.setAttribute('aria-expanded', true);
-      setTimeout(() => {
-        target.scrollIntoView({ behavior: 'smooth' });
-      }, 1000);
     }
   }
 }

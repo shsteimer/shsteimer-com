@@ -35,6 +35,9 @@ async function loadFonts() {
 
 function buildFragmentBlocks(container) {
   container.querySelectorAll('a[href*="/fragments/"]:only-child').forEach((a) => {
+    // ignore if inside a fragment block
+    if (a.closest('.fragment')) return;
+
     // skip links to other sites JIC
     const domainCheck = checkDomain(a.href);
     if (domainCheck.isExternal) return;

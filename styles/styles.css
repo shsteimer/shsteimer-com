@@ -55,9 +55,12 @@ svg {
   --fixed-font-family: 'Roboto Mono', menlo, consolas, 'Liberation Mono', monospace;
 
   /* body sizes */
-  --body-font-size-m: 1.25rem; /* 24px */
-  --body-font-size-s: 1.125rem; /* 18px */
-  --body-font-size-xs: 1rem; /* 16px */
+  --body-font-size-m: 1.25rem;
+  /* 24px */
+  --body-font-size-s: 1.125rem;
+  /* 18px */
+  --body-font-size-xs: 1rem;
+  /* 16px */
 
 
   /* heading sizes */
@@ -99,6 +102,10 @@ svg {
   font-family: lato-fallback;
   size-adjust: 97.33%;
   src: local("Arial");
+}
+
+html {
+  scroll-padding-top: calc(var(--nav-height) + 2.5rem);
 }
 
 body {
