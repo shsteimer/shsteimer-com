@@ -1,5 +1,5 @@
 import { domEl, button } from '../../scripts/dom-helpers.js';
-import { loadCSS, loadScript } from '../../scripts/aem.js';
+import { loadCSS } from '../../scripts/aem.js';
 
 const jsonpGist = (url, callback) => {
   // Setup a unique name that cane be called & destroyed
@@ -57,8 +57,4 @@ export default async function decorate(block) {
   copyButton.addEventListener('click', () => {
     navigator.clipboard.writeText(codeContent);
   });
-
-  loadCSS('../../libs/highlight/styles/atom-one-dark.css');
-  await loadScript('../../libs/highlight/highlight.js');
-  hljs.highlightElement(block.querySelector('code'));
 }
