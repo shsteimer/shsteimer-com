@@ -7,8 +7,8 @@ import { toClassName } from '../../scripts/aem.js';
 const gatherData = async () => {
   const structured = {
     Categories: {},
-    Tags: {},
     Date: {},
+    Tags: {},
   };
 
   const results = ffetch('/query-index.json')
@@ -66,7 +66,7 @@ const renderDom = (block, structured) => {
   block.innerHTML = '';
   Object.keys(structured).forEach((group) => {
     const el = div(
-      { class: 'archive-group' },
+      { class: `archive-group archive-group-${toClassName(group)}` },
       h2(group),
       div(
         { class: 'archive-group-inner' },
