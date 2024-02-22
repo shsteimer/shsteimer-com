@@ -2,6 +2,7 @@
 
 .post main h1 {
   margin-bottom: 0;
+  color: var(--clr-red-400);
 }
 
 .post main .post-date {

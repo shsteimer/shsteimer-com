@@ -33,6 +33,18 @@ async function loadFonts() {
   }
 }
 
+function buildCodeBlocks(container) {
+  container.querySelectorAll('pre code').forEach((code) => {
+    // ignore if inside a code block
+    if (code.closest('.code')) return;
+
+    const pre = code.parentNode;
+    const block = buildBlock('code', [[pre.cloneNode(true)]]);
+    pre.before(block);
+    pre.remove();
+  });
+}
+
 function buildFragmentBlocks(container) {
   container.querySelectorAll('a[href*="/fragments/"]:only-child').forEach((a) => {
     // ignore if inside a fragment block
@@ -61,6 +73,7 @@ function buildFragmentBlocks(container) {
 function buildAutoBlocks(main) {
   try {
     buildFragmentBlocks(main);
+    buildCodeBlocks(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);

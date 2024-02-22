@@ -1,10 +1,6 @@
-.blog main {
-  display: grid;
-  grid-template-columns: 1fr;
-}
-
 @media (width >=900px) {
   .blog main {
+    display: grid;
     grid-template-columns: minmax(50%, 2fr) minmax(300px, 1fr);
     max-width: var(--max-content-width);
     margin: 0 auto;

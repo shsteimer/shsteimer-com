@@ -48,6 +48,8 @@ svg {
   --light-color: var(--clr-grey-400);
   --dark-color: var(--clr-grey-600);
   --text-color: var(--clr-grey-600);
+  --code-bg-color: rgb(0 0 0 / 20%);
+  --code-text-color: var(--clr-black);
 
   /* fonts */
   --body-font-family: lato, lato-fallback;
@@ -182,23 +184,14 @@ blockquote {
 code,
 pre {
   font-family: var(--fixed-font-family);
-  font-size: var(--body-font-size-s);
+  font-size: var(--body-font-size-xs);
 }
 
-code {
-  padding: .125em;
-}
-
-pre {
-  overflow: scroll;
-}
-
-main pre {
-  background-color: var(--light-color);
-  padding: 1em;
-  border-radius: .25em;
-  overflow-x: auto;
-  white-space: pre;
+p code {
+  padding: 4px 5px 6px;
+  border-radius: 0.3em;
+  background-color: var(--code-bg-color);
+  color: var(--code-text-color);
 }
 
 /* links */
