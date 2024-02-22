@@ -11,9 +11,13 @@
   margin-bottom: 1.5em;
 }
 
-.post main .post-date a:any-link {
+.post main a:any-link {
   text-decoration: underline dotted;
   text-underline-offset: 4px;
+}
+
+.post main a:hover {
+  text-decoration: underline solid;
 }
 
 .blog main .section:not(.archives-container) a:any-link {
