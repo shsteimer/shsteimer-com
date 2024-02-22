@@ -10,24 +10,16 @@ import {
   waitForLCP,
   loadBlocks,
   loadCSS,
+  decorateButtons,
+  toClassName,
+  getMetadata,
 } from './aem.js';
+import {
+  checkDomain,
+  rewriteLinkUrl,
+} from './utils.js';
 
 const LCP_BLOCKS = []; // add your LCP blocks to the list
-
-/**
- * Builds hero block and prepends to main in a new section.
- * @param {Element} main The container element
- */
-function buildHeroBlock(main) {
-  const h1 = main.querySelector('h1');
-  const picture = main.querySelector('picture');
-  // eslint-disable-next-line no-bitwise
-  if (h1 && picture && (h1.compareDocumentPosition(picture) & Node.DOCUMENT_POSITION_PRECEDING)) {
-    const section = document.createElement('div');
-    section.append(buildBlock('hero', { elems: [picture, h1] }));
-    main.prepend(section);
-  }
-}
 
 /**
  * load fonts.css and set a session storage flag
@@ -41,56 +33,35 @@ async function loadFonts() {
   }
 }
 
+function buildFragmentBlocks(container) {
+  container.querySelectorAll('a[href*="/fragments/"]:only-child').forEach((a) => {
+    // skip links to other sites JIC
+    const domainCheck = checkDomain(a.href);
+    if (domainCheck.isExternal) return;
+
+    const parent = a.parentNode;
+    const fragment = buildBlock('fragment', [[a.cloneNode(true)]]);
+    if (parent.tagName === 'P') {
+      parent.before(fragment);
+      parent.remove();
+    } else {
+      a.before(fragment);
+      a.remove();
+    }
+  });
+}
+
 /**
  * Builds all synthetic blocks in a container element.
  * @param {Element} main The container element
  */
 function buildAutoBlocks(main) {
   try {
-    buildHeroBlock(main);
+    buildFragmentBlocks(main);
   } catch (error) {
     // eslint-disable-next-line no-console
     console.error('Auto Blocking failed', error);
   }
-}
-
-/**
- * Decorates paragraphs containing a single link as buttons.
- * @param {Element} element container element
- */
-function decorateButtons(element) {
-  element.querySelectorAll('a').forEach((a) => {
-    a.title = a.title || a.textContent;
-    const url = new URL(a.href);
-    if (!a.textContent.includes(url.pathname)) {
-      const up = a.parentElement;
-      const twoup = a.parentElement.parentElement;
-      if (!a.querySelector('img')) {
-        if (up.childNodes.length === 1 && (up.tagName === 'P' || up.tagName === 'DIV')) {
-          a.className = 'button'; // default
-          up.classList.add('button-container');
-        }
-        if (
-          up.childNodes.length === 1
-          && up.tagName === 'STRONG'
-          && twoup.childNodes.length === 1
-          && twoup.tagName === 'P'
-        ) {
-          a.className = 'button primary';
-          twoup.classList.add('button-container');
-        }
-        if (
-          up.childNodes.length === 1
-          && up.tagName === 'EM'
-          && twoup.childNodes.length === 1
-          && twoup.tagName === 'P'
-        ) {
-          a.className = 'button secondary';
-          twoup.classList.add('button-container');
-        }
-      }
-    }
-  });
 }
 
 /**
@@ -100,10 +71,38 @@ function decorateButtons(element) {
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
   decorateIcons(main);
+  main.querySelectorAll('a').forEach(rewriteLinkUrl);
   decorateButtons(main);
   buildAutoBlocks(main);
   decorateSections(main);
   decorateBlocks(main);
+}
+
+async function decorateTemplate(doc) {
+  const templateName = toClassName(getMetadata('template'));
+  try {
+    const cssLoaded = loadCSS(`${window.hlx.codeBasePath}/templates/${templateName}/${templateName}.css`);
+    const decorationComplete = new Promise((resolve) => {
+      (async () => {
+        try {
+          const mod = await import(
+            `${window.hlx.codeBasePath}/templates/${templateName}/${templateName}.js`
+          );
+          if (mod.default) {
+            await mod.default(doc);
+          }
+        } catch (error) {
+          // eslint-disable-next-line no-console
+          console.log('failed to load module for post', error);
+        }
+        resolve();
+      })();
+    });
+    await Promise.all([cssLoaded, decorationComplete]);
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log('failed to decorate post', error);
+  }
 }
 
 /**
@@ -113,6 +112,7 @@ export function decorateMain(main) {
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
   decorateTemplateAndTheme();
+  await decorateTemplate(doc);
   const main = doc.querySelector('main');
   if (main) {
     decorateMain(main);

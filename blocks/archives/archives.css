@@ -1,0 +1,95 @@
+main .archives {
+  font-size: var(--body-font-size-s);
+}
+
+main .archives .archive-group > h2 {
+  margin-bottom: .4em;
+}
+
+main .archives.simple .archive-group > h2 {
+  font-size: var(--heading-font-size-m);
+}
+
+main .archives .group-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+main .archives.simple .group-list {
+  list-style: disc;
+  gap: .25rem;
+  padding-inline: 2.5rem 0;
+}
+
+main .archives .group-list > li {
+  background-color: var(--light-color);
+  border: 1px solid var(--dark-color);
+  padding: .5rem 1rem;
+  border-radius: 4px;
+}
+
+main .archives.simple .group-list > li {
+  padding: 0;
+}
+
+main .archives.simple .group-list > li {
+  border: none;
+}
+
+main .archives.simple .archive-group-inner {
+  background-color: var(--light-color);
+  border: 1px solid var(--dark-color);
+  border-radius: 4px;
+  padding: .5rem 1rem;
+}
+
+main .archives .sub-group-controller {
+  display: block;
+  text-decoration: none;
+  position: relative;
+}
+
+main .archives .sub-group-controller::after {
+  content: '';
+  position: absolute;
+  right: 1rem;
+  border-right: 3px solid var(--dark-color);
+  border-bottom: 3px solid var(--dark-color);
+  height: 12px;
+  width: 12px;
+  transform: rotate(-45deg);
+  margin: auto;
+  top: 0;
+  bottom: 0;
+  transition: transform .5s;
+}
+
+main .archives.simple .sub-group-controller::after {
+  content: none;
+}
+
+main .archives li[aria-expanded="true"] .sub-group-controller::after {
+  transform: rotate(45deg);
+}
+
+main .archives .expander {
+  display: grid;
+  grid-template-rows: 0fr;
+  margin: 0;
+  transition: grid-template-rows .5s, visibility .5s;
+  visibility: hidden;
+}
+
+main .archives .expander > ul {
+  overflow: hidden;
+  margin-bottom: .2rem;
+}
+
+main .archives li[aria-expanded="true"] .expander {
+  grid-template-rows: 1fr;
+  visibility: visible;
+}

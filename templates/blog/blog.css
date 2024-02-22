@@ -1,0 +1,22 @@
+.blog main {
+  display: grid;
+}
+
+@media (width >=900px) {
+  .blog main {
+    grid-template-columns: minmax(50%, 2fr) minmax(300px, 1fr);
+    max-width: var(--max-content-width);
+    margin: 0 auto;
+    gap: 3rem;
+  }
+
+  .blog main .section {
+    grid-column: 1;
+    padding-inline: var(--inline-section-padding) 0;
+  }
+
+  .blog main .section.archives-container:not(:first-child) {
+    grid-column: 2;
+    padding-inline: 0 var(--inline-section-padding);
+  }
+}

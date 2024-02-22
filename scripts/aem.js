@@ -640,9 +640,14 @@ function decorateBlocks(main) {
  */
 async function loadHeader(header) {
   const headerBlock = buildBlock('header', '');
+  headerBlock.style.display = 'none';
   header.append(headerBlock);
   decorateBlock(headerBlock);
-  return loadBlock(headerBlock);
+  const loaded = loadBlock(headerBlock);
+  loaded.then(() => {
+    headerBlock.style.display = null;
+  });
+  return loaded;
 }
 
 /**
@@ -652,9 +657,14 @@ async function loadHeader(header) {
  */
 async function loadFooter(footer) {
   const footerBlock = buildBlock('footer', '');
+  footerBlock.style.display = 'none';
   footer.append(footerBlock);
   decorateBlock(footerBlock);
-  return loadBlock(footerBlock);
+  const loaded = loadBlock(footerBlock);
+  loaded.then(() => {
+    footerBlock.style.display = null;
+  });
+  return loaded;
 }
 
 /**
