@@ -8,6 +8,7 @@ const runDelayed = async () => {
   if (document.querySelector('.code:not(.gist)')) {
     await loadCSS('../../libs/highlight/styles/atom-one-dark.css');
     await loadScript('../../libs/highlight/highlight.js');
+    // eslint-disable-next-line no-undef
     hljs.highlightAll();
   }
 };
