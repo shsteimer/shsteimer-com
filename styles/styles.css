@@ -34,16 +34,16 @@ svg {
   --clr-black: #000;
   --clr-red-400: #ce2f00;
   --clr-red-500: #9b2300;
-  --clr-blue-400: #428bca;
-  --clr-blue-500: #2a6496;
+  --clr-blue-400: #2a6496;
+  --clr-blue-500: #205181;
   --clr-grey-400: #f5f5f5;
   --clr-grey-500: #999;
   --clr-grey-600: #333;
   --clr-grey-700: #222;
 
   /* element colors */
-  --link-color: var(--clr-blue-500);
-  --link-hover-color: var(--clr-blue-400);
+  --link-color: var(--clr-blue-400);
+  --link-hover-color: var(--clr-blue-500);
   --background-color: var(--clr-white);
   --light-color: var(--clr-grey-400);
   --dark-color: var(--clr-grey-600);
