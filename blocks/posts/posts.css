@@ -26,6 +26,11 @@ main .posts .posts-list .post-item .post-date {
   margin-bottom: .5em;
 }
 
+main .posts .posts-list .post-item .post-date a:any-link {
+  text-decoration: underline dotted;
+  text-underline-offset: 4px;
+}
+
 main .posts .posts-list .post-item .post-description {
   font-size: var(--body-font-size-s);
   margin-bottom: .3em;
