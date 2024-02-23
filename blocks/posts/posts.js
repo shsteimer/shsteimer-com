@@ -71,7 +71,7 @@ async function renderInitialResults(block) {
     .filter((page) => page.template && page.template.toLowerCase() === 'post')
     .limit(5);
 
-  renderResults(block, results);
+  await renderResults(block, results);
 }
 
 /**
@@ -80,7 +80,7 @@ async function renderInitialResults(block) {
  */
 export default async function decorate(block) {
   block.innerHTML = '';
-  renderInitialResults(block);
+  await renderInitialResults(block);
 
   // search interaction
   const header = document.querySelector('header');
