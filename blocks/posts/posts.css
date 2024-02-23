@@ -16,7 +16,8 @@ main .posts .posts-list {
   view-transition-name: posts-updated;
 }
 
-@keyframes grow-x {
+
+@keyframes rotate-in {
   from {
     transform: scale(0) rotate(-90deg);
   }
@@ -25,7 +26,7 @@ main .posts .posts-list {
   }
 }
 
-@keyframes shrink-x {
+@keyframes rotate-out {
   from {
     transform: scale(1) rotate(0);
   }
@@ -35,11 +36,11 @@ main .posts .posts-list {
 }
 
 ::view-transition-old(posts-updated) {
-  animation: 0.25s linear both shrink-x;
+  animation: 0.2s linear both rotate-out;
 }
 
 ::view-transition-new(posts-updated) {
-  animation: 0.25s 0.25s linear both grow-x;
+  animation: 0.3s 0.2s linear both rotate-in;
 }
 
 main .posts .posts-list .post-item .post-title h2 {
