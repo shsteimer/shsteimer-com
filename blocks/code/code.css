@@ -15,6 +15,11 @@ main .code pre {
   margin: 0;
 }
 
+main .code pre code {
+  display: block;
+  overflow-x: auto;
+  padding: 1em;
+}
 
 main .code button {
   position: absolute;
