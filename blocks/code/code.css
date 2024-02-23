@@ -2,7 +2,7 @@ main .code {
   position: relative;
   background-color: var(--code-bg-color);
   color: var(--code-text-color);
-  padding: 2.7rem 1rem 1rem 1rem;
+  padding: 2.7rem 1rem 1rem;
   border-radius: 0.5em;
   margin-inline: auto;
   max-width: min(800px, 100%);
