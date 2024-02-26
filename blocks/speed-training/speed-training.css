@@ -1,0 +1,29 @@
+main .speed-training .training-info-cards {
+  display: flex;
+  gap: 2rem;
+  margin-block: 2rem;
+  max-width: 50rem;
+  flex-wrap: wrap;
+}
+
+main .speed-training .session-card {
+  background-color: var(--light-color);
+  padding: 1em;
+  border: 1px solid var(--clr-grey-700);
+  border-radius: 1rem;
+  flex: 1;
+}
+
+main .speed-training .session-card h3 {
+  font-size: var(--heading-font-size-m);
+  margin-block-end: .6em;
+}
+
+main .speed-training .session-card > div {
+  display: flex;
+  justify-content: space-between;
+}
+
+main .speed-training .session-card .label {
+  font-weight: 700;
+}
