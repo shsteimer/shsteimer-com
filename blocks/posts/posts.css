@@ -13,6 +13,36 @@ main .posts .posts-list {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  view-transition-name: posts-updated;
+}
+
+
+@keyframes rotate-in {
+  from {
+    transform: scale(0) rotate(-90deg);
+  }
+
+  to {
+    transform: scale(1) rotate(0);
+  }
+}
+
+@keyframes rotate-out {
+  from {
+    transform: scale(1) rotate(0);
+  }
+  
+  to {
+    transform: scale(0) rotate(90deg);
+  }
+}
+
+::view-transition-old(posts-updated) {
+  animation: 0.2s linear both rotate-out;
+}
+
+::view-transition-new(posts-updated) {
+  animation: 0.3s 0.2s linear both rotate-in;
 }
 
 main .posts .posts-list .post-item .post-title h2 {
