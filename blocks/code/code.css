@@ -34,20 +34,3 @@ main .code button:hover,
 main .code button:focus {
   opacity: 1;
 } 
-
-/* main .code {
-  position: relative;
-  max-width: min(800px, 100%);
-  margin-inline: auto;
-}
-
-main .code pre {
-  background-color: var(--code-bg-color);
-  color: var(--code-text-color);
-  max-height: 800px;
-  overflow: auto;
-  padding: 2.7rem 1rem 1rem;
-  border-radius: 0.5em;
-}
-
-*/
