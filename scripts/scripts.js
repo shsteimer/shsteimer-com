@@ -109,6 +109,8 @@ export function decorateMain(main) {
 
 async function decorateTemplate(doc) {
   const templateName = toClassName(getMetadata('template'));
+  if (!templateName) return;
+
   try {
     const cssLoaded = loadCSS(`${window.hlx.codeBasePath}/templates/${templateName}/${templateName}.css`);
     const decorationComplete = new Promise((resolve) => {
@@ -122,7 +124,7 @@ async function decorateTemplate(doc) {
           }
         } catch (error) {
           // eslint-disable-next-line no-console
-          console.log('failed to load module for post', error);
+          console.log('failed to load module for template', error);
         }
         resolve();
       })();
@@ -130,7 +132,7 @@ async function decorateTemplate(doc) {
     await Promise.all([cssLoaded, decorationComplete]);
   } catch (error) {
     // eslint-disable-next-line no-console
-    console.log('failed to decorate post', error);
+    console.log('failed to decorate template', error);
   }
 }
 
