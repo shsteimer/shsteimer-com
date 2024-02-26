@@ -14,7 +14,7 @@ export function createPostDate(post) {
 
   const dateFormatted = `${days[d.getUTCDay()]}, ${months[d.getUTCMonth()]} ${d.getUTCDate()}, ${d.getUTCFullYear()}`;
 
-  return p({ class: 'post-date' }, `Posted on ${dateFormatted} in `, a({ href: `/blog/archives#categories:${toClassName(post.category)}` }, post.category));
+  return p({ class: 'post-date' }, `Posted on ${dateFormatted} in `, a({ href: `/blog/archives#sub-group-categories-${toClassName(post.category)}` }, post.category));
 }
 
 let transitionView = false;
