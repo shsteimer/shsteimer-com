@@ -85,13 +85,14 @@ const decorateNav = (navSection, brandSection) => {
         ),
       );
       navEl.querySelector('.icon-search').replaceWith(searchForm);
+      searchForm.addEventListener('submit', (e) => e.preventDefault());
 
       const searchInput = searchForm.querySelector('input');
       searchInput.addEventListener('keyup', () => {
         debounce(() => {
           const q = searchInput.value;
           window.postMessage({ executeSearch: true, q }, getOrigin());
-        }, 250);
+        }, 300);
       });
     }
 

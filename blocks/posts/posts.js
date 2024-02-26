@@ -17,6 +17,7 @@ export function createPostDate(post) {
   return p({ class: 'post-date' }, `Posted on ${dateFormatted} in `, a({ href: `/blog/archives#categories:${toClassName(post.category)}` }, post.category));
 }
 
+let transitionView = false;
 let lastQ;
 async function renderResults(block, results, q = '') {
   if (lastQ === q.trim()) return;
@@ -59,10 +60,11 @@ async function renderResults(block, results, q = '') {
       }
     }
   };
-  if (!document.startViewTransition) {
-    await render();
-  } else {
+  if (document.startViewTransition && transitionView) {
     document.startViewTransition(() => render());
+  } else {
+    transitionView = true;
+    await render();
   }
 }
 
