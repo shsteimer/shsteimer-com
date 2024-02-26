@@ -173,11 +173,20 @@ async function loadLazy(doc) {
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
   if (hash && element) element.scrollIntoView();
 
-  loadHeader(doc.querySelector('header'));
-  loadFooter(doc.querySelector('footer'));
+  const lazyPromises = [];
 
-  loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`);
-  loadFonts();
+  lazyPromises.push(loadHeader(doc.querySelector('header')));
+  lazyPromises.push(loadFooter(doc.querySelector('footer')));
+
+  lazyPromises.push(loadCSS(`${window.hlx.codeBasePath}/styles/lazy-styles.css`));
+  lazyPromises.push(loadFonts());
+
+  await Promise.allSettled(lazyPromises);
+
+  const getsFocus = document.querySelector('[data-focus="true"]');
+  if (getsFocus) {
+    getsFocus.focus();
+  }
 
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));

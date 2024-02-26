@@ -134,6 +134,8 @@ export default async function decorate(block) {
     const target = block.querySelector(hash);
     if (target) {
       target.setAttribute('aria-expanded', true);
+      const linkToFocus = target.querySelector('.sub-group-controller');
+      linkToFocus.dataset.focus = true;
     }
   }
 }
