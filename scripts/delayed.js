@@ -2,13 +2,23 @@
 import { sampleRUM, loadCSS, loadScript } from './aem.js';
 
 const highlightCode = async () => {
-  if (document.querySelector('.code:not(.gist)')) {
+  const codeEls = [...document.querySelectorAll('code')].filter((code) => {
+    const codeBlock = code.closest('.code');
+    if (codeBlock && codeBlock.classList.contains('gist')) {
+      return false;
+    }
+
+    return true;
+  });
+  if (codeEls.length > 0) {
     await Promise.all([
       loadCSS('../../libs/highlight/styles/github-dark.min.css'),
       loadScript('../../libs/highlight/highlight.min.js'),
     ]);
-    // eslint-disable-next-line no-undef
-    hljs.highlightAll();
+    codeEls.forEach((codeEl) => {
+      // eslint-disable-next-line no-undef
+      hljs.highlightElement(codeEl);
+    });
   }
 };
 
