@@ -1,11 +1,26 @@
+.header {
+  --header-bg-color: var(--clr-grey-700);
+  --header-text-color: var(--light-color);
+  --header-link-hover: var(--clr-grey-500);
+  --header-box-shadow: var(--clr-grey-700);
+}
+
+@media (prefers-color-scheme: dark) {
+  .header {
+    --header-box-shadow: var(--clr-grey-600);
+  }
+}
+
 .header .nav-container {
-  background-color: var(--clr-grey-700);
-  color: var(--light-color);
+  background-color: var(--header-bg-color);
+  color: var(--header-text-color);
   width: 100%;
   z-index: 2;
   position: fixed;
-  box-shadow: 0 0 .5rem 1px var(--clr-grey-700);
+  box-shadow: 0 0 .5rem 1px var(--header-box-shadow);
 }
+
+
 
 header nav {
   display: grid;
@@ -31,13 +46,13 @@ header nav[aria-expanded="true"] {
 }
 
 header nav a:any-link {
-  color: var(--light-color);
+  color: var(--header-text-color);
   font-size: var(--body-font-size-xs);
 }
 
 header nav a:hover {
   text-decoration: none;
-  color: var(--clr-grey-500);
+  color: var(--header-link-hover);
 }
 
 /* hamburger */

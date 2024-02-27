@@ -78,6 +78,13 @@ svg {
   --nav-height: 3rem;
 }
 
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: var(--clr-grey-700);
+    --text-color: var(--clr-grey-400);
+  }
+}
+
 @media (width >=600px) {
   :root {
     --inline-section-padding: 2rem;

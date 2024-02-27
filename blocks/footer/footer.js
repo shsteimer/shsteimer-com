@@ -34,5 +34,11 @@ export default async function decorate(block) {
   const curYear = (new Date()).getFullYear();
   footer.innerHTML = footer.innerHTML.replace('{year}', curYear);
 
+  footer.querySelectorAll('.icon').forEach((icon) => {
+    const img = icon.querySelector('img');
+    icon.style.mask = `url(${img.src}) no-repeat center`;
+    img.remove();
+  });
+
   block.append(footer);
 }

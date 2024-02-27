@@ -1,8 +1,18 @@
 footer {
+  --footer-icon-color: var(--text-color);
+
   background-color: var(--light-color);
   font-size: var(--body-font-size-xs);
   border-block: 1px solid var(--clr-black);
   margin-block: 0 .75rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  footer {
+    --footer-icon-color: var(--text-color);
+
+    background-color: var(--clr-grey-700);
+  }
 }
 
 footer .footer {
@@ -31,4 +41,8 @@ footer .footer .footer-container > * {
 
 footer .footer .footer-container .footer-social a {
   display: inline-flex;
+}
+
+footer .footer .footer-container .footer-social .icon {
+  background: var(--footer-icon-color);
 }
