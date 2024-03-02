@@ -89,7 +89,7 @@ main .archives.simple .sub-group-controller::after {
   content: none;
 }
 
-main .archives li[aria-expanded="true"] .sub-group-controller::after {
+main .archives .sub-group-controller[aria-expanded="true"]::after {
   transform: rotate(45deg);
 }
 
@@ -106,7 +106,7 @@ main .archives .expander > ul {
   margin-bottom: .2rem;
 }
 
-main .archives li[aria-expanded="true"] .expander {
+main .archives .sub-group-controller[aria-expanded="true"] + .expander {
   grid-template-rows: 1fr;
   visibility: visible;
 }

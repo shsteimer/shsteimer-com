@@ -77,13 +77,15 @@ const renderDom = (block, structured) => {
     structured[group].orderedKeys.forEach((subGroup) => {
       const posts = structured[group][subGroup];
       const listItem = li(
-        { id: `sub-group-${toClassName(group)}-${toClassName(subGroup)}`, 'aria-expanded': 'false' },
+        { id: `sub-group-${toClassName(group)}-${toClassName(subGroup)}` },
         a(
           {
             role: 'button',
+            id: `sub-group-controller-${toClassName(group)}-${toClassName(subGroup)}`,
             'aria-controls': `sub-group-${toClassName(group)}-${toClassName(subGroup)}`,
+            'aria-expanded': 'false',
             class: 'sub-group-controller',
-            href: `/blog/archives#sub-group-${toClassName(group)}-${toClassName(subGroup)}`,
+            href: `/blog/archives#sub-group-controller-${toClassName(group)}-${toClassName(subGroup)}`,
           },
           `${subGroup} (${posts.length})`,
         ),
@@ -122,9 +124,8 @@ export default async function decorate(block) {
     } else {
       controller.addEventListener('click', (e) => {
         e.preventDefault();
-        const controls = block.querySelector(`#${controller.getAttribute('aria-controls')}`);
-        const expanded = controls.getAttribute('aria-expanded') === 'true';
-        controls.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+        const expanded = controller.getAttribute('aria-expanded') === 'true';
+        controller.setAttribute('aria-expanded', expanded ? 'false' : 'true');
       });
     }
   });
@@ -134,8 +135,6 @@ export default async function decorate(block) {
     const target = block.querySelector(hash);
     if (target) {
       target.setAttribute('aria-expanded', true);
-      const linkToFocus = target.querySelector('.sub-group-controller');
-      linkToFocus.dataset.focus = true;
     }
   }
 }
