@@ -609,18 +609,35 @@ async function loadBlocks(main) {
 }
 
 /**
- * Ensure all column div's within a block contain a block level element (p, h2, etc.)
- * Avoids situations where you end up with a column with just a text node but no wrapping p tag
- * @param {Element} main the main element
- */
-// eslint-disable-next-line import/prefer-default-export
-function addMissingParagraphs(block) {
+* Wrap inline text content of block cells within a <p> tag.
+* @param {Element} block the block element
+*/
+export function wrapTextNodes(block) {
+  const validWrappers = [
+    'P',
+    'PRE',
+    'UL', 'OL',
+    'PICTURE',
+    'TABLE',
+    'H1', 'H2', 'H3', 'H4', 'H5', 'H6',
+  ];
+
+  const wrap = (el, tag = 'p') => {
+    const wrapper = document.createElement(tag);
+    wrapper.append(...el.childNodes);
+    el.append(wrapper);
+  };
+
   block.querySelectorAll(':scope > div > div').forEach((blockColumn) => {
-    const hasContent = !!blockColumn.firstElementChild || !!block.textContent.trim();
-    if (hasContent) {
+    if (blockColumn.hasChildNodes()) {
       const hasWrapper = !!blockColumn.firstElementChild
-        && window.getComputedStyle(blockColumn.firstElementChild).display === 'block';
-      if (!hasWrapper) blockColumn.innerHTML = `<p>${blockColumn.innerHTML}</p>`;
+        && validWrappers.some((tagName) => blockColumn.firstElementChild.tagName === tagName);
+      if (!hasWrapper) {
+        wrap(blockColumn);
+      } else if (blockColumn.firstElementChild.tagName === 'PICTURE'
+        && (blockColumn.children.length > 1 || !!blockColumn.textContent.trim())) {
+        wrap(blockColumn);
+      }
     }
   });
 }
@@ -635,7 +652,7 @@ function decorateBlock(block) {
     block.classList.add('block');
     block.dataset.blockName = shortBlockName;
     block.dataset.blockStatus = 'initialized';
-    addMissingParagraphs(block);
+    wrapTextNodes(block);
     const blockWrapper = block.parentElement;
     blockWrapper.classList.add(`${shortBlockName}-wrapper`);
     const section = block.closest('.section');
