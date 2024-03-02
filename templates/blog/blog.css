@@ -8,12 +8,14 @@
   }
 
   .blog main .section {
-    grid-column: 1;
     padding-inline: var(--inline-section-padding) 0;
   }
 
-  .blog main .section.archives-container:not(:first-child) {
-    grid-column: 2;
+  .blog main aside {
     padding-inline: 0 var(--inline-section-padding);
+  }
+
+  .blog main aside .section {
+    padding-inline: 0;
   }
 }

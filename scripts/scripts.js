@@ -94,17 +94,25 @@ function buildAutoBlocks(main) {
   }
 }
 
+function decorateLink(a) {
+  rewriteLinkUrl(a);
+}
+
+function decorateLinks(main) {
+  main.querySelectorAll('a').forEach(decorateLink);
+}
+
 /**
  * Decorates the main element.
  * @param {Element} main The main element
  */
 // eslint-disable-next-line import/prefer-default-export
 export function decorateMain(main) {
-  decorateIcons(main);
-  main.querySelectorAll('a').forEach(rewriteLinkUrl);
-  buildAutoBlocks(main);
   decorateSections(main);
+  buildAutoBlocks(main);
   decorateBlocks(main);
+  decorateIcons(main);
+  decorateLinks(main);
 }
 
 async function decorateTemplate(doc) {
@@ -182,11 +190,6 @@ async function loadLazy(doc) {
   lazyPromises.push(loadFonts());
 
   await Promise.allSettled(lazyPromises);
-
-  const getsFocus = document.querySelector('[data-focus="true"]');
-  if (getsFocus) {
-    getsFocus.focus();
-  }
 
   sampleRUM('lazy');
   sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
