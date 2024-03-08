@@ -1,9 +1,14 @@
 main .speed-training .training-info-cards {
-  display: flex;
+  display: grid;
   gap: 2rem;
   margin-block: 2rem;
-  max-width: 50rem;
-  flex-wrap: wrap;
+  max-width: 70rem;
+}
+
+@media (width >= 600px) {
+  main .speed-training .training-info-cards {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 main .speed-training .session-card {
@@ -21,9 +26,67 @@ main .speed-training .session-card h3 {
 
 main .speed-training .session-card > div {
   display: flex;
+  gap: 1rem;
   justify-content: space-between;
 }
 
 main .speed-training .session-card .label {
   font-weight: 700;
+}
+
+main .speed-training .session-card.current-cycle {
+  display: flex;
+  flex-direction: column;
+  grid-column: 1 / -1;;
+}
+
+main .speed-training .session-card > .cycle-graph {
+  justify-content: space-evenly;
+  flex-grow: 1;
+}
+
+main .speed-training .session-card > .cycle-graph .week {
+  --procol-color: rebeccapurple;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column-reverse;
+  gap: 1px;
+}
+
+main .speed-training .session-card > .cycle-graph .week span:not(:last-child) {
+  color: transparent;
+  user-select: none;
+  width: 1rem;
+  height: 1.5rem;
+  background-color: var(--procol-color);
+}
+
+main .speed-training .session-card > .cycle-graph .week [data-protocol="1"] {
+  --procol-color: forestgreen;
+}
+
+main .speed-training .session-card > .cycle-graph .week [data-protocol="2"] {
+  --procol-color: indigo
+}
+
+
+main .speed-training .session-card > .cycle-graph .week [data-protocol="3"] {
+  --procol-color: crimson;
+}
+
+main .speed-training .session-card > .cycle-graph .week [data-protocol="4"] {
+  --procol-color: gold;
+}
+
+main .speed-training .session-card > .cycle-graph .week [data-protocol="5"] {
+  --procol-color: darkorange;
+}
+
+
+
+main .speed-training .session-card > .cycle-graph .week span:last-child {
+  font-weight: 700;
+  font-size: var(--body-font-size-xs);
 }

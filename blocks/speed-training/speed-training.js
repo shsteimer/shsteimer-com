@@ -12,6 +12,36 @@ import {
  */
 const formatDate = (date) => `${date.getUTCMonth() + 1}/${date.getUTCDate()}/${date.getUTCFullYear()}`;
 
+const renderGraphCard = (cycleData, name) => {
+  const card = div(
+    { class: `session-card ${toClassName(name)}` },
+    h3(name),
+    div({ class: 'cycle-graph' }),
+  );
+
+  const graph = card.querySelector('.cycle-graph');
+
+  let curWeek = -1;
+  let weekMaxSpeed = -1;
+  let curWeekEl;
+  cycleData.forEach((sessionData) => {
+    if (sessionData.week !== curWeek) {
+      if (curWeekEl) {
+        curWeekEl.append(span({ class: 'week-max' }, weekMaxSpeed));
+      }
+      curWeekEl = div({ class: 'week', 'data-week': sessionData.week });
+      curWeek = sessionData.week;
+      graph.append(curWeekEl);
+    }
+    if (weekMaxSpeed < sessionData.maxSpeed) {
+      weekMaxSpeed = sessionData.maxSpeed;
+    }
+    curWeekEl.append(span({ 'data-protocol': sessionData.protocol }, sessionData.maxSpeed));
+  });
+  curWeekEl.append(span({ class: 'week-max' }, weekMaxSpeed));
+
+  return card;
+};
 const renderSessionCard = (sessionData, name) => div(
   { class: `session-card ${toClassName(name)}` },
   h3(name),
@@ -30,6 +60,8 @@ export default async function decorate(block) {
   const formLink = block.querySelector('a[href$=".json"]');
   if (!formLink) return;
   const { pathname } = new URL(formLink.href);
+
+  block.innerHTML = '';
 
   const results = await ffetch(pathname)
     .sheet('data')
@@ -65,13 +97,18 @@ export default async function decorate(block) {
     }
   });
 
+  const currentCycleInfo = results
+    .filter((sessionData) => sessionData.cycle === mostRecentSession.cycle)
+    .sort((a, b) => a.date - b.date);
+
   const info = div(
     { class: 'training-info' },
     h2('Training Info'),
     div(
       { class: 'training-info-cards' },
-      renderSessionCard(mostRecentSession, 'Last Session'),
+      renderGraphCard(currentCycleInfo, 'Current Cycle'),
       renderSessionCard(maxSpeed, 'Fastest Session'),
+      renderSessionCard(mostRecentSession, 'Last Session'),
     ),
   );
   block.append(info);
