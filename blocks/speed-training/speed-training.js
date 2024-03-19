@@ -28,6 +28,7 @@ const renderGraphCard = (cycleData, name) => {
     if (sessionData.week !== curWeek) {
       if (curWeekEl) {
         curWeekEl.append(span({ class: 'week-max' }, weekMaxSpeed));
+        weekMaxSpeed = -1;
       }
       curWeekEl = div({ class: 'week', 'data-week': sessionData.week });
       curWeek = sessionData.week;

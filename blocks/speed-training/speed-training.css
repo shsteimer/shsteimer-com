@@ -43,6 +43,7 @@ main .speed-training .session-card.current-cycle {
 main .speed-training .session-card > .cycle-graph {
   justify-content: space-evenly;
   flex-grow: 1;
+  align-items: flex-end;
 }
 
 main .speed-training .session-card > .cycle-graph .week {
