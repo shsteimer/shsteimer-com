@@ -100,7 +100,7 @@ const decorateNav = (navSection, brandSection) => {
       const brandLinks = brandSection.querySelectorAll('a');
       const brandWrapper = div({ class: 'nav-brand' });
       brandWrapper.append(...brandLinks);
-      navEl.append(brandWrapper);
+      navEl.prepend(brandWrapper);
       brandSection.remove();
     }
   }
