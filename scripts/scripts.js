@@ -1,5 +1,4 @@
 import {
-  sampleRUM,
   buildBlock,
   loadHeader,
   loadFooter,
@@ -7,18 +6,17 @@ import {
   decorateSections,
   decorateBlocks,
   decorateTemplateAndTheme,
-  waitForLCP,
-  loadBlocks,
   loadCSS,
   toClassName,
   getMetadata,
+  loadSection,
+  loadSections,
+  waitForFirstImage,
 } from './aem.js';
 import {
   checkDomain,
   rewriteLinkUrl,
 } from './utils.js';
-
-const LCP_BLOCKS = []; // add your LCP blocks to the list
 
 /**
  * load fonts.css and set a session storage flag
@@ -156,7 +154,7 @@ async function loadEager(doc) {
   if (main) {
     decorateMain(main);
     document.body.classList.add('appear');
-    await waitForLCP(LCP_BLOCKS);
+    await loadSection(main.querySelector('.section'), waitForFirstImage);
   }
 
   try {
@@ -175,7 +173,7 @@ async function loadEager(doc) {
  */
 async function loadLazy(doc) {
   const main = doc.querySelector('main');
-  await loadBlocks(main);
+  await loadSections(main);
 
   const { hash } = window.location;
   const element = hash ? doc.getElementById(hash.substring(1)) : false;
@@ -190,10 +188,6 @@ async function loadLazy(doc) {
   lazyPromises.push(loadFonts());
 
   await Promise.allSettled(lazyPromises);
-
-  sampleRUM('lazy');
-  sampleRUM.observe(main.querySelectorAll('div[data-block-name]'));
-  sampleRUM.observe(main.querySelectorAll('picture > img'));
 }
 
 /**

@@ -1,4 +1,4 @@
-import { getMetadata } from '../../scripts/aem.js';
+import { decorateSections, getMetadata } from '../../scripts/aem.js';
 import decorateBlog from '../blog/blog.js';
 import { createPostDate } from '../../blocks/posts/posts.js';
 import { domEl } from '../../scripts/dom-helpers.js';
@@ -25,4 +25,5 @@ export default async function decorateTemplate(doc) {
   main.querySelectorAll(':scope > div').forEach((section) => {
     article.append(section);
   });
+  decorateSections(article);
 }
