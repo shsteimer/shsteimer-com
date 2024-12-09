@@ -1,5 +1,5 @@
 import { div, domEl } from '../../scripts/dom-helpers.js';
-import { buildBlock } from '../../scripts/aem.js';
+import { buildBlock, decorateSections } from '../../scripts/aem.js';
 
 /**
  * decorate the template
@@ -16,5 +16,7 @@ export default async function decorateTemplate(doc) {
     const aside = domEl('aside', { class: 'section-container' });
     main.append(aside);
     aside.append(sidebar);
+
+    decorateSections(aside);
   }
 }
