@@ -1,5 +1,5 @@
 // eslint-disable-next-line import/no-cycle
-import { sampleRUM, loadCSS, loadScript } from './aem.js';
+import { loadCSS, loadScript } from './aem.js';
 
 const highlightCode = async () => {
   const codeEls = [...document.querySelectorAll('code')].filter((code) => {
@@ -23,9 +23,6 @@ const highlightCode = async () => {
 };
 
 const runDelayed = async () => {
-  // Core Web Vitals RUM collection
-  sampleRUM('cwv');
-
   await highlightCode();
 };
 
