@@ -1,0 +1,42 @@
+.blog.post main h1 {
+  margin-bottom: 0;
+  color: var(--clr-red-400);
+}
+
+.blog.post main .post-date {
+  font-size: var(--body-font-size-xs);
+  color: var(--clr-grey-500);
+  margin-bottom: 1.5em;
+}
+
+.blog.post main article a:hover {
+  color: var(--clr-red-500);
+  text-decoration: underline solid;
+}
+
+.blog.post main article .section a:any-link {
+  color: var(--clr-red-400);
+  text-decoration: underline dotted;
+  text-underline-offset: 4px;
+}
+
+@media (width >=900px) {
+  .blog.post main aside .section,
+  .blog.post main article .section {
+    padding: 0;
+  }
+  
+  .blog.post main article {
+    padding-block: 2rem;
+    padding-inline: var(--inline-section-padding) 0;
+  }
+  
+  .blog.post main aside {
+    padding-block: 2rem;
+    padding-inline: 0 var(--inline-section-padding);
+  }
+}
+
+.blog.post main article .section:not(:last-child) {
+  margin-block-end: 2rem;
+}

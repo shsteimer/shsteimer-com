@@ -1,0 +1,76 @@
+main .posts a:any-link {
+  color: var(--clr-red-400);
+}
+
+main .posts a:hover {
+  color: var(--clr-red-500);
+}
+
+main .posts .posts-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  view-transition-name: posts-updated;
+}
+
+
+@keyframes rotate-in {
+  from {
+    transform: scale(0) rotate(-90deg);
+  }
+
+  to {
+    transform: scale(1) rotate(0);
+  }
+}
+
+@keyframes rotate-out {
+  from {
+    transform: scale(1) rotate(0);
+  }
+  
+  to {
+    transform: scale(0) rotate(90deg);
+  }
+}
+
+::view-transition-old(posts-updated) {
+  animation: 0.2s linear both rotate-out;
+}
+
+::view-transition-new(posts-updated) {
+  animation: 0.3s 0.2s linear both rotate-in;
+}
+
+main .posts .posts-list .post-item .post-title h2 {
+  margin: 0;
+  font-size: var(--heading-font-size-l);
+}
+
+main .posts .posts-list .post-item .post-date {
+  font-size: var(--body-font-size-xs);
+  color: var(--clr-grey-500);
+  margin-bottom: .5em;
+}
+
+main .posts .posts-list .post-item .post-description + a {
+  font-size: var(--body-font-size-s);
+  font-weight: 700;
+}
+
+main .posts .posts-list .post-item .post-date a:any-link {
+  text-decoration: underline dotted;
+  text-underline-offset: 4px;
+}
+
+main .posts .posts-list .post-item .post-date a:hover {
+  text-decoration: underline solid;
+}
+
+main .posts .posts-list .post-item .post-description {
+  font-size: var(--body-font-size-s);
+  margin-bottom: .3em;
+}
