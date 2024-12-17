@@ -1,17 +1,17 @@
 {
+  "/blocks/archives/archives.css": "/blocks/archives/archives.d8e5bfc855b07d410bcd7369396135a9616580fe.css",
+  "/blocks/code/code.css": "/blocks/code/code.3330f5ac928f18ac93d7ca1a5a93f732f3b6738a.css",
+  "/blocks/footer/footer.css": "/blocks/footer/footer.11bcb15891f203b6a33baffa21455b47ea17ac94.css",
+  "/blocks/footnotes/footnotes.css": "/blocks/footnotes/footnotes.66e7ef8d664b29baf362f10a0b3954b7d5c53ab6.css",
+  "/blocks/form/form.css": "/blocks/form/form.5e1f3d04018c6d4a45d538dd89707d703f4f6557.css",
+  "/blocks/fragment/fragment.css": "/blocks/fragment/fragment.d06f3eee659312b8f384b197c55317cdfdcb713f.css",
+  "/blocks/header/header.css": "/blocks/header/header.127985ce1781b9d6d9bfa4b8b83047e18400f569.css",
+  "/blocks/posts/posts.css": "/blocks/posts/posts.b3f5b7217218311b77d4b7eeeb8320b6b983f531.css",
+  "/blocks/quote/quote.css": "/blocks/quote/quote.05e731d5492ee909226f661fe5eaeaa6a8fb2d7f.css",
+  "/blocks/speed-training/speed-training.css": "/blocks/speed-training/speed-training.58328ff5c48913643ec596e8190a18b6043a8904.css",
   "/styles/fonts.css": "/styles/fonts.78ad7504e5205da3b225a103ed7d9a753cdc68ce.css",
   "/styles/lazy-styles.css": "/styles/lazy-styles.be714944ffe534ae56e59474d593ca274734000a.css",
   "/styles/styles.css": "/styles/styles.c21b9ee8fba9dbbca3487e93b2fa97a82f449e68.css",
-  "/templates/post/post.css": "/templates/post/post.92da4ff7c66a1feabe7e55a561e990461bf44dbb.css",
   "/templates/blog/blog.css": "/templates/blog/blog.2e3eb8d7d84efa2f2247ae963bf1e91b5f04d3cd.css",
-  "/blocks/speed-training/speed-training.css": "/blocks/speed-training/speed-training.58328ff5c48913643ec596e8190a18b6043a8904.css",
-  "/blocks/quote/quote.css": "/blocks/quote/quote.05e731d5492ee909226f661fe5eaeaa6a8fb2d7f.css",
-  "/blocks/header/header.css": "/blocks/header/header.127985ce1781b9d6d9bfa4b8b83047e18400f569.css",
-  "/blocks/posts/posts.css": "/blocks/posts/posts.b3f5b7217218311b77d4b7eeeb8320b6b983f531.css",
-  "/blocks/fragment/fragment.css": "/blocks/fragment/fragment.d06f3eee659312b8f384b197c55317cdfdcb713f.css",
-  "/blocks/form/form.css": "/blocks/form/form.5e1f3d04018c6d4a45d538dd89707d703f4f6557.css",
-  "/blocks/footnotes/footnotes.css": "/blocks/footnotes/footnotes.66e7ef8d664b29baf362f10a0b3954b7d5c53ab6.css",
-  "/blocks/footer/footer.css": "/blocks/footer/footer.11bcb15891f203b6a33baffa21455b47ea17ac94.css",
-  "/blocks/code/code.css": "/blocks/code/code.3330f5ac928f18ac93d7ca1a5a93f732f3b6738a.css",
-  "/blocks/archives/archives.css": "/blocks/archives/archives.d8e5bfc855b07d410bcd7369396135a9616580fe.css"
+  "/templates/post/post.css": "/templates/post/post.92da4ff7c66a1feabe7e55a561e990461bf44dbb.css"
 }

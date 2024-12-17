@@ -155,6 +155,10 @@ async function build() {
     const updated = await copyFileHash(file);
     scriptImportMap[`/${file}`] = `/${updated}`;
   });
+  const orderedScriptImportMap = Object.keys(scriptImportMap).sort().reduce((acc, key) => {
+    acc[key] = scriptImportMap[key];
+    return acc;
+  }, {});
 
   const styleImportMap = {};
   await processLocations((file) => file.endsWith('.css') && !isVersioned(file), async (file) => {
@@ -162,20 +166,43 @@ async function build() {
     const updated = await copyFileHash(file);
     styleImportMap[`/${file}`] = `/${updated}`;
   });
-  await fs.writeFile('scripts/style-import-map.json', JSON.stringify(styleImportMap, null, 2));
+  const orderedStyleImportMap = Object.keys(styleImportMap).sort().reduce((acc, key) => {
+    acc[key] = styleImportMap[key];
+    return acc;
+  }, {});
 
-  const headDom = await rewriteDomFile('head.html', scriptImportMap, styleImportMap);
+  await fs.writeFile('scripts/style-import-map.json', JSON.stringify(orderedStyleImportMap, null, 2));
+
+  const headDom = await rewriteDomFile('head.html', orderedScriptImportMap, orderedStyleImportMap);
   const newHeadContents = headDom.window.document.documentElement.querySelector('head').innerHTML;
   await fs.writeFile('head.html', newHeadContents);
 
-  const errorDom = await rewriteDomFile('404.html', scriptImportMap, styleImportMap);
+  const errorDom = await rewriteDomFile('404.html', orderedScriptImportMap, orderedStyleImportMap);
   const newErrorContents = errorDom.window.document.documentElement.outerHTML;
   await fs.writeFile('404.html', newErrorContents);
+}
+
+async function watch() {
+  await build();
+
+  // then watch files
+  locations.forEach(async (location) => {
+    const watcher = fs.watch(location, {
+      recursive: true,
+    });
+
+    // eslint-disable-next-line no-restricted-syntax
+    for await (const event of watcher) {
+      console.log(event);
+    }
+  });
 }
 
 async function run(args) {
   if (args.includes('--clean')) {
     await clean();
+  } else if (args.includes('--watch')) {
+    await watch();
   } else {
     await build();
   }

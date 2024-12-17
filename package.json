@@ -8,7 +8,8 @@
     "lint:css": "stylelint templates/**/*.css blocks/**/*.css styles/*.css",
     "lint": "npm run lint:js && npm run lint:css",
     "build": "node build/build.mjs",
-    "build:clean": "node build/build.mjs --clean"
+    "build:clean": "node build/build.mjs --clean",
+    "build:watch": "node build/build.mjs --watch"
   },
   "repository": {
     "type": "git",
