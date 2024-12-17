@@ -27,5 +27,3 @@ const runDelayed = async () => {
 
 // add more delayed functionality here
 runDelayed();
-
-console.log('delayed.js loaded');
