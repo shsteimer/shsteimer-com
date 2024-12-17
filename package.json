@@ -4,9 +4,14 @@
   "version": "1.3.0",
   "description": "Starter project for Adobe Helix",
   "scripts": {
+    "start": "concurrently \"npm:build:watch\" \"aem up\"",
     "lint:js": "eslint .",
-    "lint:css": "stylelint blocks/**/*.css styles/*.css",
-    "lint": "npm run lint:js && npm run lint:css"
+    "lint:css": "stylelint templates/**/*.css blocks/**/*.css styles/*.css",
+    "lint": "npm run lint:js && npm run lint:css && npm run build:check",
+    "build": "node build/build.mjs",
+    "build:clean": "node build/build.mjs --clean",
+    "build:watch": "node build/build.mjs --watch",
+    "build:check": "node build/build.mjs --check"
   },
   "repository": {
     "type": "git",
@@ -22,9 +27,11 @@
     "@babel/core": "7.23.7",
     "@babel/eslint-parser": "7.23.3",
     "chai": "5.0.0",
+    "concurrently": "^9.1.0",
     "eslint": "8.56.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.29.1",
+    "jsdom": "^25.0.1",
     "stylelint": "16.1.0",
     "stylelint-config-standard": "36.0.0"
   }

@@ -1,0 +1,22 @@
+main .footnotes {
+  font-size: var(--body-font-size-xs);
+}
+
+main a.footnote-link:any-link {
+  font-size: var(--body-font-size-xs);
+  vertical-align: super;
+  text-decoration: none;
+}
+
+main .footnotes a.footnote-back-link:any-link {
+  text-decoration: none;
+}
+
+main .footnotes .footnote-back-link::after {
+  content: '↩';
+  margin-inline-start: 1ch;
+}
+
+main .footnotes p:last-of-type {
+  margin: 0;
+}
