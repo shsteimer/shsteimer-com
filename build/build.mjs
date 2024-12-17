@@ -56,24 +56,14 @@ async function fsExists(file) {
   }
 }
 
-async function clean() {
-  await processLocations((file) => file.endsWith('.js') && isVersioned(file), async (file) => {
-    console.log(`deleting versioned js: ${file}`);
-    await fs.rm(`${file}`);
-  });
-  await processLocations((file) => file.endsWith('.css') && isVersioned(file), async (file) => {
-    console.log(`deleting versioned css: ${file}`);
-    await fs.rm(`${file}`);
-  });
+async function revertDomFile(file) {
+  const fileContents = await fs.readFile(file, 'utf-8');
+  const dom = new JSDOM(fileContents);
 
-  // revert head.html
-  const headContents = await fs.readFile('head.html', 'utf-8');
-  const headDom = new JSDOM(headContents);
-
-  const importMap = headDom.window.document.querySelector('script[type="importmap"]');
+  const importMap = dom.window.document.querySelector('script[type="importmap"]');
   if (importMap) importMap.remove();
 
-  const scriptEls = headDom.window.document.querySelectorAll('script');
+  const scriptEls = dom.window.document.querySelectorAll('script');
   scriptEls.forEach((script) => {
     const src = script.getAttribute('src');
     if (src && isVersioned(src)) {
@@ -85,7 +75,7 @@ async function clean() {
     }
   });
 
-  const styleEls = headDom.window.document.querySelectorAll('link[rel="stylesheet"]');
+  const styleEls = dom.window.document.querySelectorAll('link[rel="stylesheet"]');
   styleEls.forEach((style) => {
     const href = style.getAttribute('href');
     if (href && isVersioned(href)) {
@@ -97,13 +87,63 @@ async function clean() {
     }
   });
 
-  const newHeadContents = headDom.window.document.documentElement.querySelector('head').innerHTML;
-  fs.writeFile('head.html', newHeadContents);
+  return dom;
+}
+
+async function clean() {
+  await processLocations((file) => file.endsWith('.js') && isVersioned(file), async (file) => {
+    console.log(`deleting versioned js: ${file}`);
+    await fs.rm(`${file}`);
+  });
+  await processLocations((file) => file.endsWith('.css') && isVersioned(file), async (file) => {
+    console.log(`deleting versioned css: ${file}`);
+    await fs.rm(`${file}`);
+  });
 
   const exists = await fsExists('scripts/style-import-map.json');
   if (exists) {
     await fs.rm('scripts/style-import-map.json');
   }
+
+  const headDom = await revertDomFile('head.html');
+  const newHeadContents = headDom.window.document.documentElement.querySelector('head').innerHTML;
+  await fs.writeFile('head.html', newHeadContents);
+
+  const errorDom = await revertDomFile('404.html');
+  const newErrorContents = errorDom.window.document.documentElement.outerHTML;
+  await fs.writeFile('404.html', newErrorContents);
+}
+
+async function rewriteDomFile(file, scriptImportMap, styleImportMap) {
+  const fileContents = await fs.readFile(file, 'utf-8');
+  const dom = new JSDOM(fileContents);
+
+  const scriptEls = dom.window.document.querySelectorAll('script');
+  const importMap = dom.window.document.createElement('script');
+  importMap.type = 'importmap';
+  importMap.textContent = JSON.stringify({
+    imports: {
+      ...scriptImportMap,
+    },
+  }, null, 2);
+  scriptEls[0].before(importMap);
+
+  scriptEls.forEach((script) => {
+    const src = script.getAttribute('src');
+    if (src && scriptImportMap[src]) {
+      script.setAttribute('src', scriptImportMap[src]);
+    }
+  });
+
+  const styleEls = dom.window.document.querySelectorAll('link[rel="stylesheet"]');
+  styleEls.forEach((style) => {
+    const href = style.getAttribute('href');
+    if (href && styleImportMap[href]) {
+      style.setAttribute('href', styleImportMap[href]);
+    }
+  });
+
+  return dom;
 }
 
 async function build() {
@@ -122,39 +162,15 @@ async function build() {
     const updated = await copyFileHash(file);
     styleImportMap[`/${file}`] = `/${updated}`;
   });
+  await fs.writeFile('scripts/style-import-map.json', JSON.stringify(styleImportMap, null, 2));
 
-  const headContents = await fs.readFile('head.html', 'utf-8');
-  const headDom = new JSDOM(headContents);
-
-  const scriptEls = headDom.window.document.querySelectorAll('script');
-  const importMap = headDom.window.document.createElement('script');
-  importMap.type = 'importmap';
-  importMap.textContent = JSON.stringify({
-    imports: {
-      ...scriptImportMap,
-    },
-  }, null, 2);
-  scriptEls[0].before(importMap);
-
-  scriptEls.forEach((script) => {
-    const src = script.getAttribute('src');
-    if (src && scriptImportMap[src]) {
-      script.setAttribute('src', scriptImportMap[src]);
-    }
-  });
-
-  const styleEls = headDom.window.document.querySelectorAll('link[rel="stylesheet"]');
-  styleEls.forEach((style) => {
-    const href = style.getAttribute('href');
-    if (href && styleImportMap[href]) {
-      style.setAttribute('href', styleImportMap[href]);
-    }
-  });
-
+  const headDom = await rewriteDomFile('head.html', scriptImportMap, styleImportMap);
   const newHeadContents = headDom.window.document.documentElement.querySelector('head').innerHTML;
   await fs.writeFile('head.html', newHeadContents);
 
-  await fs.writeFile('scripts/style-import-map.json', JSON.stringify(styleImportMap, null, 2));
+  const errorDom = await rewriteDomFile('404.html', scriptImportMap, styleImportMap);
+  const newErrorContents = errorDom.window.document.documentElement.outerHTML;
+  await fs.writeFile('404.html', newErrorContents);
 }
 
 async function run(args) {
