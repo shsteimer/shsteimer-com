@@ -27,11 +27,15 @@ async function processLocations(fileFilter, processFile) {
   await Promise.all(promises);
 }
 
-async function copyFileHash(file) {
+async function getFileHash(file) {
   const contents = await fs.readFile(file, 'utf-8');
   const shasum = crypto.createHash('sha1');
   shasum.update(contents);
-  const hash = shasum.digest('hex');
+  return shasum.digest('hex');
+}
+
+async function copyFileHash(file) {
+  const hash = await getFileHash(file);
   const extensionIndex = file.lastIndexOf('.');
   const extension = file.slice(extensionIndex + 1);
   const versionedFile = `${file.slice(0, (extension.length + 1) * -1)}.${hash}.${extension}`;
@@ -147,6 +151,7 @@ async function rewriteDomFile(file, scriptImportMap, styleImportMap) {
 }
 
 async function build() {
+  const start = Date.now();
   await clean();
 
   const scriptImportMap = {};
@@ -180,6 +185,10 @@ async function build() {
   const errorDom = await rewriteDomFile('404.html', orderedScriptImportMap, orderedStyleImportMap);
   const newErrorContents = errorDom.window.document.documentElement.outerHTML;
   await fs.writeFile('404.html', newErrorContents);
+
+  const done = Date.now();
+  const elapsed = done - start;
+  console.log(`build completed in ${elapsed}ms`);
 }
 
 async function watch() {
@@ -193,7 +202,34 @@ async function watch() {
 
     // eslint-disable-next-line no-restricted-syntax
     for await (const event of watcher) {
-      console.log(event);
+      if (event.eventType === 'change' && !isVersioned(`${location}/${event.filename}`) && (event.filename.endsWith('.js') || event.filename.endsWith('.css'))) {
+        console.log('rebuilding...');
+        await build();
+      }
+    }
+  });
+}
+
+async function check() {
+  await processLocations((file) => (file.endsWith('.js') || file.endsWith('.css')) && !isVersioned(file), async (file) => {
+    const hash = await getFileHash(file);
+    const extensionIndex = file.lastIndexOf('.');
+    const extension = file.slice(extensionIndex + 1);
+    const versionedFile = `${file.slice(0, (extension.length + 1) * -1)}.${hash}.${extension}`;
+    const exists = await fsExists(versionedFile);
+    if (!exists) {
+      console.error(`Missing versioned file for ${file}: ${versionedFile}`);
+      process.exit(1);
+    }
+  });
+
+  await processLocations((file) => (file.endsWith('.js') || file.endsWith('.css')) && isVersioned(file), async (file) => {
+    const hash = await getFileHash(file);
+    const parts = file.split('.');
+    const expected = parts[parts.length - 2];
+    if (hash !== expected) {
+      console.error(`Hash mismatch for ${file}: expected ${expected}, got ${hash}`);
+      process.exit(1);
     }
   });
 }
@@ -203,6 +239,8 @@ async function run(args) {
     await clean();
   } else if (args.includes('--watch')) {
     await watch();
+  } else if (args.includes('--check')) {
+    await check();
   } else {
     await build();
   }
