@@ -1,4 +1,5 @@
 import {
+  sampleRUM,
   buildBlock,
   loadHeader,
   loadFooter,
@@ -201,6 +202,10 @@ function loadDelayed() {
 }
 
 async function loadPage() {
+  if (window.isErrorPage && window.errorCode) {
+    sampleRUM(window.errorCode, { source: document.referrer });
+  }
+
   await loadEager(document);
   await loadLazy(document);
   loadDelayed();

@@ -11,10 +11,9 @@ const highlightCode = async () => {
     return true;
   });
   if (codeEls.length > 0) {
-    await Promise.all([
-      loadCSS('../../libs/highlight/styles/github-dark.min.css'),
-      loadScript('../../libs/highlight/highlight.min.js'),
-    ]);
+    const css = loadCSS(`${window.hlx.codeBasePath}/libs/highlight/styles/github-dark.min.css`);
+    const js = loadScript(`${window.hlx.codeBasePath}/libs/highlight/highlight.min.js`);
+    await Promise.all([css, js]);
     codeEls.forEach((codeEl) => {
       // eslint-disable-next-line no-undef
       hljs.highlightElement(codeEl);

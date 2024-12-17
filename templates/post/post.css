@@ -1,5 +1,3 @@
-@import url('../blog/blog.css');
-
 .blog.post main h1 {
   margin-bottom: 0;
   color: var(--clr-red-400);
@@ -11,15 +9,15 @@
   margin-bottom: 1.5em;
 }
 
+.blog.post main article a:hover {
+  color: var(--clr-red-500);
+  text-decoration: underline solid;
+}
+
 .blog.post main article .section a:any-link {
   color: var(--clr-red-400);
   text-decoration: underline dotted;
   text-underline-offset: 4px;
-}
-
-.blog.post main article a:hover {
-  color: var(--clr-red-500);
-  text-decoration: underline solid;
 }
 
 @media (width >=900px) {

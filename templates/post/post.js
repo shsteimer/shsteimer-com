@@ -1,4 +1,4 @@
-import { decorateSections, getMetadata } from '../../scripts/aem.js';
+import { decorateSections, getMetadata, loadCSS } from '../../scripts/aem.js';
 import decorateBlog from '../blog/blog.js';
 import { createPostDate } from '../../blocks/posts/posts.js';
 import { domEl } from '../../scripts/dom-helpers.js';
@@ -8,6 +8,7 @@ import { domEl } from '../../scripts/dom-helpers.js';
  * @param {Document} doc the document
  */
 export default async function decorateTemplate(doc) {
+  await loadCSS(`${window.hlx.codeBasePath}/templates/blog/blog.css`);
   decorateBlog(doc);
   doc.body.classList.add('blog');
 
