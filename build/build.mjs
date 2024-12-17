@@ -211,6 +211,7 @@ async function watch() {
 }
 
 async function check() {
+  let checkFailed = false;
   await processLocations((file) => (file.endsWith('.js') || file.endsWith('.css')) && !isVersioned(file), async (file) => {
     const hash = await getFileHash(file);
     const extensionIndex = file.lastIndexOf('.');
@@ -219,7 +220,7 @@ async function check() {
     const exists = await fsExists(versionedFile);
     if (!exists) {
       console.error(`Missing versioned file for ${file}: ${versionedFile}`);
-      process.exit(1);
+      checkFailed = true;
     }
   });
 
@@ -229,9 +230,13 @@ async function check() {
     const expected = parts[parts.length - 2];
     if (hash !== expected) {
       console.error(`Hash mismatch for ${file}: expected ${expected}, got ${hash}`);
-      process.exit(1);
+      checkFailed = true;
     }
   });
+
+  if (checkFailed) {
+    process.exit(1);
+  }
 }
 
 async function run(args) {
