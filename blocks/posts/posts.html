@@ -1,0 +1,17 @@
+<template>
+  <ul class="posts-list">
+    <li data-fly-test="noPosts" class="post-item">No Results Found</li>
+    <li class="post-item" data-fly-repeat="posts">
+      <a href="${item.path}" class="post-title">
+        <h2>${item.title}</h2>
+      </a>
+      <p data-fly-unwrap data-fly-include="post-date"></p>
+      <p class="post-description">${item.description}</p>
+      <a href="${item.path}">Read More...</a>
+    </li>
+  </ul>
+</template>
+
+<template data-fly-name="post-date">
+  <p class="post-date">Posted on ${formatPostDate} in <a href="/blog/archives#${categoryHash}">${item.category}</a>
+</template>

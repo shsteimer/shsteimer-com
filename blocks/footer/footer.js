@@ -1,6 +1,5 @@
 import { getMetadata } from '../../scripts/aem.js';
 import { loadFragment } from '../fragment/fragment.js';
-import { div } from '../../scripts/dom-helpers.js';
 
 /**
  * loads and decorates the footer
@@ -15,7 +14,9 @@ export default async function decorate(block) {
   const fragment = await loadFragment(footerPath);
 
   // decorate footer DOM
-  const footer = div({ class: 'footer-container' });
+  const footer = document.createElement('div');
+  footer.className = 'footer-container';
+
   const sections = ['social', 'copyright'];
   let sectionCount = 0;
   while (fragment.firstElementChild) {
