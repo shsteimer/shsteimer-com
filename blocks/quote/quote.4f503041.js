@@ -1,12 +1,12 @@
-import { domEl } from '../../scripts/dom-helpers.js';
 /**
  * decorate the block
  * @param {Element} block the block
  */
 export default async function decorate(block) {
-  const bq = domEl(
-    'blockquote',
-    ...block.querySelectorAll('p'),
-  );
+  const pars = block.querySelectorAll('p');
+  const bq = document.createElement('blockquote');
+
+  bq.append(...pars);
+
   block.replaceChildren(bq);
 }

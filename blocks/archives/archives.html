@@ -1,0 +1,22 @@
+<template>
+  <div data-fly-repeat.group="archivedPosts" class="archive-group archive-group-${groupClassName}">
+    <h2>${ groupKey }</h2>
+    <div class="archive-group-inner">
+      <ul class="group-list">
+        <li data-fly-repeat.subgroup="group.orderedKeys" id="sub-group-${groupClassName}-${subGroupClassName}">
+          <a role="button" class="sub-group-controller" id="sub-group-controller-${groupClassName}-${subGroupClassName}"
+            aria-controls="sub-group-${groupClassName}-${subGroupClassName}" aria-expanded="false"
+            href="/blog/archives#sub-group-controller-${groupClassName}-${subGroupClassName}">${subgroup}
+            (${posts.length })</a>
+          <div class="expander">
+            <ul class="sub-group-list">
+              <li data-fly-repeat.post="posts">
+                <a href="${post.path}">${post.title}</a>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</template>

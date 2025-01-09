@@ -31,7 +31,9 @@ async function getFileHash(file) {
   const contents = await fs.readFile(file, 'utf-8');
   const shasum = crypto.createHash('sha1');
   shasum.update(contents);
-  return shasum.digest('hex');
+  const hash = shasum.digest('hex');
+
+  return hash.slice(0, 8);
 }
 
 async function copyFileHash(file) {

@@ -1,0 +1,15 @@
+<template>
+  <ol>
+    <li id="fn-${itemNumber}" data-fly-repeat="footnotes">
+      <p data-fly-unwrap data-fly-repeat.child="item.childNodes" data-fly-content="child"></p>
+      <a href="#fn-ref-${itemNumber}" class="footnote-back-link">
+        <span class="sr-only">Back to Content</span>
+      </a>
+    </li>
+  </ol>
+</template>
+
+<template data-fly-name="footnote-link">
+  <a id="fn-ref-${itemNumber}" href="#fn-${itemNumber}" class="footnote-link"
+    title="item.textContent">[${itemNumber}]</a>
+</template>

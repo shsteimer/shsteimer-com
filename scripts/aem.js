@@ -239,7 +239,7 @@ async function loadCSS(href) {
         cssImportMap = {};
       }
     } catch {
-      // no op
+      cssImportMap = {};
     }
   }
 

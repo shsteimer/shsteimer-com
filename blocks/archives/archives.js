@@ -1,7 +1,5 @@
 import ffetch from '../../scripts/ffetch.js';
-import {
-  div, ul, li, h2, a,
-} from '../../scripts/dom-helpers.js';
+import { renderBlock } from '../../scripts/faintly.js';
 import { toClassName } from '../../scripts/aem.js';
 
 const gatherData = async () => {
@@ -62,60 +60,18 @@ const gatherData = async () => {
   return structured;
 };
 
-const renderDom = (block, structured) => {
-  block.innerHTML = '';
-  Object.keys(structured).forEach((group) => {
-    const el = div(
-      { class: `archive-group archive-group-${toClassName(group)}` },
-      h2(group),
-      div(
-        { class: 'archive-group-inner' },
-        ul({ class: 'group-list' }),
-      ),
-    );
-    const list = el.querySelector('ul');
-    structured[group].orderedKeys.forEach((subGroup) => {
-      const posts = structured[group][subGroup];
-      const listItem = li(
-        { id: `sub-group-${toClassName(group)}-${toClassName(subGroup)}` },
-        a(
-          {
-            role: 'button',
-            id: `sub-group-controller-${toClassName(group)}-${toClassName(subGroup)}`,
-            'aria-controls': `sub-group-${toClassName(group)}-${toClassName(subGroup)}`,
-            'aria-expanded': 'false',
-            class: 'sub-group-controller',
-            href: `/blog/archives#sub-group-controller-${toClassName(group)}-${toClassName(subGroup)}`,
-          },
-          `${subGroup} (${posts.length})`,
-        ),
-        div({ class: 'expander' }, ul({ class: 'sub-group-list' })),
-      );
-      const subList = listItem.querySelector('ul');
-      list.append(listItem);
-
-      posts.forEach((post) => {
-        subList.append(
-          li(
-            a(
-              { href: post.path },
-              post.title,
-            ),
-          ),
-        );
-      });
-    });
-    block.append(el);
-  });
-};
-
 /**
  * decorate the block
  * @param {Element} block the block
  */
 export default async function decorate(block) {
   const structured = await gatherData();
-  renderDom(block, structured);
+  await renderBlock(block, {
+    archivedPosts: structured,
+    groupClassName: ({ groupKey }) => toClassName(groupKey),
+    subGroupClassName: ({ subgroup }) => toClassName(subgroup),
+    posts: ({ group, subgroup }) => group[subgroup],
+  });
 
   block.querySelectorAll('.sub-group-controller').forEach((controller) => {
     if (block.classList.contains('simple')) {

@@ -1,5 +1,5 @@
-import { domEl, button } from '../../scripts/dom-helpers.js';
 import { loadCSS } from '../../scripts/aem.js';
+import { renderBlock } from '../../scripts/faintly.js';
 
 const jsonpGist = (url, callback) => {
   // Setup a unique name that cane be called & destroyed
@@ -40,21 +40,9 @@ export default async function decorate(block) {
     gist(block.querySelector('a[href^="https://gist.github.com"]'));
     return;
   }
+  await renderBlock(block);
 
-  const codeContent = block.textContent.trim();
-  block.innerHTML = '';
-  block.append(
-    domEl(
-      'pre',
-      domEl(
-        'code',
-        codeContent,
-      ),
-    ),
-  );
-  const copyButton = button({ role: 'button' }, 'Copy');
-  block.append(copyButton);
-  copyButton.addEventListener('click', () => {
-    navigator.clipboard.writeText(codeContent);
+  block.querySelector('.copy-code').addEventListener('click', () => {
+    navigator.clipboard.writeText(block.textContent.trim());
   });
 }
