@@ -5,6 +5,7 @@ import ffetch from '../../scripts/ffetch.js';
 import {
   div, span, h2, h3,
 } from '../../scripts/dom-helpers.js';
+import { renderBlock } from '../../scripts/faintly.js';
 
 /**
  * @param {Date} date the date
@@ -43,15 +44,6 @@ const renderGraphCard = (cycleData, name) => {
 
   return card;
 };
-const renderSessionCard = (sessionData, name) => div(
-  { class: `session-card ${toClassName(name)}` },
-  h3(name),
-  div(span({ class: 'label' }, 'Date:'), span(formatDate(sessionData.date))),
-  div(span({ class: 'label' }, 'Cycle:'), span(sessionData.cycle)),
-  div(span({ class: 'label' }, 'Protocol:'), span(sessionData.protocol)),
-  div(span({ class: 'label' }, 'Training Week:'), span(sessionData.week)),
-  div(span({ class: 'label' }, 'Max Speed:'), span(sessionData.maxSpeed)),
-);
 
 /**
  * decorate the form block
@@ -102,20 +94,27 @@ export default async function decorate(block) {
     .filter((sessionData) => sessionData.cycle === mostRecentSession.cycle)
     .sort((a, b) => a.date - b.date);
 
-  const info = div(
-    { class: 'training-info' },
-    h2('Training Info'),
-    div(
-      { class: 'training-info-cards' },
-      renderGraphCard(currentCycleInfo, 'Current Cycle'),
-      renderSessionCard(maxSpeed, 'Fastest Session'),
-      renderSessionCard(mostRecentSession, 'Last Session'),
-    ),
-  );
-  block.append(info);
+  await renderBlock(block, {
+    sessions: () => [
+      {
+        ...maxSpeed,
+        name: 'Fastest Session',
+      },
+      {
+        ...mostRecentSession,
+        name: 'Last Session',
+      },
+    ],
+    sessionClass: ({ session }) => toClassName(session.name),
+    sessionDate: ({ session }) => formatDate(session.date),
+    formBlock: async () => {
+      const formBlock = buildBlock('form', formLink);
+      block.append(formBlock);
+      decorateBlock(formBlock);
+      await loadBlock(formBlock);
 
-  const formBlock = buildBlock('form', formLink);
-  block.append(formBlock);
-  decorateBlock(formBlock);
-  await loadBlock(formBlock);
+      return formBlock;
+    },
+    currentCycleInfo,
+  });
 }

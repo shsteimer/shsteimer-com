@@ -79,10 +79,8 @@ async function resolveExpressions(str, context) {
 
   if (promises.length > 0) {
     const promiseResults = await Promise.all(promises);
-    let i = 0;
     const updatedText = str.replaceAll(regexp, () => {
-      const result = promiseResults[i];
-      i += 1;
+      const result = promiseResults.shift();
       return result;
     });
 
@@ -133,14 +131,13 @@ async function processAttributesDirective(el, context) {
 async function processAttributes(el, context) {
   processAttributesDirective(el, context);
 
-  // eslint-disable-next-line no-restricted-syntax
-  for (const attr of el.attributes) {
-    if (!attr.name.startsWith('data-fly-')) {
-      // eslint-disable-next-line no-await-in-loop
-      const { updated, updatedText } = await resolveExpressions(attr.value, context);
-      if (updated) el.setAttribute(attr.name, updatedText);
-    }
-  }
+  const attrPromises = el.getAttributeNames()
+    .filter((attrName) => !attrName.startsWith('data-fly-'))
+    .map(async (attrName) => {
+      const { updated, updatedText } = await resolveExpressions(el.getAttribute(attrName), context);
+      if (updated) el.setAttribute(attrName, updatedText);
+    });
+  await Promise.all(attrPromises);
 }
 
 /**
@@ -151,7 +148,7 @@ async function processAttributes(el, context) {
  * @returns {Promise<boolean>} indicator if node should be rendered
  */
 async function processTest(el, context) {
-  const testAttrName = el.getAttributeNames().find((attrName) => attrName.startsWith('data-fly-test'));
+  const testAttrName = el.getAttributeNames().find((attrName) => attrName.startsWith('data-fly-test') || attrName.startsWith('data-fly-not'));
   if (!testAttrName) return true;
 
   const nameParts = testAttrName.split('.');
@@ -162,7 +159,7 @@ async function processTest(el, context) {
 
   el.removeAttribute(testAttrName);
 
-  const testResult = !!testData;
+  const testResult = testAttrName.startsWith('data-fly-not') ? !testData : !!testData;
 
   if (contextName) context[contextName.toLowerCase()] = testResult;
 
@@ -377,3 +374,16 @@ export async function renderBlock(block, context = {}) {
 
   await renderElement(block, context);
 }
+
+export const exportForTesting = {
+  resolveTemplate,
+  resolveExpression,
+  resolveExpressions,
+  processTextExpressions,
+  processAttributes,
+  processTest,
+  processContent,
+  processInclude,
+  processRepeat,
+  processUnwrap,
+};
