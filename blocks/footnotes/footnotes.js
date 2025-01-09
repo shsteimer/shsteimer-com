@@ -18,13 +18,12 @@ export default async function decorate(block) {
   });
 
   document.querySelectorAll('.icon-footnote').forEach(async (icon, i) => {
-    const fnLink = await renderElement({
+    await renderElement(icon, {
       template: {
         name: 'footnote-link',
         path: context.template.path,
       },
       itemNumber: i + 1,
     });
-    icon.replaceWith(fnLink);
   });
 }
