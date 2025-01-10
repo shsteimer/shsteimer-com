@@ -1,8 +1,8 @@
 # shsteimer.coom
 
 ## Environments
-- Preview: https://main--shsteimer-com--shsteimer.hlx.page/
-- Live: https://main--shsteimer-com--shsteimer.hlx.live/
+- Preview: https://main--shsteimer-com--shsteimer.aem.page/
+- Live: https://main--shsteimer-com--shsteimer.aem.live/
 
 ## Installation
 
