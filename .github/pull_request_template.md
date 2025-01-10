@@ -1,3 +1,3 @@
 Test URLs:
-- Before: https://main--shsteimer-com--shsteimer.hlx.live/blog/
-- After: https://<branch>--shsteimer-com--shsteimer.hlx.live/blog/
+- Before: https://main--shsteimer-com--shsteimer.aem.live/blog/
+- After: https://<branch>--shsteimer-com--shsteimer.aem.live/blog/
