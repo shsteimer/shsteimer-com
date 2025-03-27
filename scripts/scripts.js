@@ -18,6 +18,34 @@ import {
   rewriteLinkUrl,
 } from './utils.js';
 
+/* AEM experimentation config */
+const experimentationConfig = {
+  isProd: () => {
+    const { hostname } = window.location;
+    return hostname.includes('.ups.com') || hostname.includes('aem.live');
+  },
+  audiences: {
+    mobile: () => window.innerWidth < 600,
+    desktop: () => window.innerWidth >= 600,
+  },
+};
+
+let showExperimentationOverlay;
+let runExperimentation;
+async function initExperimentation() {
+  const isExperimentationEnabled = document.head.querySelector('[name^="experiment"],[name^="campaign-"],[name^="audience-"],[property^="campaign:"],[property^="audience:"]')
+  || [...document.querySelectorAll('.section-metadata div')].some((d) => d.textContent.match(/Experiment|Campaign|Audience/i));
+  if (isExperimentationEnabled) {
+    // eslint-disable-next-line import/no-relative-packages
+    const expModule = await import('../plugins/experimentation/src/index.js');
+    if (expModule && expModule.loadEager && expModule.loadLazy) {
+      runExperimentation = expModule.loadEager;
+      showExperimentationOverlay = expModule.loadLazy;
+    }
+  }
+}
+const expInit = initExperimentation();
+
 /**
  * load fonts.css and set a session storage flag
  */
@@ -148,6 +176,12 @@ async function decorateTemplate(doc) {
  */
 async function loadEager(doc) {
   document.documentElement.lang = 'en';
+
+  await expInit;
+  if (runExperimentation) {
+    await runExperimentation(doc, experimentationConfig);
+  }
+
   decorateTemplateAndTheme();
   await decorateTemplate(doc);
   const main = doc.querySelector('main');
@@ -188,6 +222,10 @@ async function loadLazy(doc) {
   lazyPromises.push(loadFonts());
 
   await Promise.allSettled(lazyPromises);
+
+  if (showExperimentationOverlay) {
+    showExperimentationOverlay(doc, experimentationConfig);
+  }
 }
 
 /**
