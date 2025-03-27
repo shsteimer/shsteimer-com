@@ -29,6 +29,12 @@ export default async function decorate(block) {
   const social = footer.querySelector('.footer-social');
   if (social) {
     const socialLinks = social.querySelectorAll('a');
+    socialLinks.forEach((link) => {
+      const icon = link.querySelector('[data-icon-name]');
+      if (icon) {
+        link.title = `Visit ${icon.dataset.iconName}`;
+      }
+    });
     social.replaceChildren(...socialLinks);
   }
 
