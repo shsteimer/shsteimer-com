@@ -224,31 +224,16 @@ function readBlockConfig(block) {
   return config;
 }
 
-let cssImportMap;
 /**
  * Loads a CSS file.
  * @param {string} href URL to the CSS file
  */
 async function loadCSS(href) {
-  if (!cssImportMap) {
-    try {
-      const resp = await fetch(`${window.hlx.codeBasePath}/scripts/style-import-map.json`);
-      if (resp.ok) {
-        cssImportMap = await resp.json();
-      } else {
-        cssImportMap = {};
-      }
-    } catch {
-      cssImportMap = {};
-    }
-  }
-
-  const newHref = cssImportMap[href] || href;
   return new Promise((resolve, reject) => {
-    if (!document.querySelector(`head > link[href="${newHref}"]`)) {
+    if (!document.querySelector(`head > link[href="${href}"]`)) {
       const link = document.createElement('link');
       link.rel = 'stylesheet';
-      link.href = newHref;
+      link.href = href;
       link.onload = resolve;
       link.onerror = reject;
       document.head.append(link);

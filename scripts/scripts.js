@@ -188,12 +188,6 @@ async function loadLazy(doc) {
   lazyPromises.push(loadFonts());
 
   await Promise.allSettled(lazyPromises);
-
-  const importMap = document.querySelector('script[type="importmap"]');
-  if (importMap) {
-    // eslint-disable-next-line no-console
-    console.log([...importMap.textContent].reduce((p, c) => p + c.charCodeAt(0), 0));
-  }
 }
 
 /**
