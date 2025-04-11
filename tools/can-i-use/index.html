@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Helix Can I Use Checker</title>
+  <script nonce="aem" src="/scripts/aem.js" type="module"></script>
+  <script nonce="aem" src="/scripts/scripts.js" type="module"></script>
+  <link rel="stylesheet" href="/styles/styles.css" />
+
+  <script nonce="aem" src="./scripts.js" type="module" defer></script>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+  <header></header>
+  <main>
+    <div>
+      <h1>Helix Can I Use</h1>
+      <p>
+        This tool uses the <a target="_blank" href="https://caniuse.com">Can I Use</a> <a target="_blank"
+          href="https://github.com/fyrd/caniuse">raw data</a> to determine how safe a feature is to use with Helix.
+      </p>
+    </div>
+    <div>
+      <form>
+        <div class="form-field">
+          <label for="featureId">Feature</label>
+          <input type="text" name="featureId" id="featureId" list="feature-list" autocomplete="off" required>
+          <datalist id="feature-list"></datalist>
+        </div>
+      </form>
+    </div>
+    <div>
+      <h2>Results</h2>
+      <p class="comparison-label"></p>
+    </div>
+  </main>
+  <footer></footer>
+</body>
+
+</html>
