@@ -1,3 +1,70 @@
+function calcBcdStats(bcdSupport, agentsData) {
+  // map agents keys from bcd data to can i use data
+  const keyMap = {
+    chrome: 'chrome',
+    chrome_android: 'and_chr',
+    edge: 'edge',
+    firefox: 'firefox',
+    firefox_android: 'and_ff',
+    ie: 'ie',
+    opera: 'opera',
+    opera_android: 'op_mob',
+    safari: 'safari',
+    safari_ios: 'ios_saf',
+    samsunginternet_android: 'samsung',
+  };
+  const stats = {};
+
+  Object.entries(keyMap).forEach(([bcdKey, agentDataKey]) => {
+    const supportData = bcdSupport[bcdKey];
+    const browserData = agentsData[agentDataKey];
+    stats[agentDataKey] = {};
+    browserData.version_list.forEach((version) => {
+      const browserVersion = version.version;
+      const supportedVersion = supportData.version_added;
+      if (!supportedVersion) {
+        stats[agentDataKey][browserVersion] = 'n';
+      } else {
+        const supportedVersionNum = Number(supportedVersion);
+        const versionNum = Number(browserVersion);
+        if (Number.isNaN(versionNum) || Number.isNaN(supportedVersionNum)) {
+          // eslint-disable-next-line no-console
+          console.warn(`Invalid version number: ${browserVersion} or ${supportedVersion}`);
+        } else if (versionNum < supportedVersionNum) {
+          stats[agentDataKey][browserVersion] = 'n';
+        } else {
+          stats[agentDataKey][browserVersion] = 'y';
+        }
+      }
+    });
+  });
+  return stats;
+}
+
+function parseBcd(bcdData, agentsData, featureKey, featureName) {
+  const data = {};
+  const keyParts = featureKey.split('.');
+  let featureData = bcdData;
+  keyParts.forEach((key) => {
+    if (featureData[key]) {
+      featureData = featureData[key];
+    } else {
+      featureData = {};
+    }
+  });
+
+  Object.entries(featureData).forEach(([key, value]) => {
+    if (key === '__compat') {
+      data[`mdn-${featureKey.toLowerCase().replaceAll('.', '_')}`] = {
+        title: featureName,
+        stats: calcBcdStats(value.support, agentsData),
+      };
+    }
+  });
+
+  return data;
+}
+
 async function fetchData() {
   const data = {};
   const response = await fetch('https://raw.githubusercontent.com/Fyrd/caniuse/refs/heads/main/fulldata-json/data-2.0.json');
@@ -6,16 +73,17 @@ async function fetchData() {
     Object.assign(data, json);
   }
 
-  // const bcdResp = await fetch('https://unpkg.com/@mdn/browser-compat-data');
-  // if (bcdResp.ok) {
-  //   const bcdJson = await bcdResp.json();
-  //   Object.entries(bcdJson).filter(([key]) => key !== '__meta').forEach(([key, value]) => {
-  //     Object.entries(value).forEach(([featureKey, featureValue]) => {
-  //       // eslint-disable-next-line no-underscore-dangle
-  //       const compatData = featureValue.__compat;
-  //     });
-  //   });
-  // }
+  const bcdResp = await fetch('https://unpkg.com/@mdn/browser-compat-data');
+  if (bcdResp.ok) {
+    const bcdJson = await bcdResp.json();
+    const bcdFeatureKeys = {
+      'api.Cache': 'Cache API',
+    };
+    Object.entries(bcdFeatureKeys).forEach(([key, value]) => {
+      const bcdFeatureData = parseBcd(bcdJson, data.agents, key, value);
+      Object.assign(data.data, bcdFeatureData);
+    });
+  }
 
   return data;
 }
@@ -34,13 +102,12 @@ function compare(baselineFeature, compareToFeature, data) {
   label.after(results);
 
   const diffData = {};
-  let globalUsageDiff = 0;
   Object.entries(uaData).forEach(([agentKey, agentInfo]) => {
     const baselineSupport = baselineData.stats[agentKey];
     const compareToSupport = compareToData.stats[agentKey];
 
     Object.entries(baselineSupport).filter(([, value]) => value === 'y').forEach(([key, value]) => {
-      const supported = compareToSupport[key] || 'n';
+      const supported = !compareToSupport ? 'u' : compareToSupport[key] || 'n';
       if (value !== supported) {
         const versionInfo = agentInfo.version_list.find((v) => v.version === key);
         diffData[agentKey] = diffData[agentKey] || {
@@ -57,7 +124,6 @@ function compare(baselineFeature, compareToFeature, data) {
           usage: versionInfo.global_usage,
           released: new Date(versionInfo.release_date * 1000),
         };
-        globalUsageDiff += versionInfo.global_usage;
       }
     });
   });
@@ -92,16 +158,21 @@ function compare(baselineFeature, compareToFeature, data) {
     }, []);
   });
 
-  const diffLi = document.createElement('li');
-  diffLi.textContent = `Global Usage Difference: ${Math.round(globalUsageDiff * 100) / 100}%`;
-  results.append(diffLi);
-
+  const summary = {
+    global: 0,
+    no: 0,
+    partial: 0,
+    disabled: 0,
+    unknown: 0,
+  };
+  let lastMajorRelease;
   Object.entries(diffData).forEach(([, { agentInfo, notes, versions }]) => {
     const li = document.createElement('li');
     li.innerHTML = `<strong>${agentInfo.long_name}</strong>`;
     results.append(li);
     const ul = document.createElement('ul');
     li.append(ul);
+    let supportCat = '';
     versions.forEach((version) => {
       const versionLi = document.createElement('li');
       const minVersion = version.versions[0];
@@ -116,16 +187,23 @@ function compare(baselineFeature, compareToFeature, data) {
       const compareVals = version.compareTo.split(' ');
       const supportVal = compareVals.map((v) => {
         if (v === 'n') {
+          supportCat = 'n';
           return 'No';
         }
         if (v === 'y') {
           return 'Yes';
         }
         if (v === 'a') {
+          supportCat = 'a';
           return 'Partial';
         }
         if (v === 'd') {
+          supportCat = 'd';
           return 'Disabled by default';
+        }
+        if (v === 'u') {
+          supportCat = 'u';
+          return 'Unknown';
         }
         if (v.startsWith('#')) {
           const note = notes.compareTo[v.replace('#', '')];
@@ -133,6 +211,22 @@ function compare(baselineFeature, compareToFeature, data) {
         }
         return v;
       }).join(' - ');
+
+      if (supportCat === 'n') {
+        summary.no += version.usage;
+      } else if (supportCat === 'u') {
+        summary.unknown += version.usage;
+      } else if (supportCat === 'a') {
+        summary.partial += version.usage;
+      } else if (supportCat === 'd') {
+        summary.disabled += version.usage;
+      }
+      summary.global += version.usage;
+
+      if (['Edge', 'Chr.', 'Chr/And.', 'Saf.', 'iOS', 'FF'].includes(agentInfo.abbr) && (!lastMajorRelease || lastMajorRelease < version.released || (version.releasedEnd && lastMajorRelease < version.releasedEnd))) {
+        lastMajorRelease = version.releasedEnd || version.released;
+      }
+
       const supportLi = document.createElement('li');
       supportLi.innerHTML = `<strong>Support:</strong> ${supportVal}`;
       details.append(supportLi);
@@ -145,12 +239,26 @@ function compare(baselineFeature, compareToFeature, data) {
       releasedLi.innerHTML = `<strong>Released:</strong> ${version.released.toLocaleDateString()}`;
       details.append(releasedLi);
       if (version.releasedEnd) {
-        const releasedEndLi = document.createElement('li');
-        releasedEndLi.innerHTML = `<strong>Released End:</strong> ${version.releasedEnd.toLocaleDateString()}`;
-        details.append(releasedEndLi);
+        releasedLi.innerHTML += ` - ${version.releasedEnd.toLocaleDateString()}`;
       }
     });
   });
+
+  const diffLi = document.createElement('li');
+  diffLi.innerHTML = '<strong>Summary</strong>';
+  results.prepend(diffLi);
+
+  const summaryUl = document.createElement('ul');
+  diffLi.append(summaryUl);
+  Object.entries(summary).forEach(([key, value]) => {
+    const summaryLi = document.createElement('li');
+    summaryLi.innerHTML = `<strong>${key}</strong>: ${Math.round(value * 100) / 100}%`;
+    summaryUl.append(summaryLi);
+  });
+
+  const lastMajorReleaseLi = document.createElement('li');
+  lastMajorReleaseLi.innerHTML = `<strong>Last Mainstream Release:</strong> ${lastMajorRelease.toLocaleDateString()}`;
+  summaryUl.append(lastMajorReleaseLi);
 }
 
 async function init() {
