@@ -129,6 +129,7 @@ body.appear {
 
 header {
   height: var(--nav-height);
+  background-color: var(--clr-grey-700);
 }
 
 h1,
