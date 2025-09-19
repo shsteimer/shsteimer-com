@@ -1,3 +1,0 @@
-Sitemap: http://www.shsteimer.com/sitemap.xml
-User-agent: *
-Allow: /
