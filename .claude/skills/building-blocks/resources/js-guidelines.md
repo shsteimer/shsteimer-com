@@ -297,18 +297,40 @@ You can import helpful utilities from `scripts/aem.js`:
 ```javascript
 import {
   buildBlock,
-  decorateIcons,
+  decorateBlock,
+  loadBlock,
   loadCSS,
+  loadScript,
   toClassName,
   getMetadata,
+  createOptimizedPicture,
 } from '../../scripts/aem.js';
 ```
 
 Common helpers:
-- `decorateIcons(element)` - Replaces :icon: syntax with SVG icons
 - `toClassName(text)` - Converts text to a valid CSS class name
 - `getMetadata(name)` - Gets page metadata value
-- `loadCSS(href)` - Loads a CSS file
-- `buildBlock(name, cells)` - Programmatically creates a block
+- `loadCSS(href)` - Loads a CSS file and returns a promise that resolves when loaded
+- `loadScript(url, attrs)` - Loads a JavaScript file with optional attributes (async, type, etc.)
+- `createOptimizedPicture(src, alt, eager, breakpoints)` - Creates a responsive picture element with optimized images
+- `buildBlock(name, cells)` - Programmatically creates a block DOM structure. **Note:** For the block to fully display, it must be decorated and loaded after being built and added to the DOM. In most cases, you'll need to call `decorateBlock()` and `loadBlock()` after building.
+
+**Example - building and loading a block:**
+```javascript
+// Create the block
+const myBlock = buildBlock('my-block', [[document.createElement('p')]]);
+
+// Blocks must be wrapped in a div and placed inside a section
+const wrapper = document.createElement('div');
+wrapper.append(myBlock);
+
+// Add to a section (either find existing or create new)
+const section = document.querySelector('main .section') || document.querySelector('main > div');
+section.append(wrapper);
+
+// Decorate and load (required in most contexts)
+decorateBlock(myBlock);
+await loadBlock(myBlock);
+```
 
 See `scripts/aem.js` for the complete list (but remember: NEVER MODIFY aem.js).
