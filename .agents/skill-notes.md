@@ -35,16 +35,12 @@ Please ask me clarifying questions to understand:
 
 ### Fully Implemented Skills
 
-- [x] building-blocks - Complete with JS and CSS guidelines
+- [x] building-blocks - Complete with JS and CSS guidelines, enforces CDD prerequisites
 - [x] docs-search - Search aem.live doc and blogs
 - [x] block-collection-and-party - Search Block Collection and Block Party for reference implementations
+- [x] content-driven-development - Complete with 3-phase process, find-block-content script, orchestrates other skills
 
 ### Skills Needing Full Implementation
-
-- [ ] **content-driven-development**
-  - Description: "Apply a Content Driven Development process to AEM Edge Delivery Services development. Use for any and all development tasks, including building new blocks, modifying existing blocks, making changes to core decoration functionality, etc."
-  - Currently: Has basic structure, needs full process definition
-  - Related to: building-blocks, content-modeling
 
 - [ ] **content-modeling**
   - Description: "Create effective content models for your blocks that are easy for authors to work with. Use this skill anytime you are building new blocks, making changes to existing blocks that modify the initial structure authors work with."
@@ -111,18 +107,24 @@ Ideas for tasks to validate skills are working:
 
 **Issue:** Agents need to know how to use the local dev server for testing and development.
 
+**Current Coverage:**
+- ✅ `content-driven-development` skill mentions restarting with `--html-folder drafts` for local HTML testing
+- ❌ Starting the dev server initially not covered
+- ❌ Accessing local pages during development not covered
+- ❌ When to restart the server (beyond drafts folder use case) not covered
+- ❌ Background vs. foreground execution not covered
+
 **Options:**
 1. Create a dedicated skill for local dev server usage
 2. Add a section to AGENTS.md/CLAUDE.md with basic commands and workflow
 
-**Key information to cover:**
+**Key information still needing coverage:**
 - Starting the dev server: `npx -y @adobe/aem-cli up --no-open --forward-browser-logs`
-- Using `--html-folder drafts` flag for static HTML testing
-- Accessing local pages during development
-- When to restart the server
-- Background vs. foreground execution
+- Accessing local pages in browser during development (http://localhost:3000)
+- When to restart the server (code changes don't require restart, config changes might)
+- Background vs. foreground execution strategies
 
-**Decision needed:** Skill or documentation section?
+**Decision needed:** Skill or documentation section? (Likely CLAUDE.md since it's basic tooling)
 
 ### Raising Pull Requests
 
@@ -153,25 +155,24 @@ Ideas for tasks to validate skills are working:
 
 **Issue:** Content created during Content Driven Development (CDD) can often serve double-duty as author-facing documentation, eliminating the need to create separate documentation.
 
-**Current State:**
-- `building-blocks` skill mentions author documentation should be created/updated (step 7)
-- `content-driven-development` skill focuses on creating content for testing purposes
-- These two purposes overlap but aren't explicitly connected
+**Status:** ✅ Addressed
 
-**Future Improvement:**
-Figure out how to represent this connection in our skills library so that:
-1. When using CDD, agents recognize that test content can become author docs
-2. Agents guide users to structure test content in a way that serves both purposes
-3. The content is placed in appropriate locations (e.g., `/drafts/library/{block-name}` or Sidekick Library)
-4. Cross-references between `content-driven-development` and `building-blocks` skills are clear
+**Implementation:**
+- `content-driven-development` skill Step 1.3 now includes "Making Test Content Serve as Author Documentation" subsection
+- Provides guidance on when test content IS sufficient vs. when separate docs are needed
+- Includes actionable advice on structuring test content to serve both purposes
+- Covers appropriate locations for different authoring systems (Sidekick Library, DA Library, etc.)
+- Asks user explicitly if test content should serve as author documentation
+- `building-blocks` skill step 7 maintains comprehensive guidance on author documentation needs
 
-**Considerations:**
-- Not all test content makes good author documentation (may be too technical or minimal)
-- Some projects may need more formal author documentation beyond test examples
-- The location of the content matters (test vs. library vs. docs paths)
-- Different authoring systems (Sidekick Library, DA Library, etc.) may have different needs
+**Key points covered:**
+- ✅ When test content is sufficient as author documentation
+- ✅ When separate author documentation is needed
+- ✅ How to structure test content to serve both purposes
+- ✅ Where to place content for different authoring systems
+- ✅ Explicit prompt to ask user about documentation approach
 
-**Action Items:**
-- [ ] When fleshing out `content-driven-development` skill, consider how to address this
-- [ ] Update cross-references between skills to highlight this opportunity
-- [ ] Provide guidance on when test content is sufficient vs. when separate author docs are needed
+**Cross-references:**
+- CDD Step 1.3 guides content creation with documentation in mind
+- Building-blocks step 7 handles documentation requirements during implementation
+- Both skills now work together to avoid redundant documentation work

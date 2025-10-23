@@ -116,6 +116,37 @@ Would you like to:
 - Note: "You will need to create actual CMS content before raising a PR"
 - Proceed to Phase 2
 
+##### Making Test Content Serve as Author Documentation
+
+Test content can often double as author-facing documentation, saving time and keeping documentation current. Consider this when creating test content:
+
+**When test content IS sufficient as author documentation:**
+- The block is straightforward with clear patterns
+- Test content shows all variants and use cases
+- Content demonstrates best practices authors should follow
+- Examples are realistic and relatable to actual use cases
+
+**When separate author documentation is needed:**
+- Block has complex configuration or many variants requiring explanation
+- There are edge cases or gotchas authors need to understand
+- Project standards require formal documentation in a specific location/format
+- Block behavior isn't self-evident from examples alone
+
+**Structuring test content to serve both purposes:**
+1. **Create comprehensive examples**: Show all variants, edge cases, and common patterns
+2. **Use realistic content**: Avoid "lorem ipsum" or technical placeholders
+3. **Demonstrate best practices**: Structure content the way authors should
+4. **Consider location**: Place content where it can serve as documentation
+   - Sidekick Library projects: Consider creating in `/tools/sidekick/library/` or appropriate library location
+   - Document Authoring: Place in DA Library structure
+   - Simple documentation: Use `/drafts/docs/` or `/drafts/library/`
+   - Universal Editor: Follow project-specific documentation patterns
+
+**Ask the user about documentation approach:**
+"Should this test content also serve as author documentation? If so, we can structure it accordingly and place it in an appropriate location (e.g., `/drafts/library/{block-name}` or your project's library system)."
+
+If yes, guide content creation with documentation in mind. If no, proceed with test-focused content and note that author documentation will be needed later.
+
 ### Phase 2: Implementation
 
 **CRITICAL: Do not begin Phase 2 until you have confirmed test content exists and is accessible.**
