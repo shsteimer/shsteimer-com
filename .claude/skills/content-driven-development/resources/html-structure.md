@@ -178,7 +178,44 @@ Blocks are `<div>` elements with specific class names that trigger decoration lo
 </div>
 ```
 
-#### 3. Images
+#### 3. Icons
+
+Icons are authored using the `:iconName:` syntax and are processed into `<span>` elements with icon classes.
+
+**Author input:**
+```
+:profile:
+```
+
+**HTML output:**
+```html
+<span class="icon icon-profile"></span>
+```
+
+**Important notes about icons:**
+- Icons can be wrapped in links, strong, em, or other inline elements
+- The icon name corresponds to an SVG file in `/icons/` (e.g., `:profile:` → `/icons/profile.svg`)
+- Icon spans use two classes: `icon` (base class) and `icon-{name}` (specific icon)
+- Icons are inline elements and can be combined with text
+
+**Examples:**
+
+Icon in a link:
+```html
+<a href="/profile"><span class="icon icon-profile"></span> View Profile</a>
+```
+
+Icon with emphasis:
+```html
+<strong><span class="icon icon-star"></span> Featured</strong>
+```
+
+Icon by itself:
+```html
+<p><span class="icon icon-home"></span></p>
+```
+
+#### 4. Images
 
 Images should always use the `<picture>` element with `<source>` elements for responsive images and format optimization.
 
