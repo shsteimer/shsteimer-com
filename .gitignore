@@ -10,4 +10,4 @@ helix-importer-ui
 .env
 
 # Skill caches
-.claude/skills/*/.cache/
+.claude/skills/**/.cache/
