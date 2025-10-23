@@ -10,7 +10,7 @@ This skill guides you through creating new AEM Edge Delivery blocks or modifying
 ## Related Skills
 
 - **content-driven-development**: Reference when working with content models
-- **block-collection-party**: Use to find similar blocks for patterns
+- **block-collection-and-party**: Use to find similar blocks for patterns
 - **[testing-skill-tbd]**: Use after implementation for unit testing
 
 ## When to Use This Skill
@@ -61,7 +61,7 @@ Does existing content for this block exist?
 **For new blocks or major modifications:**
 
 1. Search the codebase for similar blocks that might provide useful patterns or code we can re-use
-2. Use the **block-collection-party** skill to find relevant reference blocks
+2. Use the **block-collection-and-party** skill to find relevant reference blocks
 
 Review the implementation patterns in similar blocks to inform your approach.
 
