@@ -28,7 +28,17 @@ Before starting, gather the following from the user:
 2. **Block purpose and functionality**: What should this block do? What problem does it solve?
 3. **Content model**: How will authors structure content for this block? Are there any variants needed?
 
-## Process
+## Process Overview
+
+1. Understand the Content Model (existing content or CDD approach)
+2. Find Similar Blocks (for patterns and reuse)
+3. Create or Modify Block Structure (files and directories)
+4. Implement JavaScript Decoration (DOM transformation)
+5. Add CSS Styling (scoped, responsive styles)
+6. Test the Implementation (local testing, linting)
+7. Document Block (developer and author-facing docs)
+
+## Detailed Process
 
 ### 1. Understand the Content Model
 
@@ -116,11 +126,63 @@ Follow patterns and conventions in `resources/css-guidelines.md`:
 - **Run linting:** `npm run lint` (fix any issues with `npm run lint:fix`)
 - For unit testing guidance, see the **[testing-skill-tbd]** skill
 
-### 7. Document Block (If Applicable)
+### 7. Document Block
+
+Blocks require two types of documentation:
+
+#### Developer Documentation
 
 - Most blocks are simple and self-contained and only need code comments for documentation
 - If a block is especially complex (has many variants, or especially complex code) consider adding a brief README.md in the block folder
 - Keep any README documentation very brief so it can be consumed at a glance
+
+#### Author-Facing Documentation
+
+Author-facing documentation helps content authors understand how to use the block in the CMS. This documentation typically exists as draft/library content in the CMS itself, not in the codebase.
+
+**When author documentation is needed:**
+
+Almost all blocks should have author-facing documentation. The only exceptions are:
+- Deprecated blocks that should no longer be used but can't be removed yet
+- Special-purpose blocks used very infrequently on a need-to-know basis
+- Auto-blocked blocks that shouldn't be used directly by authors
+
+**Maintaining author documentation:**
+
+Author documentation must be kept in sync with the block implementation:
+- Update when variants are added, removed, or modified
+- Update when the content structure changes
+- Update when block behavior or functionality changes
+
+**Where author documentation lives:**
+
+Different projects use different approaches for author documentation:
+
+1. **Sidekick Library** (Google Drive/SharePoint authoring):
+   - Uses https://github.com/adobe/franklin-sidekick-library
+   - Check for `/tools/sidekick/library.html` in the codebase
+   - If present, guide user to add/update block documentation in the library
+
+2. **Document Authoring (DA) Library**:
+   - Uses https://docs.da.live/administrators/guides/setup-library
+   - Different implementation than Sidekick Library
+   - If in use, guide user to update block documentation in DA library
+
+3. **Universal Editor (UE) projects**:
+   - Often skip dedicated author documentation libraries
+   - May use inline help or other mechanisms
+
+4. **Simple documentation pages**:
+   - Some projects maintain documentation under `/drafts` or `/docs`
+   - Pages contain authoring guides and block examples
+
+**What to include in author documentation:**
+
+The specific content of author documentation varies by project. As an agent:
+1. Identify that author documentation needs to be created or updated
+2. Determine which documentation approach the project uses (check for `/tools/sidekick/library.html` as a signal)
+3. Guide the user on what aspects of the block should be documented based on the changes made
+4. Provide specific guidance based on the project's documentation approach
 
 ## Reference Materials
 

@@ -104,3 +104,74 @@ Ideas for tasks to validate skills are working:
 - "Build a complete feature carousel block from scratch" (should use: content-modeling → content-driven-development → block-collection-and-party → building-blocks → testing-blocks)
 - "I need a new content type for case studies with a custom block" (tests full workflow)
 - "Improve the performance of the existing hero block" (performance-optimization + building-blocks)
+
+## Topics Needing Coverage
+
+### Local Dev Server Usage
+
+**Issue:** Agents need to know how to use the local dev server for testing and development.
+
+**Options:**
+1. Create a dedicated skill for local dev server usage
+2. Add a section to AGENTS.md/CLAUDE.md with basic commands and workflow
+
+**Key information to cover:**
+- Starting the dev server: `npx -y @adobe/aem-cli up --no-open --forward-browser-logs`
+- Using `--html-folder drafts` flag for static HTML testing
+- Accessing local pages during development
+- When to restart the server
+- Background vs. foreground execution
+
+**Decision needed:** Skill or documentation section?
+
+### Raising Pull Requests
+
+**Issue:** Agents need guidance on when and how to raise PRs.
+
+**Options:**
+1. Create a dedicated skill (deployment skill?)
+2. Add a section to AGENTS.md/CLAUDE.md with PR guidelines
+
+**Key information to cover:**
+- When to raise a PR vs. continue iterating
+- PR description best practices
+- What to include in PR (code + tests + docs reminder)
+- Review process expectations
+- Branch naming conventions
+
+**Decision needed:** Skill or documentation section?
+
+**Initial thought:** This seems like documentation in AGENTS.md/CLAUDE.md is sufficient since Claude Code has built-in PR functionality.
+
+### Review Old AGENTS.md
+
+**Action item:** After completing the 3 remaining skills (content-driven-development, content-modeling, testing-blocks), review the old AGENTS.md at https://raw.githubusercontent.com/adobe/aem-boilerplate/dd12ed29a04e807673240a34acb95331ca6f82a5/AGENTS.md to ensure we haven't missed any important information that should be in our skills or documentation.
+
+## Cross-Skill Integration Ideas
+
+### CDD Content as Author Documentation
+
+**Issue:** Content created during Content Driven Development (CDD) can often serve double-duty as author-facing documentation, eliminating the need to create separate documentation.
+
+**Current State:**
+- `building-blocks` skill mentions author documentation should be created/updated (step 7)
+- `content-driven-development` skill focuses on creating content for testing purposes
+- These two purposes overlap but aren't explicitly connected
+
+**Future Improvement:**
+Figure out how to represent this connection in our skills library so that:
+1. When using CDD, agents recognize that test content can become author docs
+2. Agents guide users to structure test content in a way that serves both purposes
+3. The content is placed in appropriate locations (e.g., `/drafts/library/{block-name}` or Sidekick Library)
+4. Cross-references between `content-driven-development` and `building-blocks` skills are clear
+
+**Considerations:**
+- Not all test content makes good author documentation (may be too technical or minimal)
+- Some projects may need more formal author documentation beyond test examples
+- The location of the content matters (test vs. library vs. docs paths)
+- Different authoring systems (Sidekick Library, DA Library, etc.) may have different needs
+
+**Action Items:**
+- [ ] When fleshing out `content-driven-development` skill, consider how to address this
+- [ ] Update cross-references between skills to highlight this opportunity
+- [ ] Provide guidance on when test content is sufficient vs. when separate author docs are needed
