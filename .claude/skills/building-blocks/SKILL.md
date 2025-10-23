@@ -9,28 +9,40 @@ This skill guides you through creating new AEM Edge Delivery blocks or modifying
 
 ## Related Skills
 
-- **content-driven-development**: Reference when working with content models
+- **content-driven-development**: MUST be invoked before using this skill to ensure content and content models are ready
 - **block-collection-and-party**: Use to find similar blocks for patterns
 - **[testing-skill-tbd]**: Use after implementation for unit testing
 
 ## When to Use This Skill
 
-- Creating a new block from scratch
-- Making significant modifications to existing blocks
-- When changes involve both JavaScript decoration and CSS
-- Skip for minor CSS tweaks or simple isolated bug fixes
+This skill should ONLY be invoked from the **content-driven-development** skill during Phase 2 (Implementation).
+
+If you are not already following the CDD process:
+- **STOP** - Do not proceed with this skill
+- **Invoke the content-driven-development skill first**
+- The CDD skill will ensure test content and content models are ready before implementation
+
+This skill handles:
+- Creating new block files and structure
+- Implementing JavaScript decoration
+- Adding CSS styling
+- Code quality and testing
 
 ## Prerequisites
 
-Before starting, gather the following from the user:
+**REQUIRED before using this skill:**
+- ✅ Test content must exist (in CMS or local drafts)
+- ✅ Content model must be defined
+- ✅ Test content URL must be available
 
+**Information needed:**
 1. **Block name**: What should the block be called?
-2. **Block purpose and functionality**: What should this block do? What problem does it solve?
-3. **Content model**: How will authors structure content for this block? Are there any variants needed?
+2. **Content model**: The defined structure authors will use
+3. **Test content URL**: Path to test content for development
 
 ## Process Overview
 
-1. Understand the Content Model (existing content or CDD approach)
+1. Verify Prerequisites (CDD completed)
 2. Find Similar Blocks (for patterns and reuse)
 3. Create or Modify Block Structure (files and directories)
 4. Implement JavaScript Decoration (DOM transformation)
@@ -40,31 +52,19 @@ Before starting, gather the following from the user:
 
 ## Detailed Process
 
-### 1. Understand the Content Model
+### 1. Verify Prerequisites
 
-**Determine content availability and approach:**
+**Before proceeding, confirm with the user:**
 
-```
-Does existing content for this block exist?
-│
-├─ YES → Ask: "What are the path(s) to the page(s) with this content?"
-│         │
-│         └─ Use that content for development and testing
-│            Proceed to step 2
-│
-└─ NO → Ask: "Do you want to follow Content Driven Development principles and create content first, or proceed with defining the content model now?"
-         │
-         ├─ Create content first (CDD approach - ✅ Recommended)
-         │   └─ Use the content-driven-development skill
-         │       Then return to this skill at step 2
-         │
-         └─ Define content model now (⚠️ Not recommended)
-             └─ Remind: "You will need to create content in the CMS before a PR can be raised"
-                 Ask user to describe the content structure
-                 Create static HTML in drafts/ folder for testing
-                 Remind: Restart dev server with --html-folder drafts flag
-                 Proceed to step 2
-```
+"Do you have:
+- ✅ Test content created (URL or path)?
+- ✅ Content model defined?
+
+If not, we need to use the content-driven-development skill first."
+
+If prerequisites are not met, STOP and invoke the **content-driven-development** skill.
+
+If prerequisites are met, get the test content URL from the user and proceed to step 2.
 
 ### 2. Find Similar Blocks
 
