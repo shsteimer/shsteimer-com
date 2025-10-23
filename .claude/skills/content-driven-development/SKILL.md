@@ -112,6 +112,7 @@ Would you like to:
 
 **Option 2: Local HTML Files (Temporary)**
 - Create HTML file(s) in `drafts/` folder matching the content model structure
+- Reference the [HTML Structure Guide](resources/html-structure.md) for proper file format
 - Remind user: "Restart your dev server with: `aem up --html-folder drafts`"
 - Note: "You will need to create actual CMS content before raising a PR"
 - Proceed to Phase 2
