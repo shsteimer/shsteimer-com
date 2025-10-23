@@ -36,6 +36,8 @@ Please ask me clarifying questions to understand:
 ### Fully Implemented Skills
 
 - [x] building-blocks - Complete with JS and CSS guidelines
+- [x] docs-search - Search aem.live doc and blogs
+- [x] block-collection-and-party - Search Block Collection and Block Party for reference implementations
 
 ### Skills Needing Full Implementation
 
@@ -44,20 +46,11 @@ Please ask me clarifying questions to understand:
   - Currently: Has basic structure, needs full process definition
   - Related to: building-blocks, content-modeling
 
-- [ ] **docs-search**
-  - Description: "Search the aem.live documentation for information on features on the platform. Use when you need more information about a feature, or how to implement it, and simply searching the web isn't turning up relevant results."
-  - Currently: Has basic structure, needs search strategy and resources
-  - May need: List of common doc sections, search patterns, how to apply findings
-
 - [ ] **content-modeling**
   - Description: "Create effective content models for your blocks that are easy for authors to work with. Use this skill anytime you are building new blocks, making changes to existing blocks that modify the initial structure authors work with."
   - Currently: Mentioned but not created
   - Should cover: Author experience, content structure patterns, when to split vs combine content
 
-- [ ] **block-collection-and-party**
-  - Description: "The Block Collection and Block Party are repositories for existing AEM blocks, build tools, code snippets, integration patterns, plugins, and more. Use this skill anytime you are developing something and want to find a reference to use as a starting point."
-  - Currently: Mentioned but not created
-  - Should cover: How to search block collection, how to search block party, how to evaluate if a block is relevant
 
 - [ ] **testing-blocks** (formerly testing-skill-tbd)
   - Description: Guide for writing unit tests for AEM blocks. Use after implementing block functionality.
