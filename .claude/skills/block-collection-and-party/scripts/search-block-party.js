@@ -23,7 +23,7 @@ const __dirname = path.dirname(__filename);
 
 // Block Party constants
 const BLOCK_PARTY_INDEX_URL = 'https://www.aem.live/developer/block-party/block-party.json?sheet=curated-list-new';
-const CACHE_DIR = path.join(__dirname, '.cache');
+const CACHE_DIR = path.join(__dirname, '..', '.cache');
 const CACHE_FILE = path.join(CACHE_DIR, 'block-party-index.json');
 const CACHE_TTL = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
 
