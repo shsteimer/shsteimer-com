@@ -23,102 +23,6 @@ The repository provides the basic structure, blocks, and configuration needed to
 - Run linting: `npm run lint`
 - Fix linting issues: `npm run lint:fix`
 
-## Local Development Workflow
-
-### Starting the Development Server
-
-Run the local dev server in the background when possible:
-
-```bash
-npx -y @adobe/aem-cli up --no-open --forward-browser-logs
-```
-
-**Important:** Check the terminal output when starting to see what port the server is using.
-
-- **Default port:** 3000 (http://localhost:3000)
-- **Custom port:** Use `--port 3001` flag to specify a different port
-- **Git worktrees:** Automatically use different ports to avoid conflicts
-- **Multiple instances:** You can run multiple dev servers simultaneously for different projects/worktrees on different ports
-
-Since multiple instances can run, track whether you started the server in your current session rather than just checking if a process is running.
-
-### Auto-Refresh Behavior
-
-The dev server automatically detects and refreshes changes to all code and config files. **No restart needed for code or config changes.**
-
-### When to Restart the Server
-
-Only restart if you need to **change CLI options**, such as:
-- Adding `--html-folder drafts` to test local HTML files during Content Driven Development
-- Changing the port with `--port`
-- Modifying other command-line flags
-
-### Development Best Practices
-
-- Run the server in the background during development sessions
-- Note the port from the terminal output when starting
-- Keep it running while making code changes - auto-refresh handles everything
-- Check the terminal output for errors or warnings from `--forward-browser-logs`
-
-## Pull Request Workflow
-
-### Branch Naming Convention
-
-Use the format: `feature-name` (lowercase with hyphens)
-
-**Important:** This format is required because branch names are used to generate preview/live URLs for testing.
-
-Examples:
-- `hero-block`
-- `testimonial-carousel`
-- `footer-redesign`
-
-### Creating Pull Requests
-
-When creating a pull request, include:
-
-1. **Link to related issue(s)** (if applicable)
-2. **Summary of changes** - What was added, modified, or fixed
-3. **Preview/Live URL** - Link to the feature branch preview for testing
-   - Format: `https://[branch-name]--[repo]--[owner].aem.live/`
-   - This allows reviewers to test the changes directly and for running pr checks. **WITHOUT THIS YOUR PR WILL BE REJECTED!**
-
-Example PR description:
-```markdown
-## Related Issues
-Fixes #123
-
-## Summary
-Added new testimonial block with support for author image, quote text, and attribution.
-
-## Testing
-Preview: https://testimonial-block--shsteimer-com--shsteimer.aem.live/drafts/testimonial
-```
-
-## Deployment
-
-### Environments
-
-Edge Delivery Services provides you with three environments. Your local development server at `http://localhost:3000` serves code from your local working copy (even uncommitted code) and content that has been previewed by authors. You can access this at any time when the development server is running.
-
-For all other environments, you need to know the GitHub owner and repository name (`gh repo view --json nameWithOwner` or `git remote -v`) and the current branch name `git branch`)
-
-With this information, you can construct URLs for the preview environment (same content as `localhost:3000`) and the production environment (same content as the live website, approved by authors)
-
-- **Production Preview**: `https://main--{repo}--{owner}.aem.page/`
-- **Production Live**: `https://main--{repo}--{owner}.aem.live/`
-- **Feature Preview**: `https://{branch}--{repo}--{owner}.aem.page/`
-
-### Publishing Process
-1. Push changes to a feature branch
-2. AEM Code Sync automatically processes changes making them available on feature preview environment for that branch
-3. Open a pull request to merge changes to `main`
-   1. in the PR description, include a link to https://{branch}--{repo}--{owner}.aem.page/{path}` with a path to a file that illustrates the change you've made. This is the same path you have been testing with locally. WITHOUT THIS YOUR PR WILL BE REJECTED
-   2. If an existing page to demonstrate your changes doesn't exist, create test content as a static html file and ask the user for help copying it to a content page you can link in the PR
-4. use `gh checks` to verify the status of code synchronization, linting, and performance tests
-5. A human reviewer will review the code, inspect the provided URL and merge the PR
-6. AEM Code Sync updates the main branch for production
-
 ## Project Structure
 
 ```
@@ -139,33 +43,163 @@ With this information, you can construct URLs for the preview environment (same 
 └── 404.html         # Custom 404 page
 ```
 
+## Code Style Guidelines
+
+### JavaScript
+- Use ES6+ features (arrow functions, destructuring, etc.)
+- Follow Airbnb ESLint rules (already configured)
+- Always include `.js` file extensions in imports
+- Use Unix line endings (LF)
+
+**For detailed JavaScript guidelines:** Use the **building-blocks** skill which includes comprehensive decoration patterns and best practices.
+
+### CSS
+- Mobile-first responsive design (breakpoints: 600px/900px/1200px)
+- All selectors scoped to blocks: `.{blockName} .selector`
+- Follow Stylelint standard configuration
+
+**For detailed CSS guidelines:** Use the **building-blocks** skill which includes comprehensive styling patterns and best practices.
+
+### HTML
+- Use semantic HTML5 elements
+- Ensure accessibility standards (ARIA labels, proper heading hierarchy)
+- Follow AEM markup conventions for blocks and sections
+
 ## Key Concepts
 
 ### Content
 
 CMS authored content is a key part of every AEM Website. The content of a page is broken into sections. Sections can have default content (text, headings, links, etc.) as well as content in blocks.
 
-Use the `content-driven-development` and `content-modeling` skill for more information on how to use content as part of the development process.
+**For development workflow:** Use the **content-driven-development** skill for all development tasks. This skill ensures you identify or create test content before writing code, following AEM best practices.
+
+**Quick tips:**
+- Inspect page structure: `curl http://localhost:3000/path/to/page`
+- View source markdown: `curl http://localhost:3000/path/to/page.md`
+- Local test content: Use `--html-folder drafts` flag when starting dev server
 
 ### Blocks
 
-Blocks are the re-usable building blocks of AEM. Blocks add styling and functionality to content. Each block has an initial content structure it expects, and transforms the html in the block using DOM APIs to render a final structure.
+Blocks are the re-usable building blocks of AEM. Blocks add styling and functionality to content. Each block has an initial content structure it expects, and transforms the HTML using DOM APIs to render a final structure.
 
-Use the `building-blocks` skill for more information on block development guidance and best practices.
+**Key principle:** The initial content structure is the contract between authors and developers. Design this structure before writing any code, and be careful when making changes that could break existing pages.
+
+**For creating or modifying blocks:** Use the **building-blocks** skill which guides you through:
+- Content model design (via content-driven-development)
+- JavaScript decoration patterns
+- CSS styling conventions
+- Testing and validation
+
+**Tip:** Use `curl http://localhost:3000/path/to/page` to inspect the HTML delivered by the backend before making assumptions.
 
 ### Auto-Blocking
 
-Auto-blocking is the process of creating blocks that aren't explicitly authored into the page based on patterns in the content. See the `buildAutoBlocks` function in `/scripts/scripts.js`.
-
-Additional information on auto-blocking can be found in the `content-modeling` skill.
+Auto-blocking is the process of creating blocks that aren't explicitly authored into the page based on patterns in the content. See the `buildAutoBlocks` function in `scripts.js`.
 
 ### Three-Phase Page Loading
 
-Pages are progressively loaded in three phases to maximize performance. This process begins when `loadPage` from `/scripts/scripts.js` is called.
+Pages are progressively loaded in three phases to maximize performance. This process begins when `loadPage` from scripts.js is called.
 
-* Eager - load only what is required to get to LCP. This generally includes decorating the overall page content to create sections, blocks, buttons, etc. and loading only the first section of the page. It is critical to not muddy up the eager phase with anything not required for LCP.
+* Eager - load only what is required to get to LCP. This generally includes decorating the overall page content to create sections, blocks, buttons, etc. and loading the first section of the page.
 * Lazy - load all other page content, including the header and footer.
-* Delayed - load things that can be safely loaded later here and incur a performance penalty when loaded earlier such as tag managers, ad platforms, and otehr third-party dependencies.
+* Delayed - load things that can be safely loaded later here and incur a performance penalty when loaded earlier
+
+## Development Workflow
+
+**For all development tasks:** Use the **content-driven-development** skill which orchestrates the complete workflow:
+1. Content discovery and modeling
+2. Implementation (invokes building-blocks skill for blocks)
+3. Validation and testing (invokes testing-blocks skill)
+
+### Local Development
+1. Run `npx -y @adobe/aem-cli up --no-open` to start the AEM Proxy server
+2. Open `http://localhost:3000` in your browser, puppeteer, playwright, or other tools. If none of those are available, instruct the human to open the URL in the browser and give feedback
+3. Make changes to files - they will auto-reload
+4. Use browser dev tools to test responsive design
+
+### File Organization
+- Block files: `blocks/{blockname}/{blockname}.js` and `{blockname}.css`
+- Global styles: `styles/styles.css` (eager), `styles/lazy-styles.css` (lazy)
+- Font definitions: `styles/fonts.css`
+- Each block should be self-contained, responsive, and accessible
+
+## Testing & Quality Assurance
+
+**For comprehensive testing guidance:** Use the **testing-blocks** skill which covers:
+- Unit testing for logic-heavy utilities
+- Browser testing with Playwright/Puppeteer
+- Linting and code quality
+- Performance validation
+- PR preparation
+
+### Quick Reference
+- **Linting:** `npm run lint` (must pass before commits), `npm run lint:fix` to auto-fix
+- **Performance:** Follow https://www.aem.live/developer/keeping-it-100
+- **Accessibility:** Proper heading hierarchy, alt text, WCAG 2.1 AA guidelines
+
+## Deployment
+
+### Environments
+
+Edge Delivery Services provides you with three environments. Your local development server at `http://localhost:3000` serves code from your local working copy (even uncommitted code) and content that has been previewed by authors. You can access this at any time when the development server is running.
+
+For all other environments, you need to know the GitHub owner and repository name (`gh repo view --json nameWithOwner` or `git remote -v`) and the current branch name `git branch`)
+
+With this information, you can construct URLs for the preview environment (same content as `localhost:3000`) and the production environment (same content as the live website, approved by authors)
+
+- **Production Preview**: `https://main--{repo}--{owner}.aem.page/`
+- **Production Live**: `https://main--{repo}--{owner}.aem.live/`
+- **Feature Preview**: `https://{branch}--{repo}--{owner}.aem.page/`
+
+### Publishing Process
+1. Push changes to a feature branch
+2. AEM Code Sync automatically processes changes making them available on feature preview environment for that branch
+3. Open a pull request to merge changes to `main`
+   - **REQUIRED:** Include preview link in PR description: `https://{branch}--{repo}--{owner}.aem.page/{path}`
+   - This link is used for automated performance testing (PSI checks)
+   - Without this link, your PR will be rejected
+4. Verify checks pass: `gh checks` or `gh pr checks --watch`
+5. A human reviewer will review the code, inspect the preview URL, and merge the PR
+6. AEM Code Sync updates the main branch for production
+
+**For PR preparation and testing:** See the **testing-blocks** skill for comprehensive guidance on testing before opening a PR.
+
+## Common Tasks
+
+### Adding New Blocks
+Use the **content-driven-development** skill which will guide you through:
+1. Content modeling and test content creation
+2. Block implementation (via building-blocks skill)
+3. Testing and validation (via testing-blocks skill)
+
+### Modifying Existing Blocks
+Use the **content-driven-development** skill to ensure you have test content, then follow the building-blocks skill for implementation.
+
+### Global Style Changes
+1. Modify files in the `styles/` directory
+2. Test across different blocks and pages
+3. Ensure changes don't break existing layouts
+4. Consider impact on performance, especially CLS
+
+**For testing global changes:** Use the **testing-blocks** skill to validate style changes across the site before opening a PR.
+
+### Core Script Changes
+Changes to `scripts.js`, `delayed.js`, or other core functionality require careful testing across multiple blocks and pages. Use the **testing-blocks** skill for comprehensive validation.
+
+## Troubleshooting
+
+### Getting Help
+
+**For AEM documentation:** Use the **docs-search** skill to search aem.live documentation and blogs for feature information, implementation guidance, and best practices.
+
+**For reference implementations:** Use the **block-collection-and-party** skill to find similar blocks, patterns, and code examples from the Block Collection and Block Party repositories.
+
+**Key documentation resources:**
+- [Developer Tutorial](https://www.aem.live/developer/tutorial)
+- [The Anatomy of a Project](https://www.aem.live/developer/anatomy-of-a-project)
+- [David's Model](https://www.aem.live/docs/davidsmodel)
+
+**Manual search:** `site:www.aem.live` when searching the web
 
 ## Security Considerations
 
@@ -177,10 +211,10 @@ Pages are progressively loaded in three phases to maximize performance. This pro
 
 ## Contributing
 
-- Follow the existing code style and patterns
-- Test changes locally before committing
-- Run a PSI check on your branch and fix performance issues before raising a PR
-- Ensure all linting passes
+- Follow the existing code style and patterns (see Code Style Guidelines above)
+- Use the **content-driven-development** skill for all development tasks
+- Use the **testing-blocks** skill before opening any PR
+- Ensure all linting passes: `npm run lint`
 - Update documentation for significant changes
 
 ## If all else fails

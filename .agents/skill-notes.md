@@ -40,13 +40,9 @@ Please ask me clarifying questions to understand:
 - [x] block-collection-and-party - Search Block Collection and Block Party for reference implementations
 - [x] content-driven-development - Complete with 3-phase process, find-block-content script, orchestrates other skills
 - [x] content-modeling - Complete with author experience guidance, content structure patterns, decision frameworks
+- [x] testing-blocks - Complete guide for testing blocks including unit tests, browser tests, linting, and performance validation
 
 ### Skills Needing Full Implementation
-
-- [ ] **testing-blocks** (formerly testing-skill-tbd)
-  - Description: Guide for writing unit tests for AEM blocks. Use after implementing block functionality.
-  - Currently: Mentioned in building-blocks but not created
-  - Should cover: What to test, what not to test, testing patterns, mocking strategies
 
 ### Future Skills to Consider
 
