@@ -42,8 +42,6 @@ Please ask me clarifying questions to understand:
 - [x] content-modeling - Complete with author experience guidance, content structure patterns, decision frameworks
 - [x] testing-blocks - Complete guide for testing blocks including unit tests, browser tests, linting, and performance validation
 
-### Skills Needing Full Implementation
-
 ### Future Skills to Consider
 
 Add skills here as you identify gaps in coverage during development work. Before adding a skill to this list, verify it's not already covered by:
