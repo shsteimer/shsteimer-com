@@ -9,5 +9,9 @@ helix-importer-ui
 .idea
 .env
 
+# Test artifacts (throwaway tests and temporary content)
+test/tmp/
+drafts/tmp/
+
 # Skill caches
 .claude/skills/**/.cache/

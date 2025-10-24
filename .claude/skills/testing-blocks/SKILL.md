@@ -55,7 +55,7 @@ These tests are better done in a browser because DOM structures change frequentl
 3. Show screenshots to humans for feedback
 4. Include screenshots in PRs to aid review
 
-Just don't commit these test scripts to the repository.
+**Organization:** Keep throwaway tests in `test/tmp/` and test content in `drafts/tmp/`. Both directories should be gitignored so temporary test artifacts aren't committed.
 
 ## Testing Checklist
 
@@ -102,23 +102,40 @@ npm run test:watch
 
 **When to use:** Block decoration, visual validation, DOM structure, responsive design
 
+**Organization:**
+- Test scripts: `test/tmp/test-{block}-browser.js`
+- Test content: `drafts/tmp/{block}.html`
+- Screenshots: `test/tmp/screenshots/`
+- Both `test/tmp/` and `drafts/tmp/` should be gitignored
+
 **Quick start:**
 ```bash
 # Install Playwright
 npm install --save-dev playwright
 npx playwright install chromium
 
-# Create throwaway test script (DO NOT COMMIT)
-# test-my-block.js
+# Create test content
+# drafts/tmp/my-block.html (copy head.html content, add test markup)
+
+# Start dev server with drafts folder
+aem up --html-folder drafts
+
+# Create throwaway test script in test/tmp/
+# test/tmp/test-my-block.js
 import { chromium } from 'playwright';
+import { mkdir } from 'fs/promises';
 
 async function test() {
+  await mkdir('./test/tmp/screenshots', { recursive: true });
   const browser = await chromium.launch({ headless: false });
   const page = await browser.newPage();
 
-  await page.goto('http://localhost:3000/drafts/test');
+  await page.goto('http://localhost:3000/drafts/tmp/my-block');
   await page.waitForSelector('.my-block');
-  await page.screenshot({ path: 'screenshot.png', fullPage: true });
+  await page.screenshot({ 
+    path: './test/tmp/screenshots/my-block.png',
+    fullPage: true 
+  });
 
   await browser.close();
 }
@@ -126,9 +143,10 @@ async function test() {
 test().catch(console.error);
 
 # Run the test
-node test-my-block.js
+node test/tmp/test-my-block.js
 
-# Review screenshots, then delete the script
+# Clean up when done (optional - gitignored either way)
+rm -rf test/tmp/*
 ```
 
 **Detailed guide:** See `resources/browser-testing.md`
@@ -181,21 +199,22 @@ For detailed step-by-step workflow, see `resources/testing-workflow.md`.
 ### Before Committing
 4. Run `npm test` - all tests pass
 5. Run `npm run lint` - linting passes
-6. Write throwaway browser test
-7. Review screenshots
-8. Manual validation in browser
+6. Write throwaway browser test in `test/tmp/`
+7. Create test content in `drafts/tmp/`
+8. Review screenshots from `test/tmp/screenshots/`
+9. Manual validation in browser
 
 ### Before Opening PR
-9. Commit and push to feature branch
-10. Verify branch preview loads
-11. Run `gh checks`
-12. Create PR with test link
-13. Monitor `gh pr checks`
+10. Commit and push to feature branch (test/tmp/ won't be included)
+11. Verify branch preview loads
+12. Run `gh checks`
+13. Create PR with test link
+14. Monitor `gh pr checks`
 
 ### After PR Review
-14. Address feedback
-15. Re-test
-16. Verify checks pass
+15. Address feedback
+16. Re-test
+17. Verify checks pass
 
 ## Troubleshooting
 
@@ -218,8 +237,9 @@ For detailed troubleshooting guide, see `resources/troubleshooting.md`.
 - Fix performance issues if PSI fails
 
 ### Browser tests fail
-- Verify dev server running: `aem up`
-- Check test content exists
+- Verify dev server running: `aem up --html-folder drafts`
+- Check test content exists in `drafts/tmp/`
+- Verify URL uses `/tmp/` path: `http://localhost:3000/drafts/tmp/my-block`
 - Add waits: `await page.waitForSelector('.block')`
 
 ## Resources
