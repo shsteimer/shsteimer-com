@@ -46,10 +46,11 @@ Please ask me clarifying questions to understand:
 
 ### Future Skills to Consider
 
-- [ ] **performance-optimization** - Optimizing blocks for LCP, CLS, etc.
-- [ ] **accessibility** - Ensuring blocks meet accessibility standards
-- [ ] **debugging** - Common debugging techniques for AEM blocks
-- [ ] **deployment** - PR process, testing in production, rollback strategies
+Add skills here as you identify gaps in coverage during development work. Before adding a skill to this list, verify it's not already covered by:
+- Existing skills
+- CLAUDE.md quick references
+- docs-search skill (for finding AEM documentation)
+- General web development knowledge
 
 ## Testing Skills Effectively
 
