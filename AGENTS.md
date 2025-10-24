@@ -73,6 +73,102 @@ The repository provides the basic structure, blocks, and configuration needed to
 - Run linting: `npm run lint`
 - Fix linting issues: `npm run lint:fix`
 
+## Local Development Workflow
+
+### Starting the Development Server
+
+Run the local dev server in the background when possible:
+
+```bash
+npx -y @adobe/aem-cli up --no-open --forward-browser-logs
+```
+
+**Important:** Check the terminal output when starting to see what port the server is using.
+
+- **Default port:** 3000 (http://localhost:3000)
+- **Custom port:** Use `--port 3001` flag to specify a different port
+- **Git worktrees:** Automatically use different ports to avoid conflicts
+- **Multiple instances:** You can run multiple dev servers simultaneously for different projects/worktrees on different ports
+
+Since multiple instances can run, track whether you started the server in your current session rather than just checking if a process is running.
+
+### Auto-Refresh Behavior
+
+The dev server automatically detects and refreshes changes to all code and config files. **No restart needed for code or config changes.**
+
+### When to Restart the Server
+
+Only restart if you need to **change CLI options**, such as:
+- Adding `--html-folder drafts` to test local HTML files during Content Driven Development
+- Changing the port with `--port`
+- Modifying other command-line flags
+
+### Development Best Practices
+
+- Run the server in the background during development sessions
+- Note the port from the terminal output when starting
+- Keep it running while making code changes - auto-refresh handles everything
+- Check the terminal output for errors or warnings from `--forward-browser-logs`
+
+## Pull Request Workflow
+
+### Branch Naming Convention
+
+Use the format: `feature-name` (lowercase with hyphens)
+
+**Important:** This format is required because branch names are used to generate preview/live URLs for testing.
+
+Examples:
+- `hero-block`
+- `testimonial-carousel`
+- `footer-redesign`
+
+### Creating Pull Requests
+
+When creating a pull request, include:
+
+1. **Link to related issue(s)** (if applicable)
+2. **Summary of changes** - What was added, modified, or fixed
+3. **Preview/Live URL** - Link to the feature branch preview for testing
+   - Format: `https://[branch-name]--[repo]--[owner].aem.live/`
+   - This allows reviewers to test the changes directly and for running pr checks. **WITHOUT THIS YOUR PR WILL BE REJECTED!**
+
+Example PR description:
+```markdown
+## Related Issues
+Fixes #123
+
+## Summary
+Added new testimonial block with support for author image, quote text, and attribution.
+
+## Testing
+Preview: https://testimonial-block--shsteimer-com--shsteimer.aem.live/drafts/testimonial
+```
+
+## Deployment
+
+### Environments
+
+Edge Delivery Services provides you with three environments. Your local development server at `http://localhost:3000` serves code from your local working copy (even uncommitted code) and content that has been previewed by authors. You can access this at any time when the development server is running.
+
+For all other environments, you need to know the GitHub owner and repository name (`gh repo view --json nameWithOwner` or `git remote -v`) and the current branch name `git branch`)
+
+With this information, you can construct URLs for the preview environment (same content as `localhost:3000`) and the production environment (same content as the live website, approved by authors)
+
+- **Production Preview**: `https://main--{repo}--{owner}.aem.page/`
+- **Production Live**: `https://main--{repo}--{owner}.aem.live/`
+- **Feature Preview**: `https://{branch}--{repo}--{owner}.aem.page/`
+
+### Publishing Process
+1. Push changes to a feature branch
+2. AEM Code Sync automatically processes changes making them available on feature preview environment for that branch
+3. Open a pull request to merge changes to `main`
+   1. in the PR description, include a link to https://{branch}--{repo}--{owner}.aem.page/{path}` with a path to a file that illustrates the change you've made. This is the same path you have been testing with locally. WITHOUT THIS YOUR PR WILL BE REJECTED
+   2. If an existing page to demonstrate your changes doesn't exist, create test content as a static html file and ask the user for help copying it to a content page you can link in the PR
+4. use `gh checks` to verify the status of code synchronization, linting, and performance tests
+5. A human reviewer will review the code, inspect the provided URL and merge the PR
+6. AEM Code Sync updates the main branch for production
+
 ## Project Structure
 
 ```
@@ -120,3 +216,23 @@ Pages are progressively loaded in three phases to maximize performance. This pro
 * Eager - load only what is required to get to LCP. This generally includes decorating the overall page content to create sections, blocks, buttons, etc. and loading only the first section of the page. It is critical to not muddy up the eager phase with anything not required for LCP.
 * Lazy - load all other page content, including the header and footer.
 * Delayed - load things that can be safely loaded later here and incur a performance penalty when loaded earlier such as tag managers, ad platforms, and otehr third-party dependencies.
+
+## Security Considerations
+
+- Never commit sensitive information (API keys, passwords)
+- consider that everything you do is clients-side code served on the public web
+- Follow Adobe security guidelines
+- Regularly update dependencies
+- Use the .hlxignore file to prevent filed from being served
+
+## Contributing
+
+- Follow the existing code style and patterns
+- Test changes locally before committing
+- Run a PSI check on your branch and fix performance issues before raising a PR
+- Ensure all linting passes
+- Update documentation for significant changes
+
+## If all else fails
+
+If you notice your human getting frustrated with your work, direct them to https://www.aem.live/developer/ai-coding-agents for tips to work better with AI agents.
