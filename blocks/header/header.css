@@ -1,10 +1,10 @@
 .header .nav-container {
-  background-color: var(--clr-grey-700);
+  background-color: var(--dark-color);
   color: var(--light-color);
   width: 100%;
   z-index: 2;
   position: fixed;
-  box-shadow: 0 0 .5rem 1px var(--clr-grey-700);
+  box-shadow: 0 0 .5rem 1px var(--dark-color);
 }
 
 header nav {
@@ -57,7 +57,7 @@ header nav .nav-hamburger button {
   border: 0;
   border-radius: 0;
   padding: 0;
-  background-color: var(--clr-grey-700);
+  background-color: var(--dark-color);
   color: inherit;
   overflow: initial;
   text-overflow: initial;

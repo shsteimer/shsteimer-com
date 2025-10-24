@@ -32,22 +32,25 @@ svg {
   /* color definitions */
   --clr-white: #fff;
   --clr-black: #000;
-  --clr-red-400: #ce2f00;
-  --clr-red-500: #9b2300;
-  --clr-blue-400: #2a6496;
-  --clr-blue-500: #205181;
-  --clr-grey-400: #f5f5f5;
-  --clr-grey-500: #666;
-  --clr-grey-600: #333;
-  --clr-grey-700: #222;
+  --clr-red-400: #be4605;
+  --clr-red-500: #8c2f03;
+  --clr-blue-400: #3f6f7a;
+  --clr-blue-500: #32555f;
+  --clr-grey-400: #f3e4d8;
+  --clr-grey-500: #c89d82;
+  --clr-grey-600: #4d372b;
+  --clr-grey-700: #33241c;
 
   /* element colors */
   --link-color: var(--clr-blue-400);
-  --link-hover-color: var(--clr-blue-500);
-  --background-color: var(--clr-white);
+  --link-hover-color: var(--clr-red-400);
+  --background-color: #fff9f4;
   --light-color: var(--clr-grey-400);
-  --dark-color: var(--clr-grey-600);
+  --dark-color: var(--clr-grey-700);
   --text-color: var(--clr-grey-600);
+  --cta-background-color: var(--clr-red-400);
+  --cta-hover-background-color: var(--clr-red-500);
+  --cta-text-color: var(--clr-white);
   --code-bg-color: rgb(0 0 0 / 20%);
   --code-text-color: var(--clr-black);
 
@@ -129,7 +132,7 @@ body.appear {
 
 header {
   height: var(--nav-height);
-  background-color: var(--clr-grey-700);
+  background-color: var(--dark-color);
 }
 
 h1,
@@ -219,8 +222,8 @@ button {
   font-style: normal;
   font-weight: 700;
   cursor: pointer;
-  color: var(--background-color);
-  background-color: var(--link-color);
+  color: var(--cta-text-color);
+  background-color: var(--cta-background-color);
   margin: 1rem 0;
   white-space: nowrap;
   overflow: hidden;
@@ -232,7 +235,7 @@ a.button:hover,
 a.button:focus,
 button:hover,
 button:focus {
-  background-color: var(--link-hover-color);
+  background-color: var(--cta-hover-background-color);
   cursor: pointer;
 }
 
@@ -245,8 +248,17 @@ button:disabled:hover {
 a.button.secondary,
 button.secondary {
   background-color: unset;
-  border: 2px solid currentcolor;
-  color: var(--text-color)
+  border: 2px solid var(--link-color);
+  color: var(--link-color);
+}
+
+a.button.secondary:hover,
+a.button.secondary:focus,
+button.secondary:hover,
+button.secondary:focus {
+  border-color: var(--link-hover-color);
+  color: var(--link-hover-color);
+  background-color: unset;
 }
 
 .icon {
