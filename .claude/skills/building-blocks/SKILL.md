@@ -11,7 +11,7 @@ This skill guides you through creating new AEM Edge Delivery blocks or modifying
 
 - **content-driven-development**: MUST be invoked before using this skill to ensure content and content models are ready
 - **block-collection-and-party**: Use to find similar blocks for patterns
-- **[testing-skill-tbd]**: Use after implementation for unit testing
+- **testing-blocks**: Automatically invoked after implementation for comprehensive testing
 
 ## When to Use This Skill
 
@@ -119,12 +119,21 @@ Follow patterns and conventions in `resources/css-guidelines.md`:
 
 ### 6. Test the Implementation
 
-- View the block in the local dev server
-- Test all variants and content patterns
-- Verify responsive behavior
-- Check accessibility basics
-- **Run linting:** `npm run lint` (fix any issues with `npm run lint:fix`)
-- For unit testing guidance, see the **[testing-skill-tbd]** skill
+**After implementation is complete, invoke the testing-blocks skill:**
+
+The testing-blocks skill will guide you through:
+- Writing unit tests for any logic-heavy utilities
+- Browser testing to validate block behavior
+- Taking screenshots for validation and PR documentation
+- Running linting and fixing issues
+- Verifying GitHub checks pass
+
+Provide the testing-blocks skill with:
+- Block name being tested
+- Test content URL (from CDD process)
+- Any variants that need testing
+
+Return to this skill after testing is complete to proceed to step 7.
 
 ### 7. Document Block
 

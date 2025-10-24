@@ -198,11 +198,14 @@ npm run lint:fix
 
 #### Step 3.3: Comprehensive Testing
 
-For thorough testing guidance, reference the **testing-blocks** skill for:
-- Unit testing strategies
-- Integration testing
-- Performance validation
-- Cross-browser testing
+**The testing-blocks skill is automatically invoked by building-blocks** for block development.
+
+For other code changes, or for additional testing guidance, invoke the **testing-blocks** skill which provides:
+- Unit testing strategies for logic-heavy utilities
+- Browser testing with Playwright/Puppeteer
+- Linting and code quality checks
+- Performance validation with GitHub checks
+- Guidance on keeper vs throwaway tests
 
 #### Step 3.4: PR Preparation
 
