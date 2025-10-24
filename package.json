@@ -4,9 +4,16 @@
   "version": "1.3.0",
   "description": "Starter project for Adobe Helix",
   "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
     "lint:js": "eslint .",
+    "lint:js:fix": "eslint . --fix",
     "lint:css": "stylelint templates/**/*.css blocks/**/*.css styles/*.css",
-    "lint": "npm run lint:js && npm run lint:css"
+    "lint:css:fix": "stylelint templates/**/*.css blocks/**/*.css styles/*.css --fix",
+    "lint": "npm run lint:js && npm run lint:css",
+    "lint:fix": "npm run lint:js:fix && npm run lint:css:fix"
   },
   "repository": {
     "type": "git",
@@ -21,12 +28,15 @@
   "devDependencies": {
     "@babel/core": "7.23.7",
     "@babel/eslint-parser": "7.23.3",
+    "@vitest/coverage-v8": "^4.0.3",
+    "@vitest/ui": "^4.0.3",
     "chai": "5.0.0",
     "eslint": "8.56.0",
     "eslint-config-airbnb-base": "15.0.0",
     "eslint-plugin-import": "2.29.1",
     "jsdom": "^25.0.1",
     "stylelint": "16.1.0",
-    "stylelint-config-standard": "36.0.0"
+    "stylelint-config-standard": "36.0.0",
+    "vitest": "^4.0.3"
   }
 }

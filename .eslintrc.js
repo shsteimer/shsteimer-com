@@ -18,4 +18,13 @@ module.exports = {
       js: 'always',
     }],
   },
+  overrides: [
+    {
+      files: ['test/**/*.js', '**/*.test.js', '**/*.spec.js'],
+      rules: {
+        // allow devDependencies in test files
+        'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+      },
+    },
+  ],
 };

@@ -8,3 +8,6 @@ helix-importer-ui
 *.bak
 .idea
 .env
+
+# Skill caches
+.claude/skills/**/.cache/
