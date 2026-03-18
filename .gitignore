@@ -14,4 +14,4 @@ test/tmp/
 drafts/tmp/
 
 # Skill caches
-.claude/skills/**/.cache/
+.skills/**/.cache/
