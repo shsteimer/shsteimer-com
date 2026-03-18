@@ -223,6 +223,10 @@ Pure functions, data processing, utility methods, API integrations — these get
 
 Put vitest tests in `test/` following existing conventions (see `references/unit-testing.md`).
 
+### End-of-Loop Summary
+
+After the last assertion is green, present a summary table to the user showing all assertions, their results, and how each was evaluated. See `references/playwright-patterns.md` for the format. This serves two purposes: the user can review coverage at a glance, and writing the evaluation method forces intentional choices about how each assertion is verified (which helps catch issues like DOM queries on hidden elements).
+
 ---
 
 ## Step 7: Regression Check

@@ -162,6 +162,30 @@ Standard viewports for responsive testing — these are mid-range representative
 
 Breakpoint boundaries (599, 600, 601, 899, 900, 901) are where layout bugs most often appear. When investigating a responsive issue, test at those values rather than the mid-range defaults.
 
+## End-of-Loop Summary
+
+After the TDD loop completes (all assertions green), present a summary table to the user. This is not optional — it's the final checkpoint before moving to regression testing.
+
+**Format:**
+
+| # | Assertion | Result | Method |
+|---|-----------|--------|--------|
+| 1 | Footer loads without console errors | PASS | coded (console listener) |
+| 2 | Footer loads from metadata-specified fragment path | PASS | coded (request intercept) |
+| 3 | Social links have accessible title attributes | PASS | coded (DOM attribute) |
+| 4 | Copyright displays current year, no literal {year} | PASS | coded (text content) |
+| 5 | Social and copyright side by side on desktop | PASS | screenshot (1200px) |
+| 6 | Footer readable on mobile, no overflow | PASS | screenshot (375px) |
+
+**Method column values:**
+- `coded` — hard pass/fail from a Playwright check. Add a parenthetical for the specific technique: `(DOM query)`, `(DOM attribute)`, `(visibility check)`, `(text content)`, `(computed style)`, `(request intercept)`, `(console listener)`, `(element count)`.
+- `screenshot` — visual evaluation of a captured image. Include viewport width.
+- `a11y snapshot` — evaluation of the accessibility tree.
+
+**Why this matters:** Writing down the method forces intentional choices about *how* each assertion is verified. A `coded (DOM query)` on a conditionally-hidden element is a signal to reconsider — should it be `coded (visibility check)` instead? The table makes these choices explicit and reviewable.
+
+**When to present:** Once, at the end of the TDD loop — not after every red-green cycle. If multiple spec files were tested in the same session, present one table per spec.
+
 ## Tips
 
 - **Wait for decoration.** Blocks are decorated asynchronously. Always wait for `[data-block-status="loaded"]` before asserting.
