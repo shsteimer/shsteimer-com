@@ -7,6 +7,8 @@ tags: [content, interactive]
 ## Search visibility
 
 - When the `<header>` has the `with-search` class, the search form is visible
+- The search icon list item renders as a search form
+- The search input has an associated label for accessibility
 - The search input is a text field with a placeholder
 
 ## Search interaction

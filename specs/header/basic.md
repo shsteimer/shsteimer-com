@@ -17,8 +17,6 @@ tags: [content, interactive, responsive]
 
 ## Search
 
-- The search icon list item renders as a search form in the DOM
-- The search input has an associated label for accessibility
 - The search form is not visible when the `<header>` lacks the `with-search` class
 
 ## Hamburger menu
