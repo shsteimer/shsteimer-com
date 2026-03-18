@@ -17,9 +17,14 @@ tags: [content, responsive]
 
 ## Sub-group behavior
 
-- Sub-group items are rendered as links but are not interactive buttons
 - Sub-group items do not display a chevron indicator
 - Sub-group post lists are collapsed by default (same expand/collapse CSS as default variant applies, but there is no toggle mechanism)
+
+## Accessibility
+
+- Sub-group items in the simple variant appear as links in the accessibility tree, not buttons
+- The Tags group is completely absent from the accessibility tree
+- Each group heading is announced as a level-2 heading
 
 ## Layout
 

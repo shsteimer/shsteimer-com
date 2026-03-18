@@ -19,7 +19,6 @@ tags: [content, interactive, responsive]
 ## Expand and collapse
 
 - All sub-group items start collapsed — their post lists are not visible
-- Each sub-group item acts as a button with an accessible expanded/collapsed state
 - Clicking a sub-group item expands it, revealing a list of post links beneath
 - Clicking the same item again collapses it, hiding the post links
 - Each sub-group item displays a chevron indicator pointing right when collapsed and down when expanded
@@ -27,6 +26,13 @@ tags: [content, interactive, responsive]
 ## Post links
 
 - Each expanded sub-group contains a list of post titles that link to the post's URL path
+
+## Accessibility
+
+- Sub-group items are announced as buttons in the accessibility tree (e.g., button "AEM (8)")
+- The expanded/collapsed state of each sub-group is communicated to assistive technology
+- When expanded, the nested post links are announced as a list of links within the sub-group
+- Each group heading is announced as a level-2 heading
 
 ## Layout
 
