@@ -181,6 +181,7 @@ Before writing each assertion, verify:
 - [ ] If visual, does it say what to look for in the screenshot?
 - [ ] If describing a variant or edge case, does it state the expected outcome (not just "attempts to")?
 - [ ] Does it matter to the user or author? (If not, skip it)
+- [ ] Is the assertion in a spec whose fixture activates the behavior? Assertions about conditionally visible elements belong in a fixture/spec where the condition is met — not in one where the element happens to exist in the DOM but is hidden. A DOM query will silently pass on a hidden element, giving false confidence.
 
 ## Organizing Specs
 
