@@ -152,13 +152,15 @@ const a11y = await page.accessibility.snapshot();
 
 ## Viewport Sizes
 
-Standard viewports for responsive testing:
+Standard viewports for responsive testing — these are mid-range representatives, not fixed breakpoints:
 
-| Name | Width | Height |
-|------|-------|--------|
-| mobile | 375 | 667 |
-| tablet | 768 | 1024 |
-| desktop | 1200 | 800 |
+| Name | Width | Height | Range |
+|------|-------|--------|-------|
+| mobile | 375 | 667 | < 600px |
+| tablet | 768 | 1024 | 600–899px |
+| desktop | 1200 | 800 | 900px+ |
+
+Breakpoint boundaries (599, 600, 601, 899, 900, 901) are where layout bugs most often appear. When investigating a responsive issue, test at those values rather than the mid-range defaults.
 
 ## Tips
 

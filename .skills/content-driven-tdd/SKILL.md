@@ -141,7 +141,6 @@ Create `/specs/<block>/` directory and a spec file for each fixture. See `refere
 block: <block-name>
 fixture: /drafts/fixtures/<block>/basic.plain.html
 tags: [layout, responsive]
-viewport: [desktop, mobile]
 ---
 
 ## Tracer bullet

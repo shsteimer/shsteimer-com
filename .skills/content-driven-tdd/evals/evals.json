@@ -10,14 +10,22 @@
     {
       "id": 2,
       "prompt": "The posts block needs to be redesigned as a card grid. Right now it's a simple list. I want 3 columns on desktop, 2 on tablet, 1 on mobile. Each card should show the post image, title, and date. Keep the existing data fetching logic.",
-      "expected_output": "Reconciliation step executed: existing content found, fixtures synced. Existing posts block code modified (not rewritten from scratch). Regression check against existing pages. Specs and fixtures updated. Playwright verification at multiple viewports.",
-      "files": []
+      "expected_output": "Existing specs (specs/posts/) and fixtures (drafts/fixtures/posts/) found and used as the starting point. Reconciliation executed. Existing spec assertions for list layout updated or replaced for card grid. New assertions added for grid layout at desktop/tablet/mobile. Playwright verification at multiple viewports. Regression check against existing pages.",
+      "files": [
+        "specs/posts/basic.md",
+        "specs/posts/edge-cases.md",
+        "drafts/fixtures/posts/basic.plain.html",
+        "drafts/fixtures/posts/edge-cases.plain.html"
+      ]
     },
     {
       "id": 3,
-      "prompt": "The quote block text is too small on desktop. Bump up the font size of the blockquote text and make the attribution line italic. That's it, just CSS.",
-      "expected_output": "CSS-only change to blocks/quote/quote.css. Content modeling skipped (no structural change). But Playwright scripts still written and run to verify the visual change. Spec updated if one exists, created if not. Browser verification is NOT skipped despite the simplicity of the change.",
-      "files": []
+      "prompt": "The quote block text is too small on desktop. Bump up the font size of the blockquote text and make the attribution line (second paragraph) italic. That's it, just CSS.",
+      "expected_output": "Existing spec (specs/quote/basic.md) and fixture (drafts/fixtures/quote/basic.plain.html) found and used. New assertions added to the spec for larger font size and italic attribution before implementing. CSS-only change to blocks/quote/quote.css. Playwright scripts written and run — browser verification not skipped despite simplicity.",
+      "files": [
+        "specs/quote/basic.md",
+        "drafts/fixtures/quote/basic.plain.html"
+      ]
     }
   ]
 }

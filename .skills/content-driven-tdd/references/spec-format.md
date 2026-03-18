@@ -15,7 +15,7 @@ Spec files live in `/specs/<block>/` and describe expected block behavior in pla
     edge-cases.md     # Missing content, unusual inputs
 ```
 
-Name spec files by what they describe, not by test fixture name. One spec file can reference multiple fixtures.
+One spec file per fixture. Name spec files by what they describe — the fixture name is a reasonable default, but `basic.md`, `edge-cases.md`, `variants.md` are all fine.
 
 ## Format
 
@@ -24,7 +24,6 @@ Name spec files by what they describe, not by test fixture name. One spec file c
 block: columns
 fixture: /drafts/fixtures/columns/two-col.plain.html
 tags: [layout, responsive]
-viewport: [desktop, mobile]
 ---
 
 ## Two-column layout
@@ -46,27 +45,45 @@ viewport: [desktop, mobile]
 | Field | Required | Description |
 |-------|----------|-------------|
 | `block` | yes | Block name (matches `blocks/<name>/`) |
-| `fixture` | yes | Path to the primary test fixture. Can be a single path or an array of paths |
+| `fixture` | yes | Path to the test fixture for this spec. One path per spec file. |
 | `tags` | no | Categories for querying (layout, responsive, interactive, a11y, etc.) |
-| `viewport` | no | Which viewports to test. Array of: desktop (1200px), tablet (768px), mobile (375px) |
 
-### Fixture References
+### Viewport guidance
 
-A spec can reference multiple fixtures:
+There is no `viewport` frontmatter field. Viewport context belongs in the assertion text, where it's unambiguous and self-describing:
 
-```yaml
-fixture:
-  - /drafts/fixtures/columns/two-col.plain.html
-  - /drafts/fixtures/columns/three-col.plain.html
+- "On desktop (1200px), columns render side by side — check via screenshot"
+- "On mobile (375px), columns stack vertically — check via screenshot"
+
+**When to test at multiple viewports:**
+
+- **New block or substantive modification** — always verify at desktop and mobile at minimum. You cannot assume identical behavior until you check. Layout bugs are common and a screenshot is cheap.
+- **Edge case specs** — test at default viewport only unless the edge case is specifically viewport-related.
+- **Targeted fix (CSS tweak, bug fix)** — check the affected viewports, not necessarily all.
+
+**Keep responsive assertions inline** with content and interaction assertions. Don't create a separate `responsive.md` for viewport-specific behavior — only warranted when responsive layout is the primary concern of the entire spec.
+
+**Breakpoints are ranges, not points.** Layout changes happen at 600px and 900px. The standard sizes are mid-range representatives:
+
+| Name | Width | Range |
+|------|-------|-------|
+| mobile | 375px | < 600px |
+| tablet | 768px | 600–899px |
+| desktop | 1200px | 900px+ |
+
+Breakpoint boundaries (599, 600, 601, 899, 900, 901) are where subtle layout bugs most often appear. The standard sizes won't catch them — when investigating a responsive issue, test at those boundary values.
+
+### Multiple fixtures → multiple spec files
+
+One spec file covers one fixture. If a block needs multiple fixtures (happy path, edge cases, variants), write one spec file per fixture:
+
+```
+specs/posts/
+  basic.md         # fixture: /drafts/fixtures/posts/basic.plain.html
+  edge-cases.md    # fixture: /drafts/fixtures/posts/edge-cases.plain.html
 ```
 
-Or reference a fixture in a specific assertion group:
-
-```markdown
-## Edge case: single column (fixture: /drafts/fixtures/columns/edge-cases.plain.html)
-
-- When only one column of content is authored, the block renders it full-width
-```
+This keeps each spec focused and avoids ambiguity about which assertions apply to which fixture.
 
 ## Spec Size Should Match Change Scope
 
@@ -112,18 +129,18 @@ That last one is common and worth flagging: assertions about what code *attempts
 
 ### Gray Area — Make It Concrete
 
-"Cards have a distinct card-like appearance" is too vague to evaluate consistently. Fix it by specifying what you'll look for:
+"Cards have a distinct card-like appearance" is too vague to evaluate consistently. Fix it by describing what observable thing you'd look for:
 
 - **Too vague:** "Cards have a distinct card-like appearance"
-- **Concrete:** "Each card has a visible border or shadow separating it from the background — check via screenshot"
+- **Concrete:** "Each card has a visible border or shadow separating it from the background"
 
 - **Too vague:** "Image fills its container"
-- **Concrete:** "The card image occupies the full width of the card at all viewports — check via screenshot"
+- **Concrete:** "The card image occupies the full width of the card"
 
 - **Too vague:** "Content is visually centered"
-- **Concrete:** "The block content appears horizontally centered on the page at desktop viewport — check via screenshot"
+- **Concrete:** "The block content appears horizontally centered on the page at desktop (1200px)"
 
-The pattern: if it's a visual assertion, say what you'll look for in the screenshot. This makes the evaluation repeatable.
+Don't annotate assertions with "check via screenshot" or "check via DOM query" — the reference doc defines which evaluation method applies to which assertion type. Keep assertions focused on what, not how.
 
 ## Edge Cases and Error States
 
@@ -134,6 +151,24 @@ For any block that fetches data or renders dynamic content, include at least one
 - What renders when the authored content doesn't match the expected pattern?
 
 These are the assertions most likely to catch real bugs. Don't skip them.
+
+### Authoring contract violations
+
+For blocks that don't use authored content (or use only specific fields), assert what happens when an author puts unexpected content inside the block. The right assertion describes the observable outcome — not the implementation:
+
+- **Good:** "Authored content inside the block does not appear in the rendered output"
+- **Bad:** "The block calls replaceChildren, discarding authored content"
+
+This documents the authoring contract explicitly and catches regressions if the rendering approach changes.
+
+## Block side effects
+
+Some blocks affect parts of the page outside their own element — adding classes to the header, setting global state, dispatching events. These side effects are part of the block's behavior and belong in the spec.
+
+- "When the block loads, the `<header>` element receives the `with-search` CSS class"
+- "Clicking the share button dispatches a `share` event on the document"
+
+If a side effect is load-time (happens during decoration), put it in the load/decoration section. If it's interaction-driven, put it with the relevant interaction assertions.
 
 ## Checklist Per Assertion
 
