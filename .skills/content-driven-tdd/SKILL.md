@@ -189,7 +189,6 @@ After reaching green, look for:
 - **Duplication** — repeated DOM manipulation patterns across a block or across blocks → extract a helper function
 - **Long `decorate` functions** — break into focused private helpers (data extraction, DOM transformation, event binding are natural seams). Keep Playwright assertions on the block's public behavior, not the helpers.
 - **Shallow helpers** — a one-liner utility that just wraps another function adds indirection without depth. Inline it or deepen it.
-- **Feature envy** — logic that manipulates data it doesn't own belongs closer to where that data lives
 - **What the new code reveals about existing code** — refactoring scope isn't limited to what you just wrote. If implementing this block reveals a pattern in `scripts.js` or another block that should be extracted, note it. Address it if it's small; file it if it's large.
 
 ### Choosing Assertion Type
