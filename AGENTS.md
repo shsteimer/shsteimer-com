@@ -31,6 +31,14 @@ The repository provides the basic structure, blocks, and configuration needed to
     └── {blockname}/   - Individual block directory
         ├── {blockname}.js      # Block's JavaScript
         └── {blockname}.css     # Block's styles
+├── specs/           # Prose specs describing expected block behavior (durable)
+    └── {blockname}/   - Spec files per block
+        └── *.md           # Assertion files with YAML frontmatter
+├── drafts/          # Local test content served by dev server (--html-folder drafts)
+    ├── fixtures/      # Committed test fixtures (durable)
+    │   └── {blockname}/   - Fixture files per block
+    │       └── *.plain.html   # EDS-format authored markup for testing
+    └── tmp/           # Temporary/scratch content (gitignored)
 ├── styles/          # Global styles and CSS
     ├── styles.css          # Minimal global styling and layout for your website required for LCP
     ├── lazy-styles.css     # Additional global styling and layout for below the fold/post LCP content
@@ -74,7 +82,7 @@ The repository provides the basic structure, blocks, and configuration needed to
 
 CMS authored content is a key part of every AEM Website. The content of a page is broken into sections. Sections can have default content (text, headings, links, etc.) as well as content in blocks.
 
-If no authored content exists to test against, you can create static HTML files in a `drafts/` folder at the project root. Pass `--html-folder drafts` when starting the dev server. Follow the aem markup structure and save files with `.html` or `.plain.html` extensions.
+If no authored content exists to test against, create static HTML fixture files in `drafts/fixtures/<block>/` at the project root. Pass `--html-folder drafts` when starting the dev server. Follow the aem markup structure and save files with `.plain.html` extensions.
 
 Background on content and markup structure can be found at https://www.aem.live/developer/markup-sections-blocks and https://www.aem.live/developer/markup-reference respectively.
 

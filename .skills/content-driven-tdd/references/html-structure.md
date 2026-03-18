@@ -1,6 +1,6 @@
 # HTML File Structure for Test Content
 
-When creating local `.plain.html` files for testing blocks in the `drafts/` folder, follow this structure to match how AEM Edge Delivery Services processes authored content.
+When creating local `.plain.html` fixture files for testing blocks in `/drafts/fixtures/<block>/`, follow this structure to match how AEM Edge Delivery Services processes authored content.
 
 ## Important Change: Plain HTML Format
 
@@ -59,21 +59,21 @@ When creating local `.plain.html` files for testing blocks in the `drafts/` fold
 ## File Naming Convention
 
 **IMPORTANT:** HTML files must use the `.plain.html` extension:
-- ✅ `drafts/hero-test.plain.html`
-- ✅ `drafts/blocks/cards.plain.html`
-- ❌ `drafts/hero-test.html` (old format, no longer used)
+- ✅ `drafts/fixtures/hero/basic.plain.html`
+- ✅ `drafts/fixtures/hero/variants.plain.html`
+- ✅ `drafts/fixtures/cards/edge-cases.plain.html`
+- ❌ `drafts/hero-test.html` (wrong extension, wrong location)
 
 ## Running with Local HTML
 
 **Start dev server with:**
 ```bash
-aem up --html-folder drafts
+aem up --html-folder drafts --no-open --forward-browser-logs
 ```
 
 **Preview URLs:**
-- File: `drafts/hero-test.plain.html` → URL: `http://localhost:3000/drafts/hero-test`
-- File: `drafts/blocks/cards.plain.html` → URL: `http://localhost:3000/drafts/blocks/cards`
-- **Special case:** `drafts/blog/index.plain.html` → URL: `http://localhost:3000/drafts/blog/` (NOT `/drafts/`)
+- File: `drafts/fixtures/hero/basic.plain.html` → URL: `http://localhost:3000/drafts/fixtures/hero/basic`
+- File: `drafts/fixtures/cards/variants.plain.html` → URL: `http://localhost:3000/drafts/fixtures/cards/variants`
 
 ## Section Structure
 
@@ -445,7 +445,7 @@ The nested `<div>` structure in HTML corresponds to the table structure in autho
 
 Here's a complete example of a test `.plain.html` file for a hero block:
 
-**File:** `drafts/hero-test.plain.html`
+**File:** `drafts/fixtures/hero/basic.plain.html`
 
 ```html
 <!-- Hero block section -->
@@ -494,13 +494,13 @@ Here's a complete example of a test `.plain.html` file for a hero block:
 </div>
 ```
 
-**Preview at:** `http://localhost:3000/drafts/hero-test`
+**Preview at:** `http://localhost:3000/drafts/fixtures/hero/basic`
 
 ## Important Notes
 
 **File location:**
-- Create test HTML files in the `drafts/` folder
-- Can be organized in subfolders: `drafts/blocks/hero/test.plain.html`
+- Create fixture files in `drafts/fixtures/<block>/`
+- One directory per block, descriptive file names
 - Always use `.plain.html` extension
 
 **Running with local HTML:**

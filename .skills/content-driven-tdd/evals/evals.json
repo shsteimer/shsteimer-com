@@ -1,0 +1,23 @@
+{
+  "skill_name": "content-driven-tdd",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need a new hero block for my site redesign. It should have a full-width background image with a heading, description text, and a CTA button overlaid. On mobile the text should stack below the image. See issue #15.",
+      "expected_output": "Full TDD loop: fixtures created in drafts/fixtures/hero/, spec written in specs/hero/, Playwright scripts written to test/tmp/ and executed, block code in blocks/hero/. Tracer bullet assertion first, then layered assertions. All verified in browser.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "The posts block needs to be redesigned as a card grid. Right now it's a simple list. I want 3 columns on desktop, 2 on tablet, 1 on mobile. Each card should show the post image, title, and date. Keep the existing data fetching logic.",
+      "expected_output": "Reconciliation step executed: existing content found, fixtures synced. Existing posts block code modified (not rewritten from scratch). Regression check against existing pages. Specs and fixtures updated. Playwright verification at multiple viewports.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "The quote block text is too small on desktop. Bump up the font size of the blockquote text and make the attribution line italic. That's it, just CSS.",
+      "expected_output": "CSS-only change to blocks/quote/quote.css. Content modeling skipped (no structural change). But Playwright scripts still written and run to verify the visual change. Spec updated if one exists, created if not. Browser verification is NOT skipped despite the simplicity of the change.",
+      "files": []
+    }
+  ]
+}
