@@ -12,7 +12,7 @@ tags: [content, responsive]
 ## Social links
 
 - The footer renders social icon links (mastodon, github, rss)
-- Each social link has a `title` attribute derived from the icon name (e.g., "Visit mastodon")
+- Each social link is announced with a descriptive name in the accessibility tree (e.g., "Visit mastodon")
 
 ## Copyright
 

@@ -22,10 +22,16 @@ tags: [content, interactive, responsive]
 ## Hamburger menu
 
 - On mobile (375px), a hamburger button is visible
-- The nav starts collapsed (`aria-expanded="false"`) and the nav list is not visible
-- Clicking the hamburger button expands the nav (`aria-expanded="true"`) and the nav list becomes visible
+- The nav starts collapsed and the nav list is not visible
+- Clicking the hamburger button expands the nav and the nav list becomes visible
 - Clicking the hamburger button again collapses the nav
 - On desktop (1200px), the hamburger button is not visible
+
+## Accessibility
+
+- The hamburger button is announced as a button in the accessibility tree with a descriptive label
+- The nav's expanded/collapsed state is communicated to assistive technology
+- The hamburger button's accessible label updates to reflect the current state (e.g., "Open navigation" vs "Close navigation")
 
 ## Layout
 

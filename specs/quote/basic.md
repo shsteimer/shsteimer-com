@@ -20,6 +20,10 @@ tags: [content, responsive]
 - When a quote has a second paragraph (attribution line), both the quote text and attribution render inside the blockquote
 - Both paragraphs are visible
 
+## Accessibility
+
+- The quote content is announced as a blockquote in the accessibility tree
+
 ## Responsive layout
 
 - On mobile (375px), both quote patterns render correctly with no content overflow or layout issues
