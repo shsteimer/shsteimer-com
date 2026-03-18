@@ -19,7 +19,7 @@ tags: [content, interactive, responsive]
 
 - The search icon list item renders as a search form in the DOM
 - The search input has an associated label for accessibility
-- The search form is not visible unless the `<header>` has the `with-search` class (added by the posts block)
+- The search form is not visible when the `<header>` lacks the `with-search` class
 
 ## Hamburger menu
 
