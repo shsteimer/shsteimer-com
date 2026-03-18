@@ -166,9 +166,31 @@ For each assertion:
 **Critical rules:**
 
 - **One assertion at a time. No exceptions.** Do not write all assertions upfront then implement. Do not write all spec sections first. Write one assertion, make it pass, then write the next. This is the hardest discipline to maintain — the instinct to plan ahead is strong. Resist it. Each assertion should respond to what you learned from the previous cycle.
+
+  ```
+  WRONG (horizontal slices):
+    RED:   assertion1, assertion2, assertion3 ...
+    GREEN: impl1, impl2, impl3 ...
+
+  RIGHT (vertical slices):
+    RED→GREEN: assertion1→impl1
+    RED→GREEN: assertion2→impl2
+    RED→GREEN: assertion3→impl3
+  ```
 - **Never refactor while red.** Get to green first, then clean up.
 - **Test behavior, not implementation.** "Block renders 3 cards" survives a refactor. `.querySelectorAll('.card').length === 3` doesn't. Prose assertions describe what the user sees, not DOM structure.
 - **Choose evaluation method per assertion and stick with it.** If "columns are side by side" is evaluated via screenshot, use screenshot every time you check that assertion.
+- **Run Playwright after every refactor step**, not just at the end. Each structural change is a chance to break something.
+
+### Refactor candidates
+
+After reaching green, look for:
+
+- **Duplication** — repeated DOM manipulation patterns across a block or across blocks → extract a helper function
+- **Long `decorate` functions** — break into focused private helpers (data extraction, DOM transformation, event binding are natural seams). Keep Playwright assertions on the block's public behavior, not the helpers.
+- **Shallow helpers** — a one-liner utility that just wraps another function adds indirection without depth. Inline it or deepen it.
+- **Feature envy** — logic that manipulates data it doesn't own belongs closer to where that data lives
+- **What the new code reveals about existing code** — refactoring scope isn't limited to what you just wrote. If implementing this block reveals a pattern in `scripts.js` or another block that should be extracted, note it. Address it if it's small; file it if it's large.
 
 ### Choosing Assertion Type
 
