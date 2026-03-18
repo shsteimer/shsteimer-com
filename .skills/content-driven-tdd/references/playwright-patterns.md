@@ -182,6 +182,11 @@ After the TDD loop completes (all assertions green), present a summary table to 
 - `screenshot` — visual evaluation of a captured image. Include viewport width.
 - `a11y snapshot` — evaluation of the accessibility tree.
 
+**Result column values:**
+- `PASS` — the assertion was verified and the expected behavior was confirmed.
+- `FAIL` — the assertion was verified and the expected behavior was not observed.
+- `UNVERIFIED` — the assertion could not be conclusively evaluated. Use this when a screenshot is too small or ambiguous to judge, when a coded check doesn't actually test what the assertion claims, or when any other factor prevents a confident determination. **Never report PASS for an assertion you did not actually verify.** An unverified assertion reported as PASS is worse than a failure — it creates false confidence and hides gaps in coverage. When an assertion is UNVERIFIED, either fix the evaluation method (re-take the screenshot at a better scope, switch to a coded check, etc.) and re-evaluate, or flag it honestly so the user can decide how to proceed.
+
 **Why this matters:** Writing down the method forces intentional choices about *how* each assertion is verified. A `coded (DOM query)` on a conditionally-hidden element is a signal to reconsider — should it be `coded (visibility check)` instead? The table makes these choices explicit and reviewable.
 
 **When to present:** Once, at the end of the TDD loop — not after every red-green cycle. If multiple spec files were tested in the same session, present one table per spec.
@@ -193,4 +198,5 @@ After the TDD loop completes (all assertions green), present a summary table to 
 - **One script per TDD cycle.** Extend the script as you add assertions, don't create a new file each time.
 - **Log clearly.** Print assertion name, expected vs actual, PASS/FAIL. Makes evaluation faster.
 - **Clean up.** Delete scripts and screenshots when the session ends.
+- **Evaluate screenshots honestly.** When you take a screenshot to verify an assertion, you must actually confirm the expected behavior is visible in the image. If the screenshot is too small, too zoomed out, or otherwise ambiguous — do not report PASS. Either re-take the screenshot scoped to the relevant element, switch to a coded check (e.g., `computed style` for CSS property changes), or report UNVERIFIED. Screenshots of an entire block to verify a single link's hover underline style will not work — scope the screenshot to the element, or better yet, use `getComputedStyle()` for CSS property assertions.
 - **DOM queries pass on hidden elements.** `count()`, `getAttribute()`, `textContent()`, and similar DOM queries succeed on elements that are hidden via CSS (`display: none`, `visibility: hidden`, off-screen positioning). This means a structural assertion like "the form exists and has a label" will pass even when the form is invisible to the user. If the behavior you're asserting only matters when the element is visible, either verify visibility first (`isVisible()`) or place the assertion in a test/fixture where the element is actually shown. Conversely, use DOM queries intentionally for asserting what's in the DOM regardless of visibility — for example, verifying that a hidden element has correct `aria-*` attributes.
