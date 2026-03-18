@@ -123,32 +123,47 @@ Use a11y snapshots instead of DOM attribute queries when asserting:
 - What accessible labels are announced
 - Heading hierarchy and landmark structure
 
-```javascript
-// Capture the full tree
-const snapshot = await page.accessibility.snapshot();
-console.log(JSON.stringify(snapshot, null, 2));
+Use `locator.ariaSnapshot()` to capture the accessibility tree as a text representation. Scope the snapshot to the relevant element — don't snapshot the entire page when you only care about the header.
 
-// Or save to file for analysis
-const fs = await import('fs');
-await fs.promises.writeFile(
-  'test/tmp/<block>-a11y.json',
-  JSON.stringify(snapshot, null, 2),
-);
+```javascript
+// Snapshot a specific element
+const snap = await page.locator('header').ariaSnapshot();
+console.log(snap);
+// Output:
+// - banner:
+//   - navigation:
+//     - link "Test Home":
+//       - /url: /
+//     - button "Open navigation"
 ```
 
-**Asserting against specific parts of the tree:**
+**Asserting against the snapshot:**
+
+The snapshot is a plain text string. Use `includes()` to check for roles, names, and structure:
+
 ```javascript
-const snapshot = await page.accessibility.snapshot();
+const snap = await page.locator('header').ariaSnapshot();
 
-// Find a specific element by role and name
-const button = snapshot.children?.find(
-  (node) => node.role === 'button' && node.name === 'Open navigation',
-);
-console.log(`Hamburger announced as button: ${button ? 'PASS' : 'FAIL'}`);
+// Check that hamburger is announced as a button with a label
+const hasButton = snap.includes('button "Open navigation"');
+console.log(`Hamburger announced as button: ${hasButton ? 'PASS' : 'FAIL'}`);
 
-// Check that sub-groups appear as links, not buttons
-const links = snapshot.children?.filter((node) => node.role === 'link');
-console.log(`Sub-groups are links: ${links.length > 0 ? 'PASS' : 'FAIL'}`);
+// After expanding, check that label updates
+await hamburger.click();
+await page.waitForTimeout(300);
+const expandedSnap = await page.locator('header').ariaSnapshot();
+const hasCloseLabel = expandedSnap.includes('button "Close navigation"');
+console.log(`Label updates on expand: ${hasCloseLabel ? 'PASS' : 'FAIL'}`);
+
+// Check semantic structure
+const footerSnap = await page.locator('footer').ariaSnapshot();
+const hasNamedLinks = footerSnap.includes('link "Visit mastodon"');
+console.log(`Social links have a11y names: ${hasNamedLinks ? 'PASS' : 'FAIL'}`);
+
+// Check blockquote semantics
+const mainSnap = await page.locator('main').ariaSnapshot();
+const hasBlockquote = mainSnap.includes('blockquote:');
+console.log(`Blockquote in a11y tree: ${hasBlockquote ? 'PASS' : 'FAIL'}`);
 ```
 
 **When to use DOM queries instead:** Content-level accessibility checks like "all images have alt text" are fine as DOM queries — you're checking authored content, not semantic behavior. But roles, states, labels, and structure belong in the a11y tree.
