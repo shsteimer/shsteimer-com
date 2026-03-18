@@ -124,31 +124,8 @@ Require measurement, subjective judgment, or describe code rather than behavior:
 - "Font is 14px Helvetica" (can't determine from screenshot)
 - "The `.card` div has class `active`" (implementation detail)
 - "The block attempts to fetch featured posts" (describes code, not outcome)
-- "Sub-group controllers do not have a role attribute" (negative assertion about missing feature — see below)
-- "Items are sorted by count descending" (ordering claim without data verification — see below)
 
 That last one is common and worth flagging: assertions about what code *attempts* or *tries* are not assertions. State the observable outcome instead: "When no featured posts exist, the block falls back to displaying the latest post."
-
-### Negative assertions about missing features
-
-Do not write assertions that document the *absence* of a feature as if it were desired behavior. A baseline spec captures what the block **does**, not what it **doesn't do**. Assertions like "does not have a role attribute" or "does not have aria-controls" treat missing accessibility or functionality as a requirement to preserve. If the feature is later added, the spec would flag it as a regression — the opposite of what you want.
-
-Instead, describe the observable behavioral difference:
-
-- **Bad:** "Sub-group controllers do not have a role attribute"
-- **Bad:** "Sub-group controllers do not have an aria-controls attribute"
-- **Good:** "Sub-groups in the simple variant are not expandable"
-
-The good version captures the behavior a user would observe. Whether `role="button"` is present is an implementation detail of that behavior.
-
-### Ordering and data-dependent assertions
-
-Assertions about ordering ("sorted by count descending", "newest year first") are only valid if you verify the actual data values, not just observe that items appeared in a particular sequence. A list that happens to have 3 items in descending order doesn't prove the sort works — it might just be coincidence with the current data.
-
-To properly verify ordering:
-- Read the actual values (counts, dates, labels) from the rendered DOM
-- Confirm the sequence satisfies the claimed sort order programmatically
-- If you cannot verify the data, do not assert the ordering — describe what is visible instead ("The block renders year groups" vs "Year groups are sorted descending")
 
 ### Gray Area — Make It Concrete
 
@@ -204,8 +181,6 @@ Before writing each assertion, verify:
 - [ ] If visual, does it say what to look for in the screenshot?
 - [ ] If describing a variant or edge case, does it state the expected outcome (not just "attempts to")?
 - [ ] Does it matter to the user or author? (If not, skip it)
-- [ ] If asserting the absence of something, would adding that feature be a regression? If not, remove the assertion.
-- [ ] If asserting ordering or sequence, did you verify the actual data values, not just observe what appeared?
 - [ ] Is the assertion in a spec whose fixture activates the behavior? Assertions about conditionally visible elements belong in a fixture/spec where the condition is met — not in one where the element happens to exist in the DOM but is hidden. A DOM query will silently pass on a hidden element, giving false confidence.
 
 ## Organizing Specs
