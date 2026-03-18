@@ -115,9 +115,16 @@ After taking screenshots, read the image files and evaluate them against the pro
 
 ### A11y Snapshots (Semantic Structure)
 
-Use for semantic and accessibility assertions.
+Use for accessibility and semantic structure assertions. **The a11y tree is the source of truth for what assistive technology communicates to users.** Checking DOM attributes like `role` or `aria-expanded` is testing implementation — the a11y tree shows the actual result.
+
+Use a11y snapshots instead of DOM attribute queries when asserting:
+- What role an element is announced as (button, link, heading, etc.)
+- Whether interactive state (expanded, pressed, checked) is communicated
+- What accessible labels are announced
+- Heading hierarchy and landmark structure
 
 ```javascript
+// Capture the full tree
 const snapshot = await page.accessibility.snapshot();
 console.log(JSON.stringify(snapshot, null, 2));
 
@@ -128,6 +135,23 @@ await fs.promises.writeFile(
   JSON.stringify(snapshot, null, 2),
 );
 ```
+
+**Asserting against specific parts of the tree:**
+```javascript
+const snapshot = await page.accessibility.snapshot();
+
+// Find a specific element by role and name
+const button = snapshot.children?.find(
+  (node) => node.role === 'button' && node.name === 'Open navigation',
+);
+console.log(`Hamburger announced as button: ${button ? 'PASS' : 'FAIL'}`);
+
+// Check that sub-groups appear as links, not buttons
+const links = snapshot.children?.filter((node) => node.role === 'link');
+console.log(`Sub-groups are links: ${links.length > 0 ? 'PASS' : 'FAIL'}`);
+```
+
+**When to use DOM queries instead:** Content-level accessibility checks like "all images have alt text" are fine as DOM queries — you're checking authored content, not semantic behavior. But roles, states, labels, and structure belong in the a11y tree.
 
 ### Combined Approach
 

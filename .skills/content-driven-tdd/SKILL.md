@@ -198,7 +198,7 @@ For each assertion, pick the right evaluation approach:
 **Coded checks** (DOM queries, hard pass/fail) — use for:
 - Structural requirements ("block renders N items")
 - Content presence ("heading text matches authored content")
-- Accessibility ("all images have alt text")
+- Content accessibility ("all images have alt text")
 - Interactive behavior ("clicking header expands body")
 
 **Screenshots** — use for:
@@ -208,7 +208,8 @@ For each assertion, pick the right evaluation approach:
 
 **A11y snapshots** — use for:
 - Semantic structure ("heading hierarchy is correct")
-- ARIA attributes and roles
+- Roles and interaction models ("sub-groups are announced as expandable buttons")
+- Accessible labels and states ("button label updates to reflect expanded state")
 - Focus order and keyboard navigation
 
 ### Playwright Script Patterns

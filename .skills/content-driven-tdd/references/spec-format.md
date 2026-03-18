@@ -123,6 +123,8 @@ Require measurement, subjective judgment, or describe code rather than behavior:
 - "Animation feels smooth" (subjective)
 - "Font is 14px Helvetica" (can't determine from screenshot)
 - "The `.card` div has class `active`" (implementation detail)
+- "The element has `role=button`" (DOM attribute — assert via a11y tree instead, see Accessibility Assertions)
+- "The element does not have a role attribute" (absence of an attribute is not a behavior — describe the user experience instead)
 - "The block attempts to fetch featured posts" (describes code, not outcome)
 
 That last one is common and worth flagging: assertions about what code *attempts* or *tries* are not assertions. State the observable outcome instead: "When no featured posts exist, the block falls back to displaying the latest post."
@@ -141,6 +143,22 @@ That last one is common and worth flagging: assertions about what code *attempts
 - **Concrete:** "The block content appears horizontally centered on the page at desktop (1200px)"
 
 Don't annotate assertions with "check via screenshot" or "check via DOM query" — the reference doc defines which evaluation method applies to which assertion type. Keep assertions focused on what, not how.
+
+## Accessibility Assertions
+
+Every block spec should include accessibility assertions as a first-class concern, not an afterthought. Accessibility is user-facing behavior — assistive technology users experience roles, labels, and semantic structure directly, just as sighted users experience layout and color.
+
+**Describe the assistive technology user's experience, not DOM attributes.** The accessibility tree is the source of truth — it represents what screen readers and other assistive technology actually communicate. Use a11y snapshots to verify these assertions, not DOM attribute queries.
+
+- **Bad:** "The element has `role=button` and `aria-expanded=false`" (DOM attribute check — implementation detail)
+- **Bad:** "The element does not have a `role` attribute" (absence of an attribute — not a behavior)
+- **Good:** "Sub-group headings are announced as expandable buttons in the accessibility tree"
+- **Good:** "Sub-groups in the simple variant appear as links in the accessibility tree, not interactive controls"
+- **Good:** "The hamburger button's accessible label updates to reflect expanded or collapsed state"
+
+The good examples describe what an assistive technology user would experience. Whether that's implemented via `role="button"`, `aria-expanded`, or some other mechanism is irrelevant to the spec — the a11y tree captures the result.
+
+**When variants differ in accessibility behavior**, assert the intended experience for each variant. The simple archives variant uses links (navigate away) while the default uses buttons (expand inline) — both are correct, just different interaction models.
 
 ## Edge Cases and Error States
 
