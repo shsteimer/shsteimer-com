@@ -18,7 +18,7 @@ tags: [content, responsive]
 ## Sub-group behavior
 
 - Sub-group items do not display a chevron indicator
-- Sub-group post lists are collapsed by default (same expand/collapse CSS as default variant applies, but there is no toggle mechanism)
+- Sub-group items are not expandable — they link to the archives page instead
 
 ## Accessibility
 
